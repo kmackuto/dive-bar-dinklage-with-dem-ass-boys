@@ -1360,6 +1360,379 @@
             0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
             100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
+
+        /* ========================================
+           MOBILE EXPERIENCE
+           ======================================== */
+
+        /* Hide mobile shell on desktop */
+        .mobile-shell { display: none; }
+
+        @media (max-width: 767px) {
+            /* Hide desktop layout on mobile */
+            body.mobile-active header,
+            body.mobile-active .main-container,
+            body.mobile-active .panel-tabs {
+                display: none !important;
+            }
+
+            /* Show mobile shell */
+            body.mobile-active .mobile-shell {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+                width: 100vw;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 2000;
+                background-color: #1a1a2e;
+                overflow: hidden;
+            }
+
+            /* Mobile map (background behind launcher) */
+            .mobile-map-bg {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                opacity: 0.3;
+                pointer-events: none;
+            }
+
+            .mobile-map-bg.active-map {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            /* Screen layers - each screen is a full-viewport overlay */
+            .mobile-screen {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 10;
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background-color: #1a1a2e;
+                transition: opacity 0.25s ease;
+            }
+
+            .mobile-screen.active {
+                display: flex;
+            }
+
+            /* ---- Identity Selection Screen ---- */
+            .identity-screen {
+                gap: 2rem;
+                padding: 2rem;
+            }
+
+            .identity-prompt {
+                font-size: 1.4rem;
+                color: #90caf9;
+                text-align: center;
+                font-weight: 300;
+            }
+
+            .identity-options {
+                display: flex;
+                gap: 2rem;
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .identity-option {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+                padding: 2rem 1rem;
+                border: 2px solid #0f3460;
+                border-radius: 16px;
+                background: transparent;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .identity-option:active {
+                transform: scale(0.96);
+                border-color: #1565C0;
+                background: rgba(15, 52, 96, 0.3);
+            }
+
+            .identity-avatar {
+                width: 80px;
+                height: 80px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .identity-avatar svg {
+                width: 100%;
+                height: 100%;
+                stroke: #90caf9;
+                stroke-width: 1.5;
+                fill: none;
+            }
+
+            .identity-name {
+                font-size: 1.2rem;
+                color: #e0e0e0;
+                font-weight: 600;
+            }
+
+            /* ---- Mode Selector (Launcher) Screen ---- */
+            .launcher-screen {
+                background: transparent;
+                z-index: 5;
+            }
+
+            .launcher-greeting {
+                position: absolute;
+                top: 15%;
+                text-align: center;
+                font-size: 1.3rem;
+                color: #90caf9;
+                font-weight: 300;
+                z-index: 10;
+            }
+
+            .launcher-container {
+                position: relative;
+                width: 280px;
+                height: 280px;
+                z-index: 10;
+            }
+
+            /* Center button: Log a Visit */
+            .launcher-center {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #2E7D32, #1565C0);
+                border: none;
+                cursor: pointer;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 4px;
+                box-shadow: 0 4px 20px rgba(46, 125, 50, 0.4);
+                transition: transform 0.2s ease;
+                -webkit-tap-highlight-color: transparent;
+                z-index: 2;
+            }
+
+            .launcher-center:active {
+                transform: translate(-50%, -50%) scale(0.94);
+            }
+
+            .launcher-center-icon {
+                font-size: 1.8rem;
+                line-height: 1;
+            }
+
+            .launcher-center-label {
+                font-size: 0.6rem;
+                color: #fff;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+            /* Outer mode buttons */
+            .launcher-mode {
+                position: absolute;
+                width: 80px;
+                height: 80px;
+                border: 2px solid #0f3460;
+                border-radius: 16px;
+                background: transparent;
+                cursor: pointer;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                transition: all 0.2s ease;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .launcher-mode:active {
+                transform: scale(0.94);
+                border-color: #1565C0;
+                background: rgba(15, 52, 96, 0.3);
+            }
+
+            .launcher-mode-icon {
+                width: 32px;
+                height: 32px;
+            }
+
+            .launcher-mode-icon svg {
+                width: 100%;
+                height: 100%;
+                stroke: #90caf9;
+                stroke-width: 1.5;
+                fill: none;
+            }
+
+            .launcher-mode-label {
+                font-size: 0.65rem;
+                color: #8a8aad;
+                font-weight: 500;
+                text-align: center;
+            }
+
+            /* Position the 3 outer buttons around the center */
+            .launcher-mode.explore {
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .launcher-mode.concierge {
+                bottom: 10px;
+                left: 10px;
+            }
+
+            .launcher-mode.browse {
+                bottom: 10px;
+                right: 10px;
+            }
+
+            /* ---- Mode Content Screens ---- */
+            .mode-screen {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 15;
+                display: none;
+                flex-direction: column;
+                background-color: #1a1a2e;
+                overflow-y: auto;
+            }
+
+            .mode-screen.active {
+                display: flex;
+            }
+
+            .mode-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 1rem;
+                background: #16213e;
+                border-bottom: 1px solid #0f3460;
+                flex-shrink: 0;
+            }
+
+            .mode-header-title {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: #e0e0e0;
+            }
+
+            .mode-header-back {
+                background: none;
+                border: none;
+                color: #90caf9;
+                font-size: 1.4rem;
+                cursor: pointer;
+                padding: 0.25rem;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .mode-body {
+                flex: 1;
+                overflow-y: auto;
+                padding: 1rem;
+            }
+
+            /* ---- Swipe-up Reset Hint ---- */
+            .swipe-hint {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 4px;
+                background: linear-gradient(to right, transparent, #0f3460, transparent);
+                z-index: 100;
+                pointer-events: none;
+            }
+
+            /* ---- Swipe-up Reset Overlay ---- */
+            .reset-overlay {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                z-index: 200;
+                background: #16213e;
+                border-top: 1px solid #0f3460;
+                border-radius: 16px 16px 0 0;
+                padding: 2rem;
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+                transform: translateY(100%);
+                transition: transform 0.25s ease;
+                box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+            }
+
+            .reset-overlay.visible {
+                display: flex;
+                transform: translateY(0);
+            }
+
+            .reset-overlay-title {
+                font-size: 1.1rem;
+                color: #e0e0e0;
+            }
+
+            .reset-overlay-buttons {
+                display: flex;
+                gap: 1rem;
+                width: 100%;
+            }
+
+            .reset-overlay-buttons button {
+                flex: 1;
+                padding: 0.8rem;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                cursor: pointer;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .reset-yes {
+                background: #2E7D32;
+                color: #fff;
+                border: none;
+            }
+
+            .reset-nevermind {
+                background: transparent;
+                color: #8a8aad;
+                border: 1px solid #0f3460;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1591,6 +1964,167 @@
             <button id="matchDismiss" style="background: #2E7D32; color: #fff; border: none; padding: 0.8rem 2.5rem; border-radius: 8px; font-size: 1.1rem; cursor: pointer;">Let's go! 🍺</button>
         </div>
         <canvas id="confettiCanvas" style="position: absolute; inset: 0; pointer-events: none;"></canvas>
+    </div>
+
+    <!-- ========================================
+         MOBILE SHELL
+         ======================================== -->
+    <div class="mobile-shell" id="mobileShell">
+        <!-- Background map (dimmed behind launcher) -->
+        <div class="mobile-map-bg" id="mobileMapBg"></div>
+
+        <!-- Screen: Identity Selection -->
+        <div class="mobile-screen identity-screen active" id="identityScreen">
+            <div class="identity-prompt">Who's here?</div>
+            <div class="identity-options">
+                <button class="identity-option" data-identity="bigDog" id="identityBigDog">
+                    <div class="identity-avatar">
+                        <svg viewBox="0 0 80 80">
+                            <!-- Bulldog outline -->
+                            <circle cx="40" cy="42" r="24" />
+                            <circle cx="30" cy="36" r="3" />
+                            <circle cx="50" cy="36" r="3" />
+                            <ellipse cx="40" cy="46" rx="8" ry="5" />
+                            <path d="M20 28 Q16 18 22 20 Q24 22 24 28" />
+                            <path d="M60 28 Q64 18 58 20 Q56 22 56 28" />
+                            <path d="M32 50 Q40 56 48 50" />
+                        </svg>
+                    </div>
+                    <span class="identity-name">Big Dog</span>
+                </button>
+                <button class="identity-option" data-identity="chooch" id="identityChooch">
+                    <div class="identity-avatar">
+                        <svg viewBox="0 0 80 80">
+                            <!-- Steam engine outline -->
+                            <rect x="20" y="30" width="40" height="24" rx="4" />
+                            <circle cx="28" cy="58" r="5" />
+                            <circle cx="52" cy="58" r="5" />
+                            <circle cx="40" cy="58" r="5" />
+                            <rect x="12" y="34" width="10" height="16" rx="5" />
+                            <path d="M34 20 Q34 30 34 30" />
+                            <path d="M46 22 Q46 30 46 30" />
+                            <ellipse cx="34" cy="17" rx="4" ry="3" />
+                            <ellipse cx="46" cy="19" rx="3" ry="3" />
+                        </svg>
+                    </div>
+                    <span class="identity-name">Chooch</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Screen: Mode Selector (The Launcher) -->
+        <div class="mobile-screen launcher-screen" id="launcherScreen">
+            <div class="launcher-greeting" id="launcherGreeting">What's the move?</div>
+            <div class="launcher-container">
+                <!-- Explore (top) -->
+                <button class="launcher-mode explore" data-mode="explore" id="launchExplore">
+                    <div class="launcher-mode-icon">
+                        <svg viewBox="0 0 32 32">
+                            <!-- Binoculars -->
+                            <circle cx="10" cy="18" r="7" />
+                            <circle cx="22" cy="18" r="7" />
+                            <rect x="14" y="14" width="4" height="8" rx="2" />
+                            <line x1="10" y1="11" x2="10" y2="8" />
+                            <line x1="22" y1="11" x2="22" y2="8" />
+                        </svg>
+                    </div>
+                    <span class="launcher-mode-label">Explore</span>
+                </button>
+
+                <!-- Log a Visit (center) -->
+                <button class="launcher-center" id="launchLogVisit" data-mode="logVisit">
+                    <span class="launcher-center-icon">📍</span>
+                    <span class="launcher-center-label">Log Visit</span>
+                </button>
+
+                <!-- Concierge (bottom-left) -->
+                <button class="launcher-mode concierge" data-mode="concierge" id="launchConcierge">
+                    <div class="launcher-mode-icon">
+                        <svg viewBox="0 0 32 32">
+                            <!-- Butler -->
+                            <circle cx="16" cy="12" r="6" />
+                            <path d="M8 28 Q8 20 16 18 Q24 20 24 28" />
+                            <path d="M10 8 L22 8" stroke-width="2" />
+                            <line x1="16" y1="6" x2="16" y2="4" />
+                        </svg>
+                    </div>
+                    <span class="launcher-mode-label">Concierge</span>
+                </button>
+
+                <!-- Browse & Edit (bottom-right) -->
+                <button class="launcher-mode browse" data-mode="browseEdit" id="launchBrowseEdit">
+                    <div class="launcher-mode-icon">
+                        <svg viewBox="0 0 32 32">
+                            <!-- Pencil/gear -->
+                            <path d="M6 26 L22 10 L26 14 L10 30 Z" />
+                            <path d="M22 10 L24 8 L28 12 L26 14" />
+                            <line x1="6" y1="26" x2="10" y2="30" />
+                        </svg>
+                    </div>
+                    <span class="launcher-mode-label">Browse & Edit</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mode: Explore -->
+        <div class="mode-screen" id="modeExplore">
+            <div class="mode-header">
+                <button class="mode-header-back" id="exploreBack">←</button>
+                <span class="mode-header-title">Explore</span>
+                <span></span>
+            </div>
+            <div class="mode-body" style="padding: 0; position: relative; overflow: hidden;">
+                <div id="mobileExploreMap" style="width: 100%; height: 100%;"></div>
+            </div>
+        </div>
+
+        <!-- Mode: Concierge -->
+        <div class="mode-screen" id="modeConcierge">
+            <div class="mode-header">
+                <button class="mode-header-back" id="conciergeBack">←</button>
+                <span class="mode-header-title">Concierge</span>
+                <span></span>
+            </div>
+            <div class="mode-body" id="conciergeBody">
+                <p style="color: #8a8aad; text-align: center; margin-top: 3rem;">Coming soon...</p>
+            </div>
+        </div>
+
+        <!-- Mode: Browse & Edit -->
+        <div class="mode-screen" id="modeBrowseEdit">
+            <div class="mode-header">
+                <button class="mode-header-back" id="browseEditBack">←</button>
+                <span class="mode-header-title">Browse & Edit</span>
+                <span></span>
+            </div>
+            <div class="mode-body" id="browseEditBody">
+                <p style="color: #8a8aad; text-align: center; margin-top: 3rem;">Coming soon...</p>
+            </div>
+        </div>
+
+        <!-- Mode: Log a Visit -->
+        <div class="mode-screen" id="modeLogVisit">
+            <div class="mode-header">
+                <button class="mode-header-back" id="logVisitBack">←</button>
+                <span class="mode-header-title">Log a Visit</span>
+                <span></span>
+            </div>
+            <div class="mode-body" id="logVisitBody">
+                <p style="color: #8a8aad; text-align: center; margin-top: 3rem;">Coming soon...</p>
+            </div>
+        </div>
+
+        <!-- Swipe-up hint line -->
+        <div class="swipe-hint" id="swipeHint"></div>
+
+        <!-- Reset overlay (swipe up) -->
+        <div class="reset-overlay" id="resetOverlay">
+            <div class="reset-overlay-title">Pick a new mode?</div>
+            <div class="reset-overlay-buttons">
+                <button class="reset-yes" id="resetYes">Yes, switch modes</button>
+                <button class="reset-nevermind" id="resetNevermind">Never mind</button>
+            </div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -3842,6 +4376,142 @@
                 }
             }
             animate();
+        }
+
+        // ========================================
+        // MOBILE EXPERIENCE
+        // ========================================
+
+        const isMobile = window.innerWidth < 768;
+        let mobileIdentity = localStorage.getItem('mobileIdentity') || null;
+        let currentMobileMode = null;
+
+        function initMobile() {
+            document.body.classList.add('mobile-active');
+
+            // If identity is already set, show it pre-highlighted
+            if (mobileIdentity) {
+                const screen = document.getElementById('identityScreen');
+                const btn = mobileIdentity === 'bigDog'
+                    ? document.getElementById('identityBigDog')
+                    : document.getElementById('identityChooch');
+                btn.style.borderColor = '#1565C0';
+                btn.style.background = 'rgba(15, 52, 96, 0.3)';
+            }
+
+            // Identity selection handlers
+            document.querySelectorAll('.identity-option').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const identity = btn.dataset.identity;
+                    mobileIdentity = identity;
+                    localStorage.setItem('mobileIdentity', identity);
+
+                    // Animate selection
+                    btn.style.borderColor = '#2E7D32';
+                    btn.style.background = 'rgba(46, 125, 50, 0.2)';
+
+                    setTimeout(() => {
+                        showLauncher();
+                    }, 300);
+                });
+            });
+
+            // Launcher mode buttons
+            document.querySelectorAll('.launcher-mode, .launcher-center').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const mode = btn.dataset.mode;
+                    openMode(mode);
+                });
+            });
+
+            // Back buttons
+            document.getElementById('exploreBack').addEventListener('click', showLauncher);
+            document.getElementById('conciergeBack').addEventListener('click', showLauncher);
+            document.getElementById('browseEditBack').addEventListener('click', showLauncher);
+            document.getElementById('logVisitBack').addEventListener('click', showLauncher);
+
+            // Reset overlay
+            document.getElementById('resetYes').addEventListener('click', () => {
+                hideResetOverlay();
+                showLauncher();
+            });
+            document.getElementById('resetNevermind').addEventListener('click', hideResetOverlay);
+
+            // Swipe-up detection
+            let touchStartY = 0;
+            document.getElementById('mobileShell').addEventListener('touchstart', (e) => {
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+
+            document.getElementById('mobileShell').addEventListener('touchend', (e) => {
+                const touchEndY = e.changedTouches[0].clientY;
+                const swipeDistance = touchStartY - touchEndY;
+                const screenHeight = window.innerHeight;
+
+                // Swipe up from bottom 20% of screen, at least 60px
+                if (touchStartY > screenHeight * 0.8 && swipeDistance > 60 && currentMobileMode) {
+                    showResetOverlay();
+                }
+            }, { passive: true });
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.mobile-screen, .mode-screen').forEach(s => {
+                s.classList.remove('active');
+            });
+            const screen = document.getElementById(screenId);
+            if (screen) screen.classList.add('active');
+        }
+
+        function showLauncher() {
+            currentMobileMode = null;
+            const greeting = document.getElementById('launcherGreeting');
+            if (mobileIdentity === 'bigDog') {
+                greeting.textContent = "What's the move, Big Dog?";
+            } else if (mobileIdentity === 'chooch') {
+                greeting.textContent = "Where to, Chooch?";
+            }
+            showScreen('launcherScreen');
+
+            // Show swipe hint only when in a mode (not on launcher)
+            document.getElementById('swipeHint').style.display = 'none';
+        }
+
+        function openMode(mode) {
+            currentMobileMode = mode;
+            const modeScreenMap = {
+                'explore': 'modeExplore',
+                'concierge': 'modeConcierge',
+                'browseEdit': 'modeBrowseEdit',
+                'logVisit': 'modeLogVisit'
+            };
+
+            const screenId = modeScreenMap[mode];
+            if (screenId) {
+                showScreen(screenId);
+                document.getElementById('swipeHint').style.display = 'block';
+            }
+        }
+
+        function showResetOverlay() {
+            const overlay = document.getElementById('resetOverlay');
+            overlay.style.display = 'flex';
+            requestAnimationFrame(() => {
+                overlay.classList.add('visible');
+            });
+        }
+
+        function hideResetOverlay() {
+            const overlay = document.getElementById('resetOverlay');
+            overlay.classList.remove('visible');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 250);
+        }
+
+        // Initialize: mobile or desktop
+        if (isMobile) {
+            initMobile();
         }
 
         initMap();
