@@ -1471,46 +1471,41 @@
 
     <div class="modal" id="setupModal">
         <div class="modal-content">
-            <h2>Sync Your Dive Bar Data</h2>
-            <p>Share notes and ratings between you and Jacob — no account needed. Takes 30 seconds.</p>
+            <h2>Connect to Firebase</h2>
+            <p>Sync your dive bar data between you and Jacob in real time.</p>
 
             <div style="background: #0d1b2a; border-radius: 8px; padding: 16px; margin: 16px 0;">
-                <p style="font-size: 0.95em; color: #ccc; margin-bottom: 12px;"><strong>Step 1:</strong> Open npoint.io</p>
-                <button id="openJsonBlobBtn" style="background:#2E7D32; color:#fff; border:none; padding:10px 24px; border-radius:6px; cursor:pointer; font-size:0.95em; width:100%;">Open npoint.io in New Tab →</button>
-
-                <p style="font-size: 0.95em; color: #ccc; margin: 16px 0 8px;"><strong>Step 2:</strong> You'll see a JSON editor. Just click <strong>Save</strong> (green button)</p>
-
-                <p style="font-size: 0.95em; color: #ccc; margin: 8px 0;"><strong>Step 3:</strong> Copy the ID from the API URL shown on the page</p>
-                <p style="font-size: 0.8em; color: #8a8aad; margin-bottom: 4px;">It's the string after <code style="background:#16213e; padding:2px 6px; border-radius:3px;">api.npoint.io/</code> — looks like <code style="background:#16213e; padding:2px 6px; border-radius:3px;">a1b2c3d4e5f6</code></p>
+                <p style="font-size: 0.95em; color: #ccc; margin-bottom: 12px;">Paste your Firebase Realtime Database URL below. It looks like:</p>
+                <code style="background:#16213e; padding:4px 8px; border-radius:3px; font-size: 0.85em; color: #90caf9; display: block; text-align: center;">https://your-project-default-rtdb.firebaseio.com</code>
             </div>
 
             <div class="form-group">
-                <label for="blobId" style="font-size: 0.95em;"><strong>Step 4:</strong> Paste it here and connect:</label>
-                <input type="text" id="blobId" placeholder="Paste your npoint ID">
+                <label for="firebaseUrlInput" style="font-size: 0.95em;">Firebase Database URL:</label>
+                <input type="text" id="firebaseUrlInput" placeholder="https://your-project-default-rtdb.firebaseio.com">
             </div>
 
             <div class="modal-buttons">
-                <button id="connectBlobBtn" style="background:#2E7D32;">Connect</button>
+                <button id="connectFirebaseBtn" style="background:#2E7D32;">Connect</button>
                 <button id="skipSetupBtn">Skip for Now</button>
             </div>
 
-            <p style="font-size: 0.85em; color: #8a8aad; margin-top: 12px; text-align: center;">Already have an ID from Jacob? Just paste it above.</p>
+            <p style="font-size: 0.85em; color: #8a8aad; margin-top: 12px; text-align: center;">Both you and Jacob use the same URL to stay in sync.</p>
         </div>
     </div>
 
     <div class="modal" id="settingsModal">
         <div class="modal-content">
             <h2>Sync Settings</h2>
-            <p style="font-size: 0.85em; color: #8a8aad;">Share this ID with Jacob so he can connect to the same data.</p>
+            <p style="font-size: 0.85em; color: #8a8aad;">Both you and Jacob use the same Firebase URL to stay in sync.</p>
 
             <div class="form-group">
-                <label for="settingsBlobId">npoint ID:</label>
-                <input type="text" id="settingsBlobId" placeholder="Your npoint ID" style="cursor: text;" title="Edit or copy your npoint ID">
+                <label for="settingsFirebaseUrl">Firebase URL:</label>
+                <input type="text" id="settingsFirebaseUrl" placeholder="Your Firebase URL" style="cursor: text;" title="Edit or copy your Firebase URL">
             </div>
 
             <div class="modal-buttons">
-                <button id="updateBlobIdBtn" style="background: #2E7D32;">Update ID</button>
-                <button id="copyBlobIdBtn">Copy npoint ID</button>
+                <button id="updateFirebaseUrlBtn" style="background: #2E7D32;">Update URL</button>
+                <button id="copyFirebaseUrlBtn">Copy Firebase URL</button>
                 <button id="disconnectBtn" style="background: #c0392b;">Disconnect</button>
                 <button id="closeSyncBtn">Close</button>
             </div>
@@ -1623,7 +1618,7 @@
         let barDataStore = {};
         let currentSearchQuery = '';
         let happyHourFilterActive = false; // legacy, kept for compat
-        let blobId = null;
+        let firebaseUrl = null;
         let currentEditBar = null;
         const rightPanel = document.getElementById('rightPanel');
 
@@ -1934,16 +1929,17 @@
             }
 
             loadConfig() {
-                // One-time migration: clear old JSONBlob IDs that don't work with npoint.io
-                const migrated = localStorage.getItem('npointMigrated');
-                if (!migrated) {
+                // Migration: move from npoint to Firebase
+                const oldNpoint = localStorage.getItem('jsonBlobId');
+                if (oldNpoint && !localStorage.getItem('firebaseUrl')) {
+                    // User had npoint — they'll need to set up Firebase
                     localStorage.removeItem('jsonBlobId');
-                    localStorage.setItem('npointMigrated', 'true');
+                    localStorage.removeItem('npointMigrated');
                 }
 
-                const stored = localStorage.getItem('jsonBlobId');
+                const stored = localStorage.getItem('firebaseUrl');
                 if (stored) {
-                    blobId = stored;
+                    firebaseUrl = stored;
                 } else {
                     this.showSetupModal();
                 }
@@ -1983,7 +1979,8 @@
                         journals: {
                             bigDog: [],
                             chooch: []
-                        }
+                        },
+                        lastModified: 0
                     };
                 });
             }
@@ -1992,75 +1989,166 @@
                 localStorage.setItem('barData', JSON.stringify(barDataStore));
             }
 
+            // Push ALL data to Firebase (used for initial setup)
             async syncToCloud() {
-                if (!blobId) return { ok: false, reason: 'No blob connected' };
+                if (!firebaseUrl) return { ok: false, reason: 'No Firebase connected' };
 
                 try {
-                    const response = await fetch(`https://api.npoint.io/${blobId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ barDataStore: barDataStore, barsData: barsData, recommendations: recData })
+                    // Convert barsData array to object keyed by num for Firebase
+                    const barsObj = {};
+                    barsData.forEach(bar => { barsObj[bar.num] = bar; });
+
+                    const response = await fetch(`${firebaseUrl}/.json`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            barData: barDataStore,
+                            bars: barsObj,
+                            recommendations: recData
+                        })
                     });
 
                     if (response.ok) {
                         this.updateSyncStatus();
                         return { ok: true };
                     } else {
-                        console.error('npoint.io POST failed:', response.status, response.statusText);
+                        console.error('Firebase PATCH failed:', response.status, response.statusText);
                         return { ok: false, reason: `Server returned ${response.status}` };
                     }
                 } catch (err) {
-                    console.error('npoint.io sync error:', err);
+                    console.error('Firebase sync error:', err);
                     return { ok: false, reason: err.message };
                 }
             }
 
-            async syncFromCloud() {
-                if (!blobId) return false;
+            // Push a single bar's data to Firebase (used after editing one bar)
+            async syncBarToCloud(barNum) {
+                if (!firebaseUrl) return { ok: false, reason: 'No Firebase connected' };
 
                 try {
-                    const response = await fetch(`https://api.npoint.io/${blobId}`);
+                    const response = await fetch(`${firebaseUrl}/barData/${barNum}.json`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(barDataStore[barNum])
+                    });
 
                     if (response.ok) {
-                        const data = await response.json();
-
-                        // New format: { barDataStore: {...}, barsData: [...], recommendations: {...} }
-                        if (data.barDataStore && data.barsData) {
-                            Object.keys(data.barDataStore).forEach(key => {
-                                barDataStore[key] = data.barDataStore[key];
-                            });
-                            barsData = data.barsData;
-                            if (data.recommendations) recData = data.recommendations;
-                            saveBarsData();
-                            this.saveLocalData();
-                            this.updateSyncStatus();
-                            return true;
-                        }
-
-                        // Legacy format: just barDataStore at root
-                        const keys = Object.keys(data);
-                        const looksLikeBarData = keys.length > 0 &&
-                            keys.some(k => data[k] && data[k].ratings && data[k].journals);
-
-                        if (looksLikeBarData) {
-                            Object.keys(data).forEach(key => {
-                                barDataStore[key] = data[key];
-                            });
-                            this.saveLocalData();
-                            this.updateSyncStatus();
-                            return true;
-                        } else {
-                            console.log('Cloud data is empty or invalid, pushing local data up');
-                            await this.syncToCloud();
-                            return false;
-                        }
+                        this.updateSyncStatus();
+                        return { ok: true };
+                    } else {
+                        return { ok: false, reason: `Server returned ${response.status}` };
                     }
                 } catch (err) {
-                    console.error('npoint.io fetch error:', err);
+                    return { ok: false, reason: err.message };
                 }
-                return false;
+            }
+
+            // Push a single new bar entry (bar info + bar data) to Firebase
+            async syncNewBarToCloud(bar) {
+                if (!firebaseUrl) return { ok: false, reason: 'No Firebase connected' };
+
+                try {
+                    // Push bar info and bar data in parallel
+                    const [barResp, dataResp] = await Promise.all([
+                        fetch(`${firebaseUrl}/bars/${bar.num}.json`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(bar)
+                        }),
+                        fetch(`${firebaseUrl}/barData/${bar.num}.json`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(barDataStore[bar.num])
+                        })
+                    ]);
+
+                    if (barResp.ok && dataResp.ok) {
+                        this.updateSyncStatus();
+                        return { ok: true };
+                    } else {
+                        return { ok: false, reason: 'One or more Firebase writes failed' };
+                    }
+                } catch (err) {
+                    return { ok: false, reason: err.message };
+                }
+            }
+
+            // Pull data from Firebase and merge with local data
+            async syncFromCloud() {
+                if (!firebaseUrl) return false;
+
+                try {
+                    const response = await fetch(`${firebaseUrl}/.json`);
+
+                    if (!response.ok) {
+                        console.error('Firebase GET failed:', response.status);
+                        return false;
+                    }
+
+                    const data = await response.json();
+
+                    if (!data) {
+                        // Empty database — push local data up
+                        console.log('Firebase is empty, pushing local data up');
+                        await this.syncToCloud();
+                        return false;
+                    }
+
+                    let changed = false;
+
+                    // Merge bar data per-bar using lastModified timestamps
+                    if (data.barData) {
+                        Object.keys(data.barData).forEach(num => {
+                            const cloudBar = data.barData[num];
+                            const localBar = barDataStore[num];
+
+                            if (!localBar) {
+                                // Bar exists in cloud but not locally — add it
+                                barDataStore[num] = cloudBar;
+                                changed = true;
+                            } else {
+                                const cloudMod = cloudBar.lastModified || 0;
+                                const localMod = localBar.lastModified || 0;
+
+                                if (cloudMod > localMod) {
+                                    // Cloud is newer — use cloud version
+                                    barDataStore[num] = cloudBar;
+                                    changed = true;
+                                }
+                                // If local is newer or same, keep local (will be pushed)
+                            }
+                        });
+                    }
+
+                    // Merge bars list additively (never remove bars during sync)
+                    if (data.bars) {
+                        const cloudBars = data.bars;
+                        const localNums = new Set(barsData.map(b => b.num));
+
+                        Object.keys(cloudBars).forEach(num => {
+                            const numInt = parseInt(num);
+                            if (!localNums.has(numInt) && cloudBars[num]) {
+                                barsData.push(cloudBars[num]);
+                                changed = true;
+                            }
+                        });
+
+                        if (changed) saveBarsData();
+                    }
+
+                    // Merge recommendations
+                    if (data.recommendations) {
+                        recData = data.recommendations;
+                    }
+
+                    this.saveLocalData();
+                    this.updateSyncStatus();
+                    return changed || !!data.barData;
+
+                } catch (err) {
+                    console.error('Firebase fetch error:', err);
+                    return false;
+                }
             }
 
             updateSyncStatus() {
@@ -2073,17 +2161,18 @@
                 document.getElementById('setupModal').classList.add('active');
             }
 
-            saveConfig(id) {
-                blobId = id;
-                localStorage.setItem('jsonBlobId', id);
+            saveConfig(url) {
+                // Normalize: remove trailing slash
+                firebaseUrl = url.replace(/\/+$/, '');
+                localStorage.setItem('firebaseUrl', firebaseUrl);
             }
 
             disconnect() {
-                blobId = null;
-                localStorage.removeItem('jsonBlobId');
+                firebaseUrl = null;
+                localStorage.removeItem('firebaseUrl');
                 document.getElementById('syncStatus').textContent = 'Not connected';
-                document.getElementById('settingsBlobId').value = '';
-                document.getElementById('blobId').value = '';
+                document.getElementById('settingsFirebaseUrl').value = '';
+                document.getElementById('firebaseUrlInput').value = '';
             }
         }
 
@@ -2922,8 +3011,17 @@
         });
 
         tabDeets.addEventListener('click', () => {
+            const wasOpen = rightPanel.classList.contains('deets-open');
             rightPanel.classList.toggle('deets-open');
-            // Show empty state if no bar is selected
+            if (wasOpen) {
+                // Closing: clear selection so reopening shows empty state
+                currentEditBar = null;
+                document.querySelectorAll('.bar-item').forEach(i => i.classList.remove('selected'));
+                markers.forEach(m => {
+                    const iconEl = m._icon ? m._icon.querySelector('.marker-icon') : null;
+                    if (iconEl) iconEl.classList.remove('highlighted');
+                });
+            }
             if (rightPanel.classList.contains('deets-open') && !currentEditBar) {
                 showDeetsEmptyState();
             }
@@ -3021,6 +3119,9 @@
                 });
             }
 
+            // Stamp modification time for merge logic
+            data.lastModified = Date.now();
+
             // Re-render to show new entries with timestamps
             renderEditPanelContent(currentEditBar, data);
 
@@ -3030,13 +3131,14 @@
             renderDirectory();
             updateDirectoryVisibility();
 
-            const result = await barManager.syncToCloud();
+            // Sync just this bar to Firebase (not the whole dataset)
+            const result = await barManager.syncBarToCloud(currentEditBar.num);
             if (result.ok) {
                 alert('Saved and synced to cloud!');
-            } else if (blobId) {
+            } else if (firebaseUrl) {
                 alert('Saved locally, but cloud sync failed: ' + result.reason + '\n\nYour notes are safe on this device.');
             } else {
-                alert('Saved locally. Connect an npoint ID to sync with Jacob.');
+                alert('Saved locally. Connect Firebase to sync with Jacob.');
             }
         });
 
@@ -3153,28 +3255,27 @@
 
         document.getElementById('syncNowBtn').addEventListener('click', async () => {
             const btn = document.getElementById('syncNowBtn');
-            if (!blobId) {
-                alert('No npoint ID connected. Click ⚙️ to set one up.');
+            if (!firebaseUrl) {
+                alert('No Firebase connected. Click ⚙️ to set one up.');
                 return;
             }
             btn.textContent = '☁️ Syncing...';
             btn.disabled = true;
             try {
-                // First try to pull from cloud
+                // Pull from cloud first (merges per-bar using timestamps)
                 const pullResult = await barManager.syncFromCloud();
                 if (pullResult) {
-                    // Cloud had valid data — merged into local
                     renderDirectory();
                     updateDirectoryVisibility();
                     updateMarkers();
                     updateProgressBar();
                 }
-                // Then push local data up
+                // Then push local data up (anything locally newer gets written)
                 const pushResult = await barManager.syncToCloud();
                 if (pushResult.ok) {
-                    alert('Synced successfully! Data pushed to cloud.');
+                    alert('Synced successfully!');
                 } else {
-                    alert('Sync failed: ' + pushResult.reason + '\n\nCheck your npoint ID in ⚙️ Settings.');
+                    alert('Sync failed: ' + pushResult.reason + '\n\nCheck your Firebase URL in ⚙️ Settings.');
                 }
             } catch (err) {
                 alert('Sync error: ' + err.message);
@@ -3184,33 +3285,30 @@
         });
 
 
-        document.getElementById('openJsonBlobBtn').addEventListener('click', () => {
-            window.open('https://www.npoint.io/docs/new', '_blank');
-        });
-
-        document.getElementById('connectBlobBtn').addEventListener('click', async () => {
-            const id = document.getElementById('blobId').value.trim();
-            if (!id) {
-                alert('Paste the npoint ID from the API URL.');
+        document.getElementById('connectFirebaseBtn').addEventListener('click', async () => {
+            const url = document.getElementById('firebaseUrlInput').value.trim();
+            if (!url || !url.includes('firebaseio.com')) {
+                alert('Enter a valid Firebase Realtime Database URL.\n\nIt should look like: https://your-project-default-rtdb.firebaseio.com');
                 return;
             }
-            const btn = document.getElementById('connectBlobBtn');
+            const btn = document.getElementById('connectFirebaseBtn');
             btn.textContent = 'Connecting...';
             btn.disabled = true;
 
-            barManager.saveConfig(id);
+            barManager.saveConfig(url);
 
+            // Try to pull existing data from Firebase
             const synced = await barManager.syncFromCloud();
             if (!synced) {
-                const pushed = await barManager.syncToCloud();
-                if (pushed) {
-                    barManager.updateSyncStatus();
-                }
+                // No data in Firebase yet — push local data up
+                await barManager.syncToCloud();
             }
 
             document.getElementById('setupModal').classList.remove('active');
             renderDirectory();
-            alert('Connected! Share this npoint ID with Jacob:\n\n' + id);
+            updateMarkers();
+            updateProgressBar();
+            alert('Connected to Firebase! Share this URL with Jacob so he can sync too.');
 
             btn.textContent = 'Connect';
             btn.disabled = false;
@@ -3221,19 +3319,19 @@
         });
 
         document.getElementById('settingsBtn').addEventListener('click', () => {
-            if (blobId) {
-                document.getElementById('settingsBlobId').value = blobId;
+            if (firebaseUrl) {
+                document.getElementById('settingsFirebaseUrl').value = firebaseUrl;
             }
             document.getElementById('settingsModal').classList.add('active');
         });
 
-        document.getElementById('updateBlobIdBtn').addEventListener('click', async () => {
-            const newId = document.getElementById('settingsBlobId').value.trim();
-            if (!newId) {
-                alert('Enter an npoint ID first.');
+        document.getElementById('updateFirebaseUrlBtn').addEventListener('click', async () => {
+            const newUrl = document.getElementById('settingsFirebaseUrl').value.trim();
+            if (!newUrl || !newUrl.includes('firebaseio.com')) {
+                alert('Enter a valid Firebase URL first.');
                 return;
             }
-            barManager.saveConfig(newId);
+            barManager.saveConfig(newUrl);
             const synced = await barManager.syncFromCloud();
             if (!synced) {
                 await barManager.syncToCloud();
@@ -3242,16 +3340,16 @@
             renderDirectory();
             updateMarkers();
             document.getElementById('settingsModal').classList.remove('active');
-            alert('Connected to npoint ID: ' + newId);
+            alert('Connected to Firebase: ' + newUrl);
         });
 
-        document.getElementById('copyBlobIdBtn').addEventListener('click', () => {
-            const id = document.getElementById('settingsBlobId').value;
-            if (id) {
-                navigator.clipboard.writeText(id).then(() => {
-                    const btn = document.getElementById('copyBlobIdBtn');
+        document.getElementById('copyFirebaseUrlBtn').addEventListener('click', () => {
+            const url = document.getElementById('settingsFirebaseUrl').value;
+            if (url) {
+                navigator.clipboard.writeText(url).then(() => {
+                    const btn = document.getElementById('copyFirebaseUrlBtn');
                     btn.textContent = 'Copied!';
-                    setTimeout(() => btn.textContent = 'Copy npoint ID', 2000);
+                    setTimeout(() => btn.textContent = 'Copy Firebase URL', 2000);
                 });
             }
         });
@@ -3335,7 +3433,8 @@
                     lastVisited: '',
                     tags: [],
                     ratings: { bigDogDrinks: 0, bigDogVibes: 0, choochDrinks: 0, choochVibes: 0 },
-                    journals: { bigDog: [], chooch: [] }
+                    journals: { bigDog: [], chooch: [] },
+                    lastModified: Date.now()
                 };
                 barManager.saveLocalData();
 
@@ -3346,8 +3445,18 @@
                 renderDirectory();
                 updateDirectoryVisibility();
 
-                statusEl.style.color = '#66bb6a';
-                statusEl.textContent = `Added "${name}" (#${newNum}) to ${quadrant}!`;
+                // Sync new bar to Firebase
+                const syncResult = await barManager.syncNewBarToCloud(newBar);
+                if (syncResult.ok) {
+                    statusEl.style.color = '#66bb6a';
+                    statusEl.textContent = `Added "${name}" (#${newNum}) to ${quadrant} and synced to cloud!`;
+                } else if (firebaseUrl) {
+                    statusEl.style.color = '#f0ad4e';
+                    statusEl.textContent = `Added "${name}" locally, but cloud sync failed. Hit Sync Now to retry.`;
+                } else {
+                    statusEl.style.color = '#66bb6a';
+                    statusEl.textContent = `Added "${name}" (#${newNum}) to ${quadrant}!`;
+                }
                 document.getElementById('addBarName').value = '';
                 document.getElementById('addBarAddress').value = '';
 
@@ -3737,11 +3846,13 @@
 
         initMap();
 
-        if (blobId) {
+        if (firebaseUrl) {
             barManager.syncFromCloud().then(synced => {
                 if (synced) {
                     renderDirectory();
                     updateDirectoryVisibility();
+                    updateMarkers();
+                    updateProgressBar();
                 }
             });
         }
