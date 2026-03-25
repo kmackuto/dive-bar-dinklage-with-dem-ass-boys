@@ -1484,6 +1484,28 @@
                 fill: none;
             }
 
+            .identity-avatar img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .identity-upload-hint {
+                font-size: 0.7rem;
+                color: #0f3460;
+                margin-top: -0.5rem;
+                transition: color 0.2s;
+            }
+
+            .identity-option:active .identity-upload-hint {
+                color: #1565C0;
+            }
+
+            .identity-avatar-upload {
+                display: none;
+            }
+
             .identity-name {
                 font-size: 1.2rem;
                 color: #e0e0e0;
@@ -1511,6 +1533,59 @@
                 width: 280px;
                 height: 280px;
                 z-index: 10;
+                border-radius: 50%;
+                overflow: hidden;
+                background: transparent;
+            }
+
+            /* The three wedge segments (SVG-based) */
+            .launcher-wedges {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            .launcher-wedge {
+                cursor: pointer;
+                -webkit-tap-highlight-color: transparent;
+                transition: opacity 0.15s ease;
+            }
+
+            .launcher-wedge:active {
+                opacity: 0.7;
+            }
+
+            .launcher-wedge-path {
+                fill: transparent;
+                stroke: #0f3460;
+                stroke-width: 2;
+                transition: fill 0.15s ease;
+            }
+
+            .launcher-wedge:active .launcher-wedge-path {
+                fill: rgba(15, 52, 96, 0.3);
+            }
+
+            .launcher-wedge-icon {
+                stroke: #90caf9;
+                stroke-width: 1.5;
+                fill: none;
+            }
+
+            .launcher-wedge-label {
+                fill: #8a8aad;
+                font-size: 11px;
+                font-weight: 500;
+                text-anchor: middle;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            }
+
+            /* Divider lines between wedges */
+            .launcher-divider {
+                stroke: #0f3460;
+                stroke-width: 2;
             }
 
             /* Center button: Log a Visit */
@@ -1523,7 +1598,7 @@
                 height: 100px;
                 border-radius: 50%;
                 background: linear-gradient(135deg, #2E7D32, #1565C0);
-                border: none;
+                border: 3px solid #0f3460;
                 cursor: pointer;
                 display: flex;
                 flex-direction: column;
@@ -1551,67 +1626,6 @@
                 font-weight: 600;
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
-            }
-
-            /* Outer mode buttons */
-            .launcher-mode {
-                position: absolute;
-                width: 80px;
-                height: 80px;
-                border: 2px solid #0f3460;
-                border-radius: 16px;
-                background: transparent;
-                cursor: pointer;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 6px;
-                transition: all 0.2s ease;
-                -webkit-tap-highlight-color: transparent;
-            }
-
-            .launcher-mode:active {
-                transform: scale(0.94);
-                border-color: #1565C0;
-                background: rgba(15, 52, 96, 0.3);
-            }
-
-            .launcher-mode-icon {
-                width: 32px;
-                height: 32px;
-            }
-
-            .launcher-mode-icon svg {
-                width: 100%;
-                height: 100%;
-                stroke: #90caf9;
-                stroke-width: 1.5;
-                fill: none;
-            }
-
-            .launcher-mode-label {
-                font-size: 0.65rem;
-                color: #8a8aad;
-                font-weight: 500;
-                text-align: center;
-            }
-
-            /* Position the 3 outer buttons around the center */
-            .launcher-mode.explore {
-                top: 0;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            .launcher-mode.concierge {
-                bottom: 10px;
-                left: 10px;
-            }
-
-            .launcher-mode.browse {
-                bottom: 10px;
-                right: 10px;
             }
 
             /* ---- Mode Content Screens ---- */
@@ -1978,36 +1992,60 @@
             <div class="identity-prompt">Who's here?</div>
             <div class="identity-options">
                 <button class="identity-option" data-identity="bigDog" id="identityBigDog">
-                    <div class="identity-avatar">
+                    <div class="identity-avatar" id="bigDogAvatar">
                         <svg viewBox="0 0 80 80">
-                            <!-- Bulldog outline -->
-                            <circle cx="40" cy="42" r="24" />
-                            <circle cx="30" cy="36" r="3" />
-                            <circle cx="50" cy="36" r="3" />
-                            <ellipse cx="40" cy="46" rx="8" ry="5" />
-                            <path d="M20 28 Q16 18 22 20 Q24 22 24 28" />
-                            <path d="M60 28 Q64 18 58 20 Q56 22 56 28" />
-                            <path d="M32 50 Q40 56 48 50" />
+                            <!-- Bulldog: wide face, droopy jowls, flat nose -->
+                            <ellipse cx="40" cy="44" rx="26" ry="22" />
+                            <!-- Floppy ears -->
+                            <path d="M16 36 Q10 24 18 26 Q22 28 20 36" />
+                            <path d="M64 36 Q70 24 62 26 Q58 28 60 36" />
+                            <!-- Eyes -->
+                            <circle cx="30" cy="38" r="3.5" />
+                            <circle cx="50" cy="38" r="3.5" />
+                            <!-- Big flat nose -->
+                            <ellipse cx="40" cy="47" rx="7" ry="4.5" />
+                            <circle cx="37" cy="47" r="1.5" />
+                            <circle cx="43" cy="47" r="1.5" />
+                            <!-- Jowls / mouth -->
+                            <path d="M28 52 Q34 58 40 54 Q46 58 52 52" />
+                            <!-- Wrinkle lines on forehead -->
+                            <path d="M30 32 Q40 29 50 32" />
                         </svg>
                     </div>
                     <span class="identity-name">Big Dog</span>
+                    <span class="identity-upload-hint">tap & hold for photo</span>
+                    <input type="file" accept="image/*" class="identity-avatar-upload" id="bigDogUpload">
                 </button>
                 <button class="identity-option" data-identity="chooch" id="identityChooch">
-                    <div class="identity-avatar">
+                    <div class="identity-avatar" id="choochAvatar">
                         <svg viewBox="0 0 80 80">
-                            <!-- Steam engine outline -->
-                            <rect x="20" y="30" width="40" height="24" rx="4" />
-                            <circle cx="28" cy="58" r="5" />
-                            <circle cx="52" cy="58" r="5" />
-                            <circle cx="40" cy="58" r="5" />
-                            <rect x="12" y="34" width="10" height="16" rx="5" />
-                            <path d="M34 20 Q34 30 34 30" />
-                            <path d="M46 22 Q46 30 46 30" />
-                            <ellipse cx="34" cy="17" rx="4" ry="3" />
-                            <ellipse cx="46" cy="19" rx="3" ry="3" />
+                            <!-- Steam engine: side profile view -->
+                            <!-- Boiler (main body) -->
+                            <rect x="18" y="30" width="44" height="20" rx="10" />
+                            <!-- Cab (back) -->
+                            <rect x="48" y="20" width="16" height="30" rx="2" />
+                            <!-- Cab window -->
+                            <rect x="52" y="24" width="8" height="8" rx="1" />
+                            <!-- Smokestack -->
+                            <rect x="24" y="18" width="8" height="14" rx="2" />
+                            <path d="M22 18 L34 18" />
+                            <!-- Steam puffs -->
+                            <circle cx="28" cy="12" r="4" opacity="0.6" />
+                            <circle cx="22" cy="8" r="3" opacity="0.4" />
+                            <!-- Wheels -->
+                            <circle cx="28" cy="56" r="7" />
+                            <circle cx="28" cy="56" r="3" />
+                            <circle cx="52" cy="56" r="7" />
+                            <circle cx="52" cy="56" r="3" />
+                            <!-- Connecting rod -->
+                            <line x1="28" y1="56" x2="52" y2="56" />
+                            <!-- Cowcatcher -->
+                            <path d="M18 50 L10 58 L18 58" />
                         </svg>
                     </div>
                     <span class="identity-name">Chooch</span>
+                    <span class="identity-upload-hint">tap & hold for photo</span>
+                    <input type="file" accept="image/*" class="identity-avatar-upload" id="choochUpload">
                 </button>
             </div>
         </div>
@@ -2016,52 +2054,87 @@
         <div class="mobile-screen launcher-screen" id="launcherScreen">
             <div class="launcher-greeting" id="launcherGreeting">What's the move?</div>
             <div class="launcher-container">
-                <!-- Explore (top) -->
-                <button class="launcher-mode explore" data-mode="explore" id="launchExplore">
-                    <div class="launcher-mode-icon">
-                        <svg viewBox="0 0 32 32">
-                            <!-- Binoculars -->
-                            <circle cx="10" cy="18" r="7" />
-                            <circle cx="22" cy="18" r="7" />
-                            <rect x="14" y="14" width="4" height="8" rx="2" />
-                            <line x1="10" y1="11" x2="10" y2="8" />
-                            <line x1="22" y1="11" x2="22" y2="8" />
-                        </svg>
-                    </div>
-                    <span class="launcher-mode-label">Explore</span>
-                </button>
+                <!-- Simon Says circle: 3 wedge segments + center button -->
+                <svg class="launcher-wedges" viewBox="0 0 280 280">
+                    <!-- Outer circle border -->
+                    <circle cx="140" cy="140" r="138" fill="none" stroke="#0f3460" stroke-width="2" />
+
+                    <!-- Explore wedge: top (270° to 30°, i.e. top-right-ish to top-left-ish) -->
+                    <g class="launcher-wedge" data-mode="explore" id="launchExplore">
+                        <path class="launcher-wedge-path" d="
+                            M140 52
+                            A88 88 0 0 1 216.2 184
+                            L171.4 162.8
+                            A50 50 0 0 0 140 90
+                            Z" />
+                        <!-- Binoculars icon (profile view - side on) -->
+                        <g class="launcher-wedge-icon" transform="translate(170, 95)">
+                            <!-- Near lens (larger, in front) -->
+                            <ellipse cx="0" cy="8" rx="9" ry="10" />
+                            <!-- Far lens (smaller, behind) -->
+                            <ellipse cx="-10" cy="6" rx="7" ry="8" />
+                            <!-- Bridge connecting lenses -->
+                            <path d="M-6 0 Q-3 -4 2 -2" />
+                            <!-- Focus wheel on top -->
+                            <rect x="-4" y="-6" width="6" height="3" rx="1" />
+                        </g>
+                        <text class="launcher-wedge-label" x="178" y="122">Explore</text>
+                    </g>
+
+                    <!-- Concierge wedge: bottom-left (150° to 270°) -->
+                    <g class="launcher-wedge" data-mode="concierge" id="launchConcierge">
+                        <path class="launcher-wedge-path" d="
+                            M63.8 184
+                            A88 88 0 0 1 140 52
+                            L140 90
+                            A50 50 0 0 0 108.6 162.8
+                            Z" />
+                        <!-- Butler icon: top hat, monocle, bow tie, mustache -->
+                        <g class="launcher-wedge-icon" transform="translate(90, 95)">
+                            <!-- Top hat -->
+                            <rect x="-8" y="-14" width="16" height="12" rx="1" />
+                            <rect x="-12" y="-3" width="24" height="3" rx="1" />
+                            <!-- Head -->
+                            <circle cx="0" cy="8" r="8" />
+                            <!-- Monocle -->
+                            <circle cx="5" cy="6" r="3" />
+                            <line x1="8" y1="6" x2="12" y2="12" />
+                            <!-- Mustache -->
+                            <path d="M-5 11 Q-2 9 0 11 Q2 9 5 11" />
+                            <!-- Bow tie -->
+                            <path d="M-5 18 L0 16 L5 18 L0 20 Z" />
+                        </g>
+                        <text class="launcher-wedge-label" x="98" y="122">Concierge</text>
+                    </g>
+
+                    <!-- Browse & Edit wedge: bottom (30° to 150°) -->
+                    <g class="launcher-wedge" data-mode="browseEdit" id="launchBrowseEdit">
+                        <path class="launcher-wedge-path" d="
+                            M216.2 184
+                            A88 88 0 0 1 63.8 184
+                            L108.6 162.8
+                            A50 50 0 0 0 171.4 162.8
+                            Z" />
+                        <!-- Pencil icon -->
+                        <g class="launcher-wedge-icon" transform="translate(132, 192)">
+                            <path d="M-6 8 L6 -8 L10 -4 L-2 12 Z" />
+                            <path d="M6 -8 L8 -10 L12 -6 L10 -4" />
+                            <line x1="-6" y1="8" x2="-2" y2="12" />
+                        </g>
+                        <text class="launcher-wedge-label" x="140" y="216">Browse</text>
+                        <text class="launcher-wedge-label" x="140" y="228">& Edit</text>
+                    </g>
+
+                    <!-- Divider lines from center circle to outer edge -->
+                    <line class="launcher-divider" x1="140" y1="90" x2="140" y2="2" />
+                    <line class="launcher-divider" x1="108.6" y1="162.8" x2="20.6" y2="213.6" />
+                    <line class="launcher-divider" x1="171.4" y1="162.8" x2="259.4" y2="213.6" />
+                </svg>
 
                 <!-- Log a Visit (center) -->
                 <button class="launcher-center" id="launchLogVisit" data-mode="logVisit">
                     <span class="launcher-center-icon">📍</span>
                     <span class="launcher-center-label">Log Visit</span>
-                </button>
-
-                <!-- Concierge (bottom-left) -->
-                <button class="launcher-mode concierge" data-mode="concierge" id="launchConcierge">
-                    <div class="launcher-mode-icon">
-                        <svg viewBox="0 0 32 32">
-                            <!-- Butler -->
-                            <circle cx="16" cy="12" r="6" />
-                            <path d="M8 28 Q8 20 16 18 Q24 20 24 28" />
-                            <path d="M10 8 L22 8" stroke-width="2" />
-                            <line x1="16" y1="6" x2="16" y2="4" />
-                        </svg>
-                    </div>
-                    <span class="launcher-mode-label">Concierge</span>
-                </button>
-
-                <!-- Browse & Edit (bottom-right) -->
-                <button class="launcher-mode browse" data-mode="browseEdit" id="launchBrowseEdit">
-                    <div class="launcher-mode-icon">
-                        <svg viewBox="0 0 32 32">
-                            <!-- Pencil/gear -->
-                            <path d="M6 26 L22 10 L26 14 L10 30 Z" />
-                            <path d="M22 10 L24 8 L28 12 L26 14" />
-                            <line x1="6" y1="26" x2="10" y2="30" />
-                        </svg>
-                    </div>
-                    <span class="launcher-mode-label">Browse & Edit</span>
                 </button>
             </div>
         </div>
@@ -4399,28 +4472,72 @@
                 btn.style.background = 'rgba(15, 52, 96, 0.3)';
             }
 
-            // Identity selection handlers
+            // Load saved avatars
+            loadSavedAvatars();
+
+            // Identity selection handlers (tap = select, long press = upload photo)
+            let identityPressTimer = null;
             document.querySelectorAll('.identity-option').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const identity = btn.dataset.identity;
-                    mobileIdentity = identity;
-                    localStorage.setItem('mobileIdentity', identity);
-
-                    // Animate selection
-                    btn.style.borderColor = '#2E7D32';
-                    btn.style.background = 'rgba(46, 125, 50, 0.2)';
-
-                    setTimeout(() => {
-                        showLauncher();
-                    }, 300);
-                });
+                btn.addEventListener('mousedown', (e) => startIdentityPress(e, btn));
+                btn.addEventListener('touchstart', (e) => startIdentityPress(e, btn), { passive: true });
+                btn.addEventListener('mouseup', () => clearTimeout(identityPressTimer));
+                btn.addEventListener('touchend', (e) => {
+                    if (identityPressTimer) {
+                        clearTimeout(identityPressTimer);
+                        // Short tap = select identity
+                        const identity = btn.dataset.identity;
+                        mobileIdentity = identity;
+                        localStorage.setItem('mobileIdentity', identity);
+                        btn.style.borderColor = '#2E7D32';
+                        btn.style.background = 'rgba(46, 125, 50, 0.2)';
+                        setTimeout(() => showLauncher(), 300);
+                    }
+                }, { passive: true });
+                btn.addEventListener('mouseleave', () => clearTimeout(identityPressTimer));
             });
 
-            // Launcher mode buttons
-            document.querySelectorAll('.launcher-mode, .launcher-center').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const mode = btn.dataset.mode;
-                    openMode(mode);
+            function startIdentityPress(e, btn) {
+                identityPressTimer = setTimeout(() => {
+                    identityPressTimer = null; // null it so touchend knows it was a long press
+                    const identity = btn.dataset.identity;
+                    const fileInput = document.getElementById(identity === 'bigDog' ? 'bigDogUpload' : 'choochUpload');
+                    fileInput.click();
+                }, 600);
+            }
+
+            // Avatar file upload handlers
+            document.getElementById('bigDogUpload').addEventListener('change', (e) => handleAvatarUpload(e, 'bigDog'));
+            document.getElementById('choochUpload').addEventListener('change', (e) => handleAvatarUpload(e, 'chooch'));
+
+            function handleAvatarUpload(event, identity) {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const dataUrl = e.target.result;
+                    localStorage.setItem(`avatar_${identity}`, dataUrl);
+                    setAvatarImage(identity, dataUrl);
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function loadSavedAvatars() {
+                ['bigDog', 'chooch'].forEach(identity => {
+                    const saved = localStorage.getItem(`avatar_${identity}`);
+                    if (saved) setAvatarImage(identity, saved);
+                });
+            }
+
+            function setAvatarImage(identity, dataUrl) {
+                const container = document.getElementById(identity === 'bigDog' ? 'bigDogAvatar' : 'choochAvatar');
+                container.innerHTML = `<img src="${dataUrl}" alt="${identity}">`;
+            }
+
+            // Launcher mode buttons (SVG wedges + center button)
+            document.querySelectorAll('.launcher-wedge, .launcher-center').forEach(el => {
+                el.addEventListener('click', () => {
+                    const mode = el.dataset.mode;
+                    if (mode) openMode(mode);
                 });
             });
 
