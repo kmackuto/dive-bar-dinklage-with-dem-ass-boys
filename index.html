@@ -1530,12 +1530,9 @@
 
             .launcher-container {
                 position: relative;
-                width: 280px;
-                height: 280px;
+                width: 320px;
+                height: 320px;
                 z-index: 10;
-                border-radius: 50%;
-                overflow: hidden;
-                background: transparent;
             }
 
             /* The three wedge segments (SVG-based) */
@@ -1554,38 +1551,31 @@
             }
 
             .launcher-wedge:active {
-                opacity: 0.7;
+                opacity: 0.6;
             }
 
             .launcher-wedge-path {
-                fill: transparent;
-                stroke: #0f3460;
-                stroke-width: 2;
-                transition: fill 0.15s ease;
-            }
-
-            .launcher-wedge:active .launcher-wedge-path {
-                fill: rgba(15, 52, 96, 0.3);
+                stroke: #0a0a1a;
+                stroke-width: 3;
             }
 
             .launcher-wedge-icon {
-                stroke: #90caf9;
-                stroke-width: 1.5;
+                stroke-width: 1.8;
                 fill: none;
             }
 
             .launcher-wedge-label {
-                fill: #8a8aad;
-                font-size: 11px;
-                font-weight: 500;
+                font-size: 13px;
+                font-weight: 600;
                 text-anchor: middle;
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                letter-spacing: 0.04em;
             }
 
             /* Divider lines between wedges */
             .launcher-divider {
-                stroke: #0f3460;
-                stroke-width: 2;
+                stroke: #0a0a1a;
+                stroke-width: 4;
             }
 
             /* Center button: Log a Visit */
@@ -1594,38 +1584,41 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                width: 100px;
-                height: 100px;
+                width: 136px;
+                height: 136px;
                 border-radius: 50%;
-                background: linear-gradient(135deg, #2E7D32, #1565C0);
-                border: 3px solid #0f3460;
+                background: radial-gradient(circle at 40% 38%, #66BB6A, #2E7D32 70%);
+                border: 4px solid #0a0a1a;
                 cursor: pointer;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                gap: 4px;
-                box-shadow: 0 4px 20px rgba(46, 125, 50, 0.4);
+                gap: 2px;
+                box-shadow: 0 6px 28px rgba(76, 175, 80, 0.45), inset 0 2px 4px rgba(255,255,255,0.15);
                 transition: transform 0.2s ease;
                 -webkit-tap-highlight-color: transparent;
                 z-index: 2;
             }
 
             .launcher-center:active {
-                transform: translate(-50%, -50%) scale(0.94);
+                transform: translate(-50%, -50%) scale(0.95);
             }
 
             .launcher-center-icon {
-                font-size: 1.8rem;
+                font-size: 2.8rem;
                 line-height: 1;
+                color: #FFD700;
+                text-shadow: 0 2px 6px rgba(0,0,0,0.4);
             }
 
             .launcher-center-label {
-                font-size: 0.6rem;
-                color: #fff;
-                font-weight: 600;
+                font-size: 0.7rem;
+                color: rgba(255,255,255,0.95);
+                font-weight: 700;
                 text-transform: uppercase;
-                letter-spacing: 0.05em;
+                letter-spacing: 0.08em;
+                text-shadow: 0 1px 3px rgba(0,0,0,0.4);
             }
 
             /* ---- Mode Content Screens ---- */
@@ -2054,87 +2047,86 @@
         <div class="mobile-screen launcher-screen" id="launcherScreen">
             <div class="launcher-greeting" id="launcherGreeting">What's the move?</div>
             <div class="launcher-container">
-                <!-- Simon Says circle: 3 wedge segments + center button -->
-                <svg class="launcher-wedges" viewBox="0 0 280 280">
-                    <!-- Outer circle border -->
-                    <circle cx="140" cy="140" r="138" fill="none" stroke="#0f3460" stroke-width="2" />
+                <!-- Simon Says circle: 3 chunky wedge sectors + center button -->
+                <!-- viewBox 320x320, center (160,160), outer r=158, inner r=70 -->
+                <!-- Wedge boundaries at 300°, 60°, 180° (0°=top, clockwise) -->
+                <svg class="launcher-wedges" viewBox="0 0 320 320">
+                    <!-- Outer circle rim -->
+                    <circle cx="160" cy="160" r="158" fill="none" stroke="#0a0a1a" stroke-width="4" />
 
-                    <!-- Explore wedge: top (270° to 30°, i.e. top-right-ish to top-left-ish) -->
+                    <!-- Explore wedge: top (300° → 60°) — teal -->
                     <g class="launcher-wedge" data-mode="explore" id="launchExplore">
                         <path class="launcher-wedge-path" d="
-                            M140 52
-                            A88 88 0 0 1 216.2 184
-                            L171.4 162.8
-                            A50 50 0 0 0 140 90
-                            Z" />
-                        <!-- Binoculars icon (profile view - side on) -->
-                        <g class="launcher-wedge-icon" transform="translate(170, 95)">
-                            <!-- Near lens (larger, in front) -->
-                            <ellipse cx="0" cy="8" rx="9" ry="10" />
-                            <!-- Far lens (smaller, behind) -->
-                            <ellipse cx="-10" cy="6" rx="7" ry="8" />
-                            <!-- Bridge connecting lenses -->
-                            <path d="M-6 0 Q-3 -4 2 -2" />
-                            <!-- Focus wheel on top -->
-                            <rect x="-4" y="-6" width="6" height="3" rx="1" />
+                            M 99.4,125
+                            L 23.2,81
+                            A 158,158 0 0,1 296.8,81
+                            L 220.6,125
+                            A 70,70 0 0,0 99.4,125 Z"
+                            fill="rgba(0, 150, 136, 0.18)" />
+                        <!-- Binoculars (profile view) -->
+                        <g class="launcher-wedge-icon" stroke="#4DB6AC" transform="translate(160, 42) scale(1.1)">
+                            <ellipse cx="3" cy="6" rx="10" ry="11" />
+                            <ellipse cx="-9" cy="4" rx="7.5" ry="9" />
+                            <path d="M-5 -2 Q-1 -6 5 -4" />
+                            <rect x="-2" y="-8" width="6" height="4" rx="1" />
                         </g>
-                        <text class="launcher-wedge-label" x="178" y="122">Explore</text>
+                        <text class="launcher-wedge-label" fill="#4DB6AC" x="160" y="76">Explore</text>
                     </g>
 
-                    <!-- Concierge wedge: bottom-left (150° to 270°) -->
+                    <!-- Concierge wedge: bottom-left (180° → 300°) — purple -->
                     <g class="launcher-wedge" data-mode="concierge" id="launchConcierge">
                         <path class="launcher-wedge-path" d="
-                            M63.8 184
-                            A88 88 0 0 1 140 52
-                            L140 90
-                            A50 50 0 0 0 108.6 162.8
-                            Z" />
-                        <!-- Butler icon: top hat, monocle, bow tie, mustache -->
-                        <g class="launcher-wedge-icon" transform="translate(90, 95)">
+                            M 160,318
+                            L 160,230
+                            A 70,70 0 0,0 99.4,125
+                            L 23.2,81
+                            A 158,158 0 0,1 160,318 Z"
+                            fill="rgba(156, 39, 176, 0.18)" />
+                        <!-- Butler: top hat, head, mustache -->
+                        <g class="launcher-wedge-icon" stroke="#CE93D8" transform="translate(62, 208) scale(0.9)">
                             <!-- Top hat -->
-                            <rect x="-8" y="-14" width="16" height="12" rx="1" />
-                            <rect x="-12" y="-3" width="24" height="3" rx="1" />
+                            <rect x="-9" y="-16" width="18" height="13" rx="1" />
+                            <rect x="-13" y="-4" width="26" height="4" rx="1.5" />
                             <!-- Head -->
-                            <circle cx="0" cy="8" r="8" />
+                            <circle cx="0" cy="9" r="9" />
                             <!-- Monocle -->
-                            <circle cx="5" cy="6" r="3" />
-                            <line x1="8" y1="6" x2="12" y2="12" />
+                            <circle cx="6" cy="7" r="3.5" />
+                            <line x1="9.5" y1="7" x2="13" y2="14" />
                             <!-- Mustache -->
-                            <path d="M-5 11 Q-2 9 0 11 Q2 9 5 11" />
-                            <!-- Bow tie -->
-                            <path d="M-5 18 L0 16 L5 18 L0 20 Z" />
+                            <path d="M-5 13 Q-2 10 0 13 Q2 10 5 13" stroke-width="2" />
                         </g>
-                        <text class="launcher-wedge-label" x="98" y="122">Concierge</text>
+                        <text class="launcher-wedge-label" fill="#CE93D8" x="68" y="248">Concierge</text>
                     </g>
 
-                    <!-- Browse & Edit wedge: bottom (30° to 150°) -->
+                    <!-- Browse & Edit wedge: bottom-right (60° → 180°) — amber -->
                     <g class="launcher-wedge" data-mode="browseEdit" id="launchBrowseEdit">
                         <path class="launcher-wedge-path" d="
-                            M216.2 184
-                            A88 88 0 0 1 63.8 184
-                            L108.6 162.8
-                            A50 50 0 0 0 171.4 162.8
-                            Z" />
-                        <!-- Pencil icon -->
-                        <g class="launcher-wedge-icon" transform="translate(132, 192)">
-                            <path d="M-6 8 L6 -8 L10 -4 L-2 12 Z" />
-                            <path d="M6 -8 L8 -10 L12 -6 L10 -4" />
-                            <line x1="-6" y1="8" x2="-2" y2="12" />
+                            M 220.6,125
+                            L 296.8,81
+                            A 158,158 0 0,1 160,318
+                            L 160,230
+                            A 70,70 0 0,0 220.6,125 Z"
+                            fill="rgba(255, 183, 77, 0.18)" />
+                        <!-- Pencil -->
+                        <g class="launcher-wedge-icon" stroke="#FFB74D" transform="translate(256, 204) scale(1)">
+                            <path d="M-7 10 L7 -10 L12 -5 L-2 15 Z" />
+                            <path d="M7 -10 L10 -13 L15 -8 L12 -5" />
+                            <line x1="-7" y1="10" x2="-2" y2="15" />
                         </g>
-                        <text class="launcher-wedge-label" x="140" y="216">Browse</text>
-                        <text class="launcher-wedge-label" x="140" y="228">& Edit</text>
+                        <text class="launcher-wedge-label" fill="#FFB74D" x="258" y="240">Browse</text>
+                        <text class="launcher-wedge-label" fill="#FFB74D" x="258" y="255">& Edit</text>
                     </g>
 
-                    <!-- Divider lines from center circle to outer edge -->
-                    <line class="launcher-divider" x1="140" y1="90" x2="140" y2="2" />
-                    <line class="launcher-divider" x1="108.6" y1="162.8" x2="20.6" y2="213.6" />
-                    <line class="launcher-divider" x1="171.4" y1="162.8" x2="259.4" y2="213.6" />
+                    <!-- Divider lines between wedges -->
+                    <line class="launcher-divider" x1="99.4" y1="125" x2="23.2" y2="81" />
+                    <line class="launcher-divider" x1="220.6" y1="125" x2="296.8" y2="81" />
+                    <line class="launcher-divider" x1="160" y1="230" x2="160" y2="318" />
                 </svg>
 
                 <!-- Log a Visit (center) -->
                 <button class="launcher-center" id="launchLogVisit" data-mode="logVisit">
-                    <span class="launcher-center-icon">📍</span>
-                    <span class="launcher-center-label">Log Visit</span>
+                    <span class="launcher-center-icon">✦</span>
+                    <span class="launcher-center-label">Log a Visit</span>
                 </button>
             </div>
         </div>
