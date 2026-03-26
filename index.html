@@ -1672,6 +1672,380 @@
                 padding: 1rem;
             }
 
+            /* ---- Browse & Edit Mode ---- */
+            .be-toolbar {
+                display: flex;
+                gap: 0.5rem;
+                flex-wrap: wrap;
+                margin-bottom: 0.75rem;
+                padding-bottom: 0.75rem;
+                border-bottom: 1px solid #0f3460;
+            }
+            .be-toolbar select, .be-toolbar input {
+                background: #16213e;
+                color: #e0e0e0;
+                border: 1px solid #0f3460;
+                border-radius: 8px;
+                padding: 0.4rem 0.6rem;
+                font-size: 0.8rem;
+                flex: 1;
+                min-width: 0;
+                -webkit-appearance: none;
+            }
+            .be-toolbar select:focus, .be-toolbar input:focus {
+                outline: none;
+                border-color: #90caf9;
+            }
+            .be-search {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            .be-filter-row {
+                display: flex;
+                gap: 0.4rem;
+                width: 100%;
+            }
+            .be-reset-btn {
+                background: none;
+                border: 1px solid #0f3460;
+                color: #90caf9;
+                border-radius: 8px;
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+                cursor: pointer;
+                white-space: nowrap;
+            }
+            .be-list {
+                display: flex;
+                flex-direction: column;
+                gap: 0.4rem;
+                padding-bottom: 5rem;
+            }
+            .be-bar-row {
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+                padding: 0.75rem;
+                background: rgba(15, 52, 96, 0.3);
+                border-radius: 10px;
+                border-left: 4px solid #0f3460;
+                cursor: pointer;
+                transition: background 0.15s ease;
+            }
+            .be-bar-row:active {
+                background: rgba(15, 52, 96, 0.6);
+            }
+            .be-bar-name {
+                flex: 1;
+                font-size: 0.95rem;
+                color: #e0e0e0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .be-quad-badge {
+                font-size: 0.65rem;
+                font-weight: 700;
+                padding: 0.15rem 0.4rem;
+                border-radius: 4px;
+                color: #fff;
+                letter-spacing: 0.05em;
+                flex-shrink: 0;
+            }
+            .be-visited-icon {
+                font-size: 0.85rem;
+                flex-shrink: 0;
+            }
+            .be-completeness {
+                display: flex;
+                gap: 2px;
+                flex-shrink: 0;
+            }
+            .be-completeness-dot {
+                width: 5px;
+                height: 5px;
+                border-radius: 50%;
+                background: #0f3460;
+            }
+            .be-completeness-dot.filled {
+                background: #66BB6A;
+            }
+            .be-flag-icon {
+                color: #ef5350;
+                font-size: 0.75rem;
+                flex-shrink: 0;
+            }
+            .be-add-btn {
+                position: fixed;
+                bottom: 1.5rem;
+                right: 1.5rem;
+                z-index: 50;
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #66BB6A, #2E7D32);
+                border: 3px solid #0a0a1a;
+                color: #fff;
+                font-size: 1.8rem;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+                -webkit-tap-highlight-color: transparent;
+            }
+            .be-add-btn.visible {
+                display: flex;
+            }
+            .be-count {
+                font-size: 0.75rem;
+                color: #8a8aad;
+                margin-bottom: 0.5rem;
+            }
+
+            /* ---- Browse & Edit: Detail View ---- */
+            .be-detail {
+                display: none;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .be-detail.active {
+                display: flex;
+            }
+            .be-detail-header {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+            .be-detail-back {
+                background: none;
+                border: none;
+                color: #90caf9;
+                font-size: 1.4rem;
+                cursor: pointer;
+                padding: 0.25rem;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .be-detail-name {
+                font-size: 1.3rem;
+                font-weight: 600;
+                color: #e0e0e0;
+                flex: 1;
+            }
+            .be-detail-flag {
+                background: none;
+                border: 1px solid #0f3460;
+                border-radius: 8px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+                cursor: pointer;
+                color: #8a8aad;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .be-detail-flag.flagged {
+                border-color: #ef5350;
+                color: #ef5350;
+                background: rgba(239, 83, 80, 0.1);
+            }
+            .be-field-group {
+                display: flex;
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+            .be-field-label {
+                font-size: 0.75rem;
+                color: #8a8aad;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+            .be-field-input {
+                background: #16213e;
+                color: #e0e0e0;
+                border: 1px solid #0f3460;
+                border-radius: 8px;
+                padding: 0.6rem 0.75rem;
+                font-size: 0.9rem;
+                font-family: inherit;
+                width: 100%;
+            }
+            .be-field-input:focus {
+                outline: none;
+                border-color: #90caf9;
+            }
+            textarea.be-field-input {
+                min-height: 3.5rem;
+                resize: vertical;
+            }
+            .be-field-row {
+                display: flex;
+                gap: 0.5rem;
+            }
+            .be-field-row .be-field-group {
+                flex: 1;
+            }
+            .be-stars-row {
+                display: flex;
+                align-items: center;
+                gap: 0.3rem;
+            }
+            .be-star {
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: #0f3460;
+                transition: color 0.1s;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .be-star.active {
+                color: #FFD700;
+            }
+            .be-stars-label {
+                font-size: 0.8rem;
+                color: #8a8aad;
+                margin-right: 0.5rem;
+                min-width: 3rem;
+            }
+            .be-tags-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.4rem;
+            }
+            .be-tag-chip {
+                padding: 0.3rem 0.7rem;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                border: 1px solid #0f3460;
+                color: #8a8aad;
+                background: transparent;
+                cursor: pointer;
+                transition: all 0.15s;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .be-tag-chip.selected {
+                background: rgba(102, 187, 106, 0.2);
+                border-color: #66BB6A;
+                color: #66BB6A;
+            }
+            .be-journals {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .be-journal-entry {
+                background: rgba(15, 52, 96, 0.3);
+                border-radius: 8px;
+                padding: 0.6rem;
+                font-size: 0.85rem;
+                color: #c0c0c0;
+            }
+            .be-journal-meta {
+                font-size: 0.7rem;
+                color: #8a8aad;
+                margin-bottom: 0.25rem;
+            }
+            .be-journal-add {
+                display: flex;
+                gap: 0.5rem;
+            }
+            .be-journal-add textarea {
+                flex: 1;
+            }
+            .be-journal-add-btn {
+                background: #2E7D32;
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                padding: 0.4rem 0.75rem;
+                font-size: 0.8rem;
+                cursor: pointer;
+                align-self: flex-end;
+                white-space: nowrap;
+            }
+            .be-save-btn {
+                background: linear-gradient(135deg, #66BB6A, #2E7D32);
+                color: #fff;
+                border: none;
+                border-radius: 12px;
+                padding: 0.9rem;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                text-align: center;
+                margin-top: 0.5rem;
+                margin-bottom: 2rem;
+            }
+            .be-save-btn:active {
+                opacity: 0.8;
+            }
+            .be-section-title {
+                font-size: 0.85rem;
+                color: #90caf9;
+                font-weight: 600;
+                padding-top: 0.5rem;
+                border-top: 1px solid #0f3460;
+            }
+
+            /* ---- Browse & Edit: Add Bar Modal ---- */
+            .be-add-modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(10, 10, 26, 0.85);
+                z-index: 60;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                padding: 2rem;
+            }
+            .be-add-modal.active {
+                display: flex;
+            }
+            .be-add-modal-content {
+                background: #16213e;
+                border-radius: 16px;
+                padding: 1.5rem;
+                width: 100%;
+                max-width: 360px;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .be-add-modal-title {
+                font-size: 1.1rem;
+                color: #e0e0e0;
+                font-weight: 600;
+                text-align: center;
+            }
+            .be-add-modal-actions {
+                display: flex;
+                gap: 0.75rem;
+            }
+            .be-add-modal-cancel {
+                flex: 1;
+                padding: 0.7rem;
+                border-radius: 10px;
+                border: 1px solid #0f3460;
+                background: transparent;
+                color: #90caf9;
+                font-size: 0.9rem;
+                cursor: pointer;
+            }
+            .be-add-modal-confirm {
+                flex: 1;
+                padding: 0.7rem;
+                border-radius: 10px;
+                border: none;
+                background: linear-gradient(135deg, #66BB6A, #2E7D32);
+                color: #fff;
+                font-size: 0.9rem;
+                font-weight: 600;
+                cursor: pointer;
+            }
+            .be-add-modal-confirm:disabled {
+                opacity: 0.4;
+            }
+
             /* ---- Swipe-up Reset Hint ---- */
             .swipe-hint {
                 position: fixed;
@@ -2184,7 +2558,112 @@
                 <span></span>
             </div>
             <div class="mode-body" id="browseEditBody">
-                <p style="color: #8a8aad; text-align: center; margin-top: 3rem;">Coming soon...</p>
+                <!-- Directory List View -->
+                <div id="beListView">
+                    <div class="be-toolbar">
+                        <input type="text" class="be-search be-field-input" id="beSearch" placeholder="Search bars...">
+                        <div class="be-filter-row">
+                            <select id="beSort">
+                                <option value="alpha">A → Z</option>
+                                <option value="quadrant">Quadrant</option>
+                                <option value="recent">Recent visit</option>
+                                <option value="incomplete">Least complete</option>
+                            </select>
+                            <select id="beQuadFilter">
+                                <option value="all">All Quadrants</option>
+                                <option value="NW">NW</option>
+                                <option value="NE">NE</option>
+                                <option value="SW">SW</option>
+                                <option value="SE">SE</option>
+                            </select>
+                            <select id="beVisitFilter">
+                                <option value="all">All</option>
+                                <option value="visited">Visited</option>
+                                <option value="unvisited">Unvisited</option>
+                                <option value="flagged">Flagged</option>
+                            </select>
+                            <button class="be-reset-btn" id="beResetFilters">Reset</button>
+                        </div>
+                    </div>
+                    <div class="be-count" id="beCount"></div>
+                    <div class="be-list" id="beList"></div>
+                </div>
+                <!-- Detail View (hidden by default) -->
+                <div class="be-detail" id="beDetailView">
+                    <div class="be-detail-header">
+                        <button class="be-detail-back" id="beDetailBack">←</button>
+                        <span class="be-detail-name" id="beDetailName"></span>
+                        <button class="be-detail-flag" id="beDetailFlag">🚩 Flag</button>
+                    </div>
+                    <div class="be-field-group">
+                        <label class="be-field-label">Bar Name</label>
+                        <input type="text" class="be-field-input" id="beEditName">
+                    </div>
+                    <div class="be-field-group">
+                        <label class="be-field-label">Address</label>
+                        <input type="text" class="be-field-input" id="beEditAddress">
+                    </div>
+                    <div class="be-field-row">
+                        <div class="be-field-group">
+                            <label class="be-field-label">Quadrant</label>
+                            <select class="be-field-input" id="beEditQuadrant">
+                                <option value="NW">NW</option>
+                                <option value="NE">NE</option>
+                                <option value="SW">SW</option>
+                                <option value="SE">SE</option>
+                            </select>
+                        </div>
+                        <div class="be-field-group">
+                            <label class="be-field-label">Link / URL</label>
+                            <input type="url" class="be-field-input" id="beEditUrl" placeholder="Website or Instagram">
+                        </div>
+                    </div>
+                    <div class="be-field-group">
+                        <label class="be-field-label">Hours</label>
+                        <textarea class="be-field-input" id="beEditHours" placeholder="e.g. 11am-2am daily, closed Mondays"></textarea>
+                    </div>
+                    <div class="be-field-row">
+                        <div class="be-field-group">
+                            <label class="be-field-label">Happy Hour Times</label>
+                            <input type="text" class="be-field-input" id="beEditHHTime" placeholder="e.g. 3-6pm Mon-Fri">
+                        </div>
+                        <div class="be-field-group">
+                            <label class="be-field-label">Happy Hour Deals</label>
+                            <input type="text" class="be-field-input" id="beEditHHDeals" placeholder="e.g. $4 wells">
+                        </div>
+                    </div>
+                    <div class="be-section-title">Ratings</div>
+                    <div id="beRatingsSection"></div>
+                    <div class="be-section-title">Tags</div>
+                    <div class="be-tags-container" id="beTagsSection"></div>
+                    <div class="be-section-title">Journal</div>
+                    <div class="be-journals" id="beJournalsSection"></div>
+                    <div class="be-journal-add">
+                        <textarea class="be-field-input" id="beNewJournal" placeholder="Add a note..."></textarea>
+                        <button class="be-journal-add-btn" id="beAddJournalBtn">Add</button>
+                    </div>
+                    <button class="be-save-btn" id="beSaveBtn">Save Changes</button>
+                </div>
+            </div>
+        </div>
+        <!-- Add Bar FAB (only visible in Browse & Edit list view) -->
+        <button class="be-add-btn" id="beAddBtn">+</button>
+        <!-- Add Bar Modal -->
+        <div class="be-add-modal" id="beAddModal">
+            <div class="be-add-modal-content">
+                <div class="be-add-modal-title">Add a Bar</div>
+                <div class="be-field-group">
+                    <label class="be-field-label">Bar Name *</label>
+                    <input type="text" class="be-field-input" id="beAddName" placeholder="Bar name">
+                </div>
+                <div class="be-field-group">
+                    <label class="be-field-label">Address *</label>
+                    <input type="text" class="be-field-input" id="beAddAddress" placeholder="Full address">
+                </div>
+                <div class="be-add-modal-actions">
+                    <button class="be-add-modal-cancel" id="beAddCancel">Cancel</button>
+                    <button class="be-add-modal-confirm" id="beAddConfirm" disabled>Add Bar</button>
+                </div>
             </div>
         </div>
 
@@ -4557,8 +5036,21 @@
             // Back buttons
             document.getElementById('exploreBack').addEventListener('click', showLauncher);
             document.getElementById('conciergeBack').addEventListener('click', showLauncher);
-            document.getElementById('browseEditBack').addEventListener('click', showLauncher);
+            document.getElementById('browseEditBack').addEventListener('click', () => {
+                // If in detail view, go back to list; else go to launcher
+                if (beCurrentBar) {
+                    if (beUnsavedChanges && !confirm('Discard unsaved changes?')) return;
+                    beShowList();
+                    renderBeDirectory();
+                } else {
+                    document.getElementById('beAddBtn').classList.remove('visible');
+                    showLauncher();
+                }
+            });
             document.getElementById('logVisitBack').addEventListener('click', showLauncher);
+
+            // Init Browse & Edit
+            initBrowseEdit();
 
             // Reset overlay
             document.getElementById('resetYes').addEventListener('click', () => {
@@ -4620,7 +5112,497 @@
             if (screenId) {
                 showScreen(screenId);
                 document.getElementById('swipeHint').style.display = 'block';
+                // Init Browse & Edit when entering that mode
+                if (mode === 'browseEdit') {
+                    beShowList();
+                    renderBeDirectory();
+                    document.getElementById('beAddBtn').classList.add('visible');
+                } else {
+                    document.getElementById('beAddBtn').classList.remove('visible');
+                }
             }
+        }
+
+        // ========================================
+        //  BROWSE & EDIT MODE
+        // ========================================
+
+        let beCurrentBar = null; // { bar, barNum } currently being edited
+        let beUnsavedChanges = false;
+
+        // Flags stored in localStorage
+        let beFlaggedBars = JSON.parse(localStorage.getItem('beFlaggedBars') || '{}');
+
+        function saveBeFlaggedBars() {
+            localStorage.setItem('beFlaggedBars', JSON.stringify(beFlaggedBars));
+        }
+
+        // Completeness scoring for a bar (0-6 segments: hours, HH, tags, ratings-BD, ratings-C, journals)
+        function beCompletenessScore(barNum) {
+            const data = barDataStore[barNum];
+            if (!data) return { score: 0, segments: [false, false, false, false, false, false] };
+            const hasHours = !!(data.hours && data.hours.trim());
+            const hasHH = !!(data.happyHourTimes && data.happyHourTimes.trim());
+            const hasTags = !!(data.tags && data.tags.length > 0);
+            const r = data.ratings || {};
+            const hasRatingsBD = (r.bigDogDrinks > 0 || r.bigDogVibes > 0);
+            const hasRatingsC = (r.choochDrinks > 0 || r.choochVibes > 0);
+            const j = data.journals || {};
+            const hasJournals = (j.bigDog && j.bigDog.length > 0) || (j.chooch && j.chooch.length > 0);
+            const segments = [hasHours, hasHH, hasTags, hasRatingsBD, hasRatingsC, hasJournals];
+            return { score: segments.filter(Boolean).length, segments };
+        }
+
+        function renderBeDirectory() {
+            const list = document.getElementById('beList');
+            const countEl = document.getElementById('beCount');
+            const searchQ = (document.getElementById('beSearch').value || '').trim().toLowerCase();
+            const sortBy = document.getElementById('beSort').value;
+            const quadF = document.getElementById('beQuadFilter').value;
+            const visitF = document.getElementById('beVisitFilter').value;
+
+            const quadColors = { NW: '#D32F2F', NE: '#1565C0', SW: '#F9A825', SE: '#2E7D32' };
+
+            // Filter
+            let filtered = barsData.filter(bar => {
+                if (searchQ && !bar.name.toLowerCase().includes(searchQ)) return false;
+                if (quadF !== 'all' && bar.q !== quadF) return false;
+                const visited = isBarVisited(bar.num);
+                if (visitF === 'visited' && !visited) return false;
+                if (visitF === 'unvisited' && visited) return false;
+                if (visitF === 'flagged' && !beFlaggedBars[bar.num]) return false;
+                return true;
+            });
+
+            // Sort
+            filtered.sort((a, b) => {
+                if (sortBy === 'alpha') return a.name.localeCompare(b.name);
+                if (sortBy === 'quadrant') {
+                    const qOrder = { NW: 0, NE: 1, SW: 2, SE: 3 };
+                    if (qOrder[a.q] !== qOrder[b.q]) return qOrder[a.q] - qOrder[b.q];
+                    return a.name.localeCompare(b.name);
+                }
+                if (sortBy === 'recent') {
+                    const dA = barDataStore[a.num] && barDataStore[a.num].lastVisited ? new Date(barDataStore[a.num].lastVisited).getTime() : 0;
+                    const dB = barDataStore[b.num] && barDataStore[b.num].lastVisited ? new Date(barDataStore[b.num].lastVisited).getTime() : 0;
+                    return dB - dA; // most recent first
+                }
+                if (sortBy === 'incomplete') {
+                    return beCompletenessScore(a.num).score - beCompletenessScore(b.num).score;
+                }
+                return 0;
+            });
+
+            countEl.textContent = `${filtered.length} of ${barsData.length} bars`;
+
+            list.innerHTML = '';
+            filtered.forEach(bar => {
+                const data = barDataStore[bar.num] || {};
+                const visited = isBarVisited(bar.num);
+                const { segments } = beCompletenessScore(bar.num);
+                const flagged = !!beFlaggedBars[bar.num];
+
+                const row = document.createElement('div');
+                row.className = 'be-bar-row';
+                row.style.borderLeftColor = quadColors[bar.q] || '#0f3460';
+
+                row.innerHTML = `
+                    <span class="be-visited-icon">${visited ? '⭐' : '○'}</span>
+                    <span class="be-bar-name">${escapeHtml(bar.name)}</span>
+                    ${flagged ? '<span class="be-flag-icon">🚩</span>' : ''}
+                    <span class="be-quad-badge" style="background:${quadColors[bar.q]}">${bar.q}</span>
+                    <span class="be-completeness">${segments.map(s => `<span class="be-completeness-dot${s ? ' filled' : ''}"></span>`).join('')}</span>
+                `;
+
+                row.addEventListener('click', () => beOpenDetail(bar));
+                list.appendChild(row);
+            });
+        }
+
+        function beShowList() {
+            document.getElementById('beListView').style.display = 'block';
+            document.getElementById('beDetailView').classList.remove('active');
+            document.getElementById('beAddBtn').classList.add('visible');
+            beCurrentBar = null;
+            beUnsavedChanges = false;
+        }
+
+        function beOpenDetail(bar) {
+            beCurrentBar = bar;
+            beUnsavedChanges = false;
+            const data = barDataStore[bar.num] || {};
+            const quadColors = { NW: '#D32F2F', NE: '#1565C0', SW: '#F9A825', SE: '#2E7D32' };
+
+            document.getElementById('beListView').style.display = 'none';
+            document.getElementById('beDetailView').classList.add('active');
+            document.getElementById('beAddBtn').classList.remove('visible');
+
+            // Populate fields
+            document.getElementById('beDetailName').textContent = bar.name;
+            document.getElementById('beDetailName').style.color = quadColors[bar.q] || '#e0e0e0';
+            document.getElementById('beEditName').value = bar.name;
+            document.getElementById('beEditAddress').value = bar.address || '';
+            document.getElementById('beEditQuadrant').value = bar.q;
+            document.getElementById('beEditUrl').value = data.url || '';
+            document.getElementById('beEditHours').value = data.hours || '';
+            document.getElementById('beEditHHTime').value = data.happyHourTimes || '';
+            document.getElementById('beEditHHDeals').value = data.happyHourDeals || '';
+
+            // Flag button
+            const flagBtn = document.getElementById('beDetailFlag');
+            if (beFlaggedBars[bar.num]) {
+                flagBtn.classList.add('flagged');
+                flagBtn.textContent = '🚩 Flagged';
+            } else {
+                flagBtn.classList.remove('flagged');
+                flagBtn.textContent = '🚩 Flag';
+            }
+
+            // Ratings
+            beRenderRatings(bar.num);
+
+            // Tags
+            beRenderTags(bar.num);
+
+            // Journals
+            beRenderJournals(bar.num);
+        }
+
+        function beRenderRatings(barNum) {
+            const container = document.getElementById('beRatingsSection');
+            const data = barDataStore[barNum] || {};
+            const r = data.ratings || {};
+
+            // Show current user's ratings prominently, other user's smaller
+            const isCurrentBD = mobileIdentity === 'bigDog';
+            const primaryLabel = isCurrentBD ? 'Big Dog' : 'Chooch';
+            const secondaryLabel = isCurrentBD ? 'Chooch' : 'Big Dog';
+            const pDrinks = isCurrentBD ? r.bigDogDrinks : r.choochDrinks;
+            const pVibes = isCurrentBD ? r.bigDogVibes : r.choochVibes;
+            const sDrinks = isCurrentBD ? r.choochDrinks : r.bigDogDrinks;
+            const sVibes = isCurrentBD ? r.choochVibes : r.bigDogVibes;
+
+            function starRow(label, value, dataKey) {
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    stars += `<span class="be-star${i <= value ? ' active' : ''}" data-rating-key="${dataKey}" data-val="${i}">★</span>`;
+                }
+                return `<div class="be-stars-row"><span class="be-stars-label">${label}</span>${stars}</div>`;
+            }
+
+            container.innerHTML = `
+                <div style="margin-bottom:0.5rem;font-size:0.85rem;color:#90caf9;">${primaryLabel} (you)</div>
+                ${starRow('Drinks', pDrinks, isCurrentBD ? 'bigDogDrinks' : 'choochDrinks')}
+                ${starRow('Vibes', pVibes, isCurrentBD ? 'bigDogVibes' : 'choochVibes')}
+                <div style="margin-top:0.75rem;margin-bottom:0.5rem;font-size:0.8rem;color:#8a8aad;">${secondaryLabel}</div>
+                ${starRow('Drinks', sDrinks, isCurrentBD ? 'choochDrinks' : 'bigDogDrinks')}
+                ${starRow('Vibes', sVibes, isCurrentBD ? 'choochVibes' : 'bigDogVibes')}
+            `;
+
+            // Star click handlers
+            container.querySelectorAll('.be-star').forEach(star => {
+                star.addEventListener('click', () => {
+                    const key = star.dataset.ratingKey;
+                    const val = parseInt(star.dataset.val);
+                    if (!barDataStore[barNum].ratings) barDataStore[barNum].ratings = {};
+                    barDataStore[barNum].ratings[key] = val;
+                    beUnsavedChanges = true;
+                    beRenderRatings(barNum);
+                });
+            });
+        }
+
+        function beRenderTags(barNum) {
+            const container = document.getElementById('beTagsSection');
+            const data = barDataStore[barNum] || {};
+            const currentTags = data.tags || [];
+
+            container.innerHTML = allPresetTags.map(tag => {
+                const selected = currentTags.includes(tag);
+                return `<span class="be-tag-chip${selected ? ' selected' : ''}" data-tag="${tag}">${tag}</span>`;
+            }).join('');
+
+            container.querySelectorAll('.be-tag-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const tag = chip.dataset.tag;
+                    if (!barDataStore[barNum].tags) barDataStore[barNum].tags = [];
+                    const idx = barDataStore[barNum].tags.indexOf(tag);
+                    if (idx > -1) {
+                        barDataStore[barNum].tags.splice(idx, 1);
+                    } else {
+                        barDataStore[barNum].tags.push(tag);
+                    }
+                    beUnsavedChanges = true;
+                    beRenderTags(barNum);
+                });
+            });
+        }
+
+        function beRenderJournals(barNum) {
+            const container = document.getElementById('beJournalsSection');
+            const data = barDataStore[barNum] || {};
+            const j = data.journals || {};
+            const allEntries = [];
+
+            (j.bigDog || []).forEach(e => allEntries.push({ user: 'Big Dog', text: typeof e === 'string' ? e : e.text, date: e.date || '' }));
+            (j.chooch || []).forEach(e => allEntries.push({ user: 'Chooch', text: typeof e === 'string' ? e : e.text, date: e.date || '' }));
+
+            // Sort by date desc
+            allEntries.sort((a, b) => {
+                if (!a.date && !b.date) return 0;
+                if (!a.date) return 1;
+                if (!b.date) return -1;
+                return new Date(b.date) - new Date(a.date);
+            });
+
+            if (allEntries.length === 0) {
+                container.innerHTML = '<div style="color:#8a8aad;font-size:0.85rem;">No journal entries yet.</div>';
+            } else {
+                container.innerHTML = allEntries.map(e => `
+                    <div class="be-journal-entry">
+                        <div class="be-journal-meta">${e.user}${e.date ? ' · ' + e.date : ''}</div>
+                        <div>${escapeHtml(e.text)}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function beSaveChanges() {
+            if (!beCurrentBar) return;
+            const bar = beCurrentBar;
+            const data = barDataStore[bar.num];
+
+            // Update bar metadata
+            const newName = document.getElementById('beEditName').value.trim();
+            const newAddress = document.getElementById('beEditAddress').value.trim();
+            const newQuad = document.getElementById('beEditQuadrant').value;
+
+            if (newName) bar.name = newName;
+            if (newAddress) bar.address = newAddress;
+            bar.q = newQuad;
+            const quadColors = { NW: '#D32F2F', NE: '#1565C0', SW: '#F9A825', SE: '#2E7D32' };
+            bar.color = quadColors[newQuad] || bar.color;
+
+            // Update bar data
+            data.hours = document.getElementById('beEditHours').value;
+            data.happyHourTimes = document.getElementById('beEditHHTime').value;
+            data.happyHourDeals = document.getElementById('beEditHHDeals').value;
+            data.url = document.getElementById('beEditUrl').value.trim();
+            data.lastModified = Date.now();
+
+            // Save locally
+            barManager.saveLocalData();
+            saveBarsData();
+
+            // Sync to Firebase
+            if (firebaseUrl) {
+                barManager.syncBarToCloud(bar.num);
+            }
+
+            // Update desktop views too
+            renderDirectory();
+            updateMarkers();
+
+            beUnsavedChanges = false;
+
+            // Brief visual confirmation
+            const btn = document.getElementById('beSaveBtn');
+            btn.textContent = '✓ Saved!';
+            btn.style.background = '#2E7D32';
+            setTimeout(() => {
+                btn.textContent = 'Save Changes';
+                btn.style.background = 'linear-gradient(135deg, #66BB6A, #2E7D32)';
+            }, 1200);
+        }
+
+        function beAddJournal() {
+            if (!beCurrentBar) return;
+            const textarea = document.getElementById('beNewJournal');
+            const text = textarea.value.trim();
+            if (!text) return;
+
+            const barNum = beCurrentBar.num;
+            const data = barDataStore[barNum];
+            if (!data.journals) data.journals = { bigDog: [], chooch: [] };
+
+            const userKey = mobileIdentity === 'bigDog' ? 'bigDog' : 'chooch';
+            if (!data.journals[userKey]) data.journals[userKey] = [];
+            data.journals[userKey].push({
+                text: text,
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+            });
+
+            data.lastModified = Date.now();
+            barManager.saveLocalData();
+            if (firebaseUrl) barManager.syncBarToCloud(barNum);
+
+            textarea.value = '';
+            beUnsavedChanges = false;
+            beRenderJournals(barNum);
+        }
+
+        function beAddNewBar(name, address) {
+            // Geocode address via Nominatim
+            const encodedAddr = encodeURIComponent(address + ', Portland, OR');
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodedAddr}&limit=1`)
+                .then(r => r.json())
+                .then(results => {
+                    let lat = 45.52, lng = -122.68; // Default to Portland center
+                    let quad = 'SE';
+                    if (results.length > 0) {
+                        lat = parseFloat(results[0].lat);
+                        lng = parseFloat(results[0].lon);
+                        // Auto-assign quadrant
+                        if (lat >= 45.5226) {
+                            quad = lng >= -122.6765 ? 'NE' : 'NW';
+                        } else {
+                            quad = lng >= -122.6765 ? 'SE' : 'SW';
+                        }
+                    }
+
+                    const quadColors = { NW: '#D32F2F', NE: '#1565C0', SW: '#F9A825', SE: '#2E7D32' };
+                    const maxNum = Math.max(...barsData.map(b => b.num), 0);
+                    const newNum = maxNum + 1;
+
+                    const newBar = { name, lat, lng, num: newNum, q: quad, color: quadColors[quad], address };
+                    barsData.push(newBar);
+                    saveBarsData();
+
+                    barDataStore[newNum] = {
+                        hours: '',
+                        happyHourTimes: '',
+                        happyHourDeals: '',
+                        lastVisited: '',
+                        tags: [],
+                        ratings: { bigDogDrinks: 0, bigDogVibes: 0, choochDrinks: 0, choochVibes: 0 },
+                        journals: { bigDog: [], chooch: [] },
+                        lastModified: Date.now()
+                    };
+                    barManager.saveLocalData();
+
+                    if (firebaseUrl) {
+                        barManager.syncBarToCloud(newNum);
+                    }
+
+                    // Refresh views
+                    renderDirectory();
+                    updateMarkers();
+                    renderBeDirectory();
+
+                    // Open the new bar's detail
+                    beOpenDetail(newBar);
+                })
+                .catch(() => {
+                    // Fallback: add with default coords
+                    const quadColors = { NW: '#D32F2F', NE: '#1565C0', SW: '#F9A825', SE: '#2E7D32' };
+                    const maxNum = Math.max(...barsData.map(b => b.num), 0);
+                    const newNum = maxNum + 1;
+                    const newBar = { name, lat: 45.52, lng: -122.68, num: newNum, q: 'SE', color: quadColors['SE'], address };
+                    barsData.push(newBar);
+                    saveBarsData();
+
+                    barDataStore[newNum] = {
+                        hours: '', happyHourTimes: '', happyHourDeals: '', lastVisited: '',
+                        tags: [],
+                        ratings: { bigDogDrinks: 0, bigDogVibes: 0, choochDrinks: 0, choochVibes: 0 },
+                        journals: { bigDog: [], chooch: [] },
+                        lastModified: Date.now()
+                    };
+                    barManager.saveLocalData();
+                    renderDirectory();
+                    updateMarkers();
+                    renderBeDirectory();
+                    beOpenDetail(newBar);
+                });
+        }
+
+        // Browse & Edit event listeners (set up once, outside initMobile)
+        function initBrowseEdit() {
+            // Search & filter listeners
+            document.getElementById('beSearch').addEventListener('input', renderBeDirectory);
+            document.getElementById('beSort').addEventListener('change', renderBeDirectory);
+            document.getElementById('beQuadFilter').addEventListener('change', renderBeDirectory);
+            document.getElementById('beVisitFilter').addEventListener('change', renderBeDirectory);
+            document.getElementById('beResetFilters').addEventListener('click', () => {
+                document.getElementById('beSearch').value = '';
+                document.getElementById('beSort').value = 'alpha';
+                document.getElementById('beQuadFilter').value = 'all';
+                document.getElementById('beVisitFilter').value = 'all';
+                renderBeDirectory();
+            });
+
+            // Detail back button
+            document.getElementById('beDetailBack').addEventListener('click', () => {
+                if (beUnsavedChanges) {
+                    if (confirm('Discard unsaved changes?')) {
+                        beShowList();
+                        renderBeDirectory();
+                    }
+                } else {
+                    beShowList();
+                    renderBeDirectory();
+                }
+            });
+
+            // Flag button
+            document.getElementById('beDetailFlag').addEventListener('click', () => {
+                if (!beCurrentBar) return;
+                if (beFlaggedBars[beCurrentBar.num]) {
+                    delete beFlaggedBars[beCurrentBar.num];
+                } else {
+                    beFlaggedBars[beCurrentBar.num] = true;
+                }
+                saveBeFlaggedBars();
+                const flagBtn = document.getElementById('beDetailFlag');
+                if (beFlaggedBars[beCurrentBar.num]) {
+                    flagBtn.classList.add('flagged');
+                    flagBtn.textContent = '🚩 Flagged';
+                } else {
+                    flagBtn.classList.remove('flagged');
+                    flagBtn.textContent = '🚩 Flag';
+                }
+            });
+
+            // Save button
+            document.getElementById('beSaveBtn').addEventListener('click', beSaveChanges);
+
+            // Journal add
+            document.getElementById('beAddJournalBtn').addEventListener('click', beAddJournal);
+
+            // Track unsaved changes on text inputs
+            ['beEditName', 'beEditAddress', 'beEditHours', 'beEditHHTime', 'beEditHHDeals', 'beEditUrl'].forEach(id => {
+                document.getElementById(id).addEventListener('input', () => { beUnsavedChanges = true; });
+            });
+
+            // Add Bar FAB
+            document.getElementById('beAddBtn').addEventListener('click', () => {
+                document.getElementById('beAddName').value = '';
+                document.getElementById('beAddAddress').value = '';
+                document.getElementById('beAddConfirm').disabled = true;
+                document.getElementById('beAddModal').classList.add('active');
+            });
+
+            // Add Bar modal validation
+            const validateAddForm = () => {
+                const name = document.getElementById('beAddName').value.trim();
+                const addr = document.getElementById('beAddAddress').value.trim();
+                document.getElementById('beAddConfirm').disabled = !(name && addr);
+            };
+            document.getElementById('beAddName').addEventListener('input', validateAddForm);
+            document.getElementById('beAddAddress').addEventListener('input', validateAddForm);
+
+            document.getElementById('beAddCancel').addEventListener('click', () => {
+                document.getElementById('beAddModal').classList.remove('active');
+            });
+
+            document.getElementById('beAddConfirm').addEventListener('click', () => {
+                const name = document.getElementById('beAddName').value.trim();
+                const addr = document.getElementById('beAddAddress').value.trim();
+                if (name && addr) {
+                    document.getElementById('beAddModal').classList.remove('active');
+                    beAddNewBar(name, addr);
+                }
+            });
         }
 
         function showResetOverlay() {

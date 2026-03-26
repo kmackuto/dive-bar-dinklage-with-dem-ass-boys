@@ -1484,6 +1484,28 @@
                 fill: none;
             }
 
+            .identity-avatar img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .identity-upload-hint {
+                font-size: 0.7rem;
+                color: #0f3460;
+                margin-top: -0.5rem;
+                transition: color 0.2s;
+            }
+
+            .identity-option:active .identity-upload-hint {
+                color: #1565C0;
+            }
+
+            .identity-avatar-upload {
+                display: none;
+            }
+
             .identity-name {
                 font-size: 1.2rem;
                 color: #e0e0e0;
@@ -1508,9 +1530,52 @@
 
             .launcher-container {
                 position: relative;
-                width: 280px;
-                height: 280px;
+                width: 320px;
+                height: 320px;
                 z-index: 10;
+            }
+
+            /* The three wedge segments (SVG-based) */
+            .launcher-wedges {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            .launcher-wedge {
+                cursor: pointer;
+                -webkit-tap-highlight-color: transparent;
+                transition: opacity 0.15s ease;
+            }
+
+            .launcher-wedge:active {
+                opacity: 0.6;
+            }
+
+            .launcher-wedge-path {
+                stroke: #0a0a1a;
+                stroke-width: 3;
+            }
+
+            .launcher-wedge-icon {
+                stroke-width: 1.8;
+                fill: none;
+            }
+
+            .launcher-wedge-label {
+                font-size: 13px;
+                font-weight: 600;
+                text-anchor: middle;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                letter-spacing: 0.04em;
+            }
+
+            /* Divider lines between wedges */
+            .launcher-divider {
+                stroke: #0a0a1a;
+                stroke-width: 4;
             }
 
             /* Center button: Log a Visit */
@@ -1519,99 +1584,42 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                width: 100px;
-                height: 100px;
+                width: 148px;
+                height: 148px;
                 border-radius: 50%;
-                background: linear-gradient(135deg, #2E7D32, #1565C0);
-                border: none;
+                background: radial-gradient(circle at 40% 38%, #66BB6A, #2E7D32 70%);
+                border: 4px solid #0a0a1a;
                 cursor: pointer;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                gap: 4px;
-                box-shadow: 0 4px 20px rgba(46, 125, 50, 0.4);
+                gap: 2px;
+                box-shadow: 0 6px 28px rgba(76, 175, 80, 0.45), inset 0 2px 4px rgba(255,255,255,0.15);
                 transition: transform 0.2s ease;
                 -webkit-tap-highlight-color: transparent;
                 z-index: 2;
             }
 
             .launcher-center:active {
-                transform: translate(-50%, -50%) scale(0.94);
+                transform: translate(-50%, -50%) scale(0.95);
             }
 
             .launcher-center-icon {
-                font-size: 1.8rem;
+                font-size: 3.5rem;
                 line-height: 1;
+                color: #FFD700;
+                font-weight: 300;
+                text-shadow: 0 2px 6px rgba(0,0,0,0.4);
             }
 
             .launcher-center-label {
-                font-size: 0.6rem;
-                color: #fff;
-                font-weight: 600;
+                font-size: 0.7rem;
+                color: rgba(255,255,255,0.95);
+                font-weight: 700;
                 text-transform: uppercase;
-                letter-spacing: 0.05em;
-            }
-
-            /* Outer mode buttons */
-            .launcher-mode {
-                position: absolute;
-                width: 80px;
-                height: 80px;
-                border: 2px solid #0f3460;
-                border-radius: 16px;
-                background: transparent;
-                cursor: pointer;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 6px;
-                transition: all 0.2s ease;
-                -webkit-tap-highlight-color: transparent;
-            }
-
-            .launcher-mode:active {
-                transform: scale(0.94);
-                border-color: #1565C0;
-                background: rgba(15, 52, 96, 0.3);
-            }
-
-            .launcher-mode-icon {
-                width: 32px;
-                height: 32px;
-            }
-
-            .launcher-mode-icon svg {
-                width: 100%;
-                height: 100%;
-                stroke: #90caf9;
-                stroke-width: 1.5;
-                fill: none;
-            }
-
-            .launcher-mode-label {
-                font-size: 0.65rem;
-                color: #8a8aad;
-                font-weight: 500;
-                text-align: center;
-            }
-
-            /* Position the 3 outer buttons around the center */
-            .launcher-mode.explore {
-                top: 0;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            .launcher-mode.concierge {
-                bottom: 10px;
-                left: 10px;
-            }
-
-            .launcher-mode.browse {
-                bottom: 10px;
-                right: 10px;
+                letter-spacing: 0.08em;
+                text-shadow: 0 1px 3px rgba(0,0,0,0.4);
             }
 
             /* ---- Mode Content Screens ---- */
@@ -1662,6 +1670,380 @@
                 flex: 1;
                 overflow-y: auto;
                 padding: 1rem;
+            }
+
+            /* ---- Browse & Edit Mode ---- */
+            .be-toolbar {
+                display: flex;
+                gap: 0.5rem;
+                flex-wrap: wrap;
+                margin-bottom: 0.75rem;
+                padding-bottom: 0.75rem;
+                border-bottom: 1px solid #0f3460;
+            }
+            .be-toolbar select, .be-toolbar input {
+                background: #16213e;
+                color: #e0e0e0;
+                border: 1px solid #0f3460;
+                border-radius: 8px;
+                padding: 0.4rem 0.6rem;
+                font-size: 0.8rem;
+                flex: 1;
+                min-width: 0;
+                -webkit-appearance: none;
+            }
+            .be-toolbar select:focus, .be-toolbar input:focus {
+                outline: none;
+                border-color: #90caf9;
+            }
+            .be-search {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            .be-filter-row {
+                display: flex;
+                gap: 0.4rem;
+                width: 100%;
+            }
+            .be-reset-btn {
+                background: none;
+                border: 1px solid #0f3460;
+                color: #90caf9;
+                border-radius: 8px;
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+                cursor: pointer;
+                white-space: nowrap;
+            }
+            .be-list {
+                display: flex;
+                flex-direction: column;
+                gap: 0.4rem;
+                padding-bottom: 5rem;
+            }
+            .be-bar-row {
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+                padding: 0.75rem;
+                background: rgba(15, 52, 96, 0.3);
+                border-radius: 10px;
+                border-left: 4px solid #0f3460;
+                cursor: pointer;
+                transition: background 0.15s ease;
+            }
+            .be-bar-row:active {
+                background: rgba(15, 52, 96, 0.6);
+            }
+            .be-bar-name {
+                flex: 1;
+                font-size: 0.95rem;
+                color: #e0e0e0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .be-quad-badge {
+                font-size: 0.65rem;
+                font-weight: 700;
+                padding: 0.15rem 0.4rem;
+                border-radius: 4px;
+                color: #fff;
+                letter-spacing: 0.05em;
+                flex-shrink: 0;
+            }
+            .be-visited-icon {
+                font-size: 0.85rem;
+                flex-shrink: 0;
+            }
+            .be-completeness {
+                display: flex;
+                gap: 2px;
+                flex-shrink: 0;
+            }
+            .be-completeness-dot {
+                width: 5px;
+                height: 5px;
+                border-radius: 50%;
+                background: #0f3460;
+            }
+            .be-completeness-dot.filled {
+                background: #66BB6A;
+            }
+            .be-flag-icon {
+                color: #ef5350;
+                font-size: 0.75rem;
+                flex-shrink: 0;
+            }
+            .be-add-btn {
+                position: fixed;
+                bottom: 1.5rem;
+                right: 1.5rem;
+                z-index: 50;
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #66BB6A, #2E7D32);
+                border: 3px solid #0a0a1a;
+                color: #fff;
+                font-size: 1.8rem;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+                -webkit-tap-highlight-color: transparent;
+            }
+            .be-add-btn.visible {
+                display: flex;
+            }
+            .be-count {
+                font-size: 0.75rem;
+                color: #8a8aad;
+                margin-bottom: 0.5rem;
+            }
+
+            /* ---- Browse & Edit: Detail View ---- */
+            .be-detail {
+                display: none;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .be-detail.active {
+                display: flex;
+            }
+            .be-detail-header {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+            .be-detail-back {
+                background: none;
+                border: none;
+                color: #90caf9;
+                font-size: 1.4rem;
+                cursor: pointer;
+                padding: 0.25rem;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .be-detail-name {
+                font-size: 1.3rem;
+                font-weight: 600;
+                color: #e0e0e0;
+                flex: 1;
+            }
+            .be-detail-flag {
+                background: none;
+                border: 1px solid #0f3460;
+                border-radius: 8px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+                cursor: pointer;
+                color: #8a8aad;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .be-detail-flag.flagged {
+                border-color: #ef5350;
+                color: #ef5350;
+                background: rgba(239, 83, 80, 0.1);
+            }
+            .be-field-group {
+                display: flex;
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+            .be-field-label {
+                font-size: 0.75rem;
+                color: #8a8aad;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+            .be-field-input {
+                background: #16213e;
+                color: #e0e0e0;
+                border: 1px solid #0f3460;
+                border-radius: 8px;
+                padding: 0.6rem 0.75rem;
+                font-size: 0.9rem;
+                font-family: inherit;
+                width: 100%;
+            }
+            .be-field-input:focus {
+                outline: none;
+                border-color: #90caf9;
+            }
+            textarea.be-field-input {
+                min-height: 3.5rem;
+                resize: vertical;
+            }
+            .be-field-row {
+                display: flex;
+                gap: 0.5rem;
+            }
+            .be-field-row .be-field-group {
+                flex: 1;
+            }
+            .be-stars-row {
+                display: flex;
+                align-items: center;
+                gap: 0.3rem;
+            }
+            .be-star {
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: #0f3460;
+                transition: color 0.1s;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .be-star.active {
+                color: #FFD700;
+            }
+            .be-stars-label {
+                font-size: 0.8rem;
+                color: #8a8aad;
+                margin-right: 0.5rem;
+                min-width: 3rem;
+            }
+            .be-tags-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.4rem;
+            }
+            .be-tag-chip {
+                padding: 0.3rem 0.7rem;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                border: 1px solid #0f3460;
+                color: #8a8aad;
+                background: transparent;
+                cursor: pointer;
+                transition: all 0.15s;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .be-tag-chip.selected {
+                background: rgba(102, 187, 106, 0.2);
+                border-color: #66BB6A;
+                color: #66BB6A;
+            }
+            .be-journals {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .be-journal-entry {
+                background: rgba(15, 52, 96, 0.3);
+                border-radius: 8px;
+                padding: 0.6rem;
+                font-size: 0.85rem;
+                color: #c0c0c0;
+            }
+            .be-journal-meta {
+                font-size: 0.7rem;
+                color: #8a8aad;
+                margin-bottom: 0.25rem;
+            }
+            .be-journal-add {
+                display: flex;
+                gap: 0.5rem;
+            }
+            .be-journal-add textarea {
+                flex: 1;
+            }
+            .be-journal-add-btn {
+                background: #2E7D32;
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                padding: 0.4rem 0.75rem;
+                font-size: 0.8rem;
+                cursor: pointer;
+                align-self: flex-end;
+                white-space: nowrap;
+            }
+            .be-save-btn {
+                background: linear-gradient(135deg, #66BB6A, #2E7D32);
+                color: #fff;
+                border: none;
+                border-radius: 12px;
+                padding: 0.9rem;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                text-align: center;
+                margin-top: 0.5rem;
+                margin-bottom: 2rem;
+            }
+            .be-save-btn:active {
+                opacity: 0.8;
+            }
+            .be-section-title {
+                font-size: 0.85rem;
+                color: #90caf9;
+                font-weight: 600;
+                padding-top: 0.5rem;
+                border-top: 1px solid #0f3460;
+            }
+
+            /* ---- Browse & Edit: Add Bar Modal ---- */
+            .be-add-modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(10, 10, 26, 0.85);
+                z-index: 60;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                padding: 2rem;
+            }
+            .be-add-modal.active {
+                display: flex;
+            }
+            .be-add-modal-content {
+                background: #16213e;
+                border-radius: 16px;
+                padding: 1.5rem;
+                width: 100%;
+                max-width: 360px;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .be-add-modal-title {
+                font-size: 1.1rem;
+                color: #e0e0e0;
+                font-weight: 600;
+                text-align: center;
+            }
+            .be-add-modal-actions {
+                display: flex;
+                gap: 0.75rem;
+            }
+            .be-add-modal-cancel {
+                flex: 1;
+                padding: 0.7rem;
+                border-radius: 10px;
+                border: 1px solid #0f3460;
+                background: transparent;
+                color: #90caf9;
+                font-size: 0.9rem;
+                cursor: pointer;
+            }
+            .be-add-modal-confirm {
+                flex: 1;
+                padding: 0.7rem;
+                border-radius: 10px;
+                border: none;
+                background: linear-gradient(135deg, #66BB6A, #2E7D32);
+                color: #fff;
+                font-size: 0.9rem;
+                font-weight: 600;
+                cursor: pointer;
+            }
+            .be-add-modal-confirm:disabled {
+                opacity: 0.4;
             }
 
             /* ---- Swipe-up Reset Hint ---- */
@@ -1978,36 +2360,60 @@
             <div class="identity-prompt">Who's here?</div>
             <div class="identity-options">
                 <button class="identity-option" data-identity="bigDog" id="identityBigDog">
-                    <div class="identity-avatar">
+                    <div class="identity-avatar" id="bigDogAvatar">
                         <svg viewBox="0 0 80 80">
-                            <!-- Bulldog outline -->
-                            <circle cx="40" cy="42" r="24" />
-                            <circle cx="30" cy="36" r="3" />
-                            <circle cx="50" cy="36" r="3" />
-                            <ellipse cx="40" cy="46" rx="8" ry="5" />
-                            <path d="M20 28 Q16 18 22 20 Q24 22 24 28" />
-                            <path d="M60 28 Q64 18 58 20 Q56 22 56 28" />
-                            <path d="M32 50 Q40 56 48 50" />
+                            <!-- Bulldog: wide face, droopy jowls, flat nose -->
+                            <ellipse cx="40" cy="44" rx="26" ry="22" />
+                            <!-- Floppy ears -->
+                            <path d="M16 36 Q10 24 18 26 Q22 28 20 36" />
+                            <path d="M64 36 Q70 24 62 26 Q58 28 60 36" />
+                            <!-- Eyes -->
+                            <circle cx="30" cy="38" r="3.5" />
+                            <circle cx="50" cy="38" r="3.5" />
+                            <!-- Big flat nose -->
+                            <ellipse cx="40" cy="47" rx="7" ry="4.5" />
+                            <circle cx="37" cy="47" r="1.5" />
+                            <circle cx="43" cy="47" r="1.5" />
+                            <!-- Jowls / mouth -->
+                            <path d="M28 52 Q34 58 40 54 Q46 58 52 52" />
+                            <!-- Wrinkle lines on forehead -->
+                            <path d="M30 32 Q40 29 50 32" />
                         </svg>
                     </div>
                     <span class="identity-name">Big Dog</span>
+                    <span class="identity-upload-hint">tap & hold for photo</span>
+                    <input type="file" accept="image/*" class="identity-avatar-upload" id="bigDogUpload">
                 </button>
                 <button class="identity-option" data-identity="chooch" id="identityChooch">
-                    <div class="identity-avatar">
+                    <div class="identity-avatar" id="choochAvatar">
                         <svg viewBox="0 0 80 80">
-                            <!-- Steam engine outline -->
-                            <rect x="20" y="30" width="40" height="24" rx="4" />
-                            <circle cx="28" cy="58" r="5" />
-                            <circle cx="52" cy="58" r="5" />
-                            <circle cx="40" cy="58" r="5" />
-                            <rect x="12" y="34" width="10" height="16" rx="5" />
-                            <path d="M34 20 Q34 30 34 30" />
-                            <path d="M46 22 Q46 30 46 30" />
-                            <ellipse cx="34" cy="17" rx="4" ry="3" />
-                            <ellipse cx="46" cy="19" rx="3" ry="3" />
+                            <!-- Steam engine: side profile view -->
+                            <!-- Boiler (main body) -->
+                            <rect x="18" y="30" width="44" height="20" rx="10" />
+                            <!-- Cab (back) -->
+                            <rect x="48" y="20" width="16" height="30" rx="2" />
+                            <!-- Cab window -->
+                            <rect x="52" y="24" width="8" height="8" rx="1" />
+                            <!-- Smokestack -->
+                            <rect x="24" y="18" width="8" height="14" rx="2" />
+                            <path d="M22 18 L34 18" />
+                            <!-- Steam puffs -->
+                            <circle cx="28" cy="12" r="4" opacity="0.6" />
+                            <circle cx="22" cy="8" r="3" opacity="0.4" />
+                            <!-- Wheels -->
+                            <circle cx="28" cy="56" r="7" />
+                            <circle cx="28" cy="56" r="3" />
+                            <circle cx="52" cy="56" r="7" />
+                            <circle cx="52" cy="56" r="3" />
+                            <!-- Connecting rod -->
+                            <line x1="28" y1="56" x2="52" y2="56" />
+                            <!-- Cowcatcher -->
+                            <path d="M18 50 L10 58 L18 58" />
                         </svg>
                     </div>
                     <span class="identity-name">Chooch</span>
+                    <span class="identity-upload-hint">tap & hold for photo</span>
+                    <input type="file" accept="image/*" class="identity-avatar-upload" id="choochUpload">
                 </button>
             </div>
         </div>
@@ -2016,52 +2422,106 @@
         <div class="mobile-screen launcher-screen" id="launcherScreen">
             <div class="launcher-greeting" id="launcherGreeting">What's the move?</div>
             <div class="launcher-container">
-                <!-- Explore (top) -->
-                <button class="launcher-mode explore" data-mode="explore" id="launchExplore">
-                    <div class="launcher-mode-icon">
-                        <svg viewBox="0 0 32 32">
-                            <!-- Binoculars -->
-                            <circle cx="10" cy="18" r="7" />
-                            <circle cx="22" cy="18" r="7" />
-                            <rect x="14" y="14" width="4" height="8" rx="2" />
-                            <line x1="10" y1="11" x2="10" y2="8" />
-                            <line x1="22" y1="11" x2="22" y2="8" />
-                        </svg>
-                    </div>
-                    <span class="launcher-mode-label">Explore</span>
-                </button>
+                <!-- Simon Says circle: 3 wedge sectors + center button -->
+                <!-- viewBox 320x320, center (160,160), outer r=158, inner r=76 -->
+                <!-- Wedge boundaries at 300°, 60°, 180° (0°=top, clockwise) -->
+                <!-- Boundary points at r=76: (94.2,122), (225.8,122), (160,236) -->
+                <!-- Boundary points at r=158: (23.2,81), (296.8,81), (160,318) -->
+                <svg class="launcher-wedges" viewBox="0 0 320 320">
+                    <!-- Outer circle rim -->
+                    <circle cx="160" cy="160" r="158" fill="none" stroke="#0a0a1a" stroke-width="4" />
+
+                    <!-- Explore wedge: top (300° → 60°) — teal -->
+                    <g class="launcher-wedge" data-mode="explore" id="launchExplore">
+                        <path class="launcher-wedge-path" d="
+                            M 94.2,122
+                            L 23.2,81
+                            A 158,158 0 0,1 296.8,81
+                            L 225.8,122
+                            A 76,76 0 0,0 94.2,122 Z"
+                            fill="rgba(0, 150, 136, 0.18)" />
+                        <!-- Compass/spyglass (cleaner explore icon) -->
+                        <g class="launcher-wedge-icon" stroke="#4DB6AC" transform="translate(160, 48)">
+                            <!-- Spyglass body -->
+                            <rect x="-18" y="-5" width="36" height="10" rx="5" />
+                            <!-- Large lens end -->
+                            <circle cx="-18" cy="0" r="10" />
+                            <circle cx="-18" cy="0" r="6" />
+                            <!-- Small eyepiece -->
+                            <rect x="16" y="-3" width="8" height="6" rx="2" />
+                        </g>
+                        <text class="launcher-wedge-label" fill="#4DB6AC" x="160" y="80">Explore</text>
+                    </g>
+
+                    <!-- Concierge wedge: bottom-left (180° → 300°) — purple -->
+                    <g class="launcher-wedge" data-mode="concierge" id="launchConcierge">
+                        <path class="launcher-wedge-path" d="
+                            M 160,318
+                            L 160,236
+                            A 76,76 0 0,0 94.2,122
+                            L 23.2,81
+                            A 158,158 0 0,1 160,318 Z"
+                            fill="rgba(156, 39, 176, 0.18)" />
+                        <!-- Butler: top hat on head, bow tie below -->
+                        <g class="launcher-wedge-icon" stroke="#CE93D8" transform="translate(62, 200)">
+                            <!-- Top hat brim -->
+                            <line x1="-16" y1="0" x2="16" y2="0" stroke-width="2.5" />
+                            <!-- Top hat crown -->
+                            <rect x="-10" y="-18" width="20" height="18" rx="2" />
+                            <!-- Hat band -->
+                            <line x1="-10" y1="-4" x2="10" y2="-4" stroke-width="1.5" />
+                            <!-- Face (circle) -->
+                            <circle cx="0" cy="12" r="11" />
+                            <!-- Eyes -->
+                            <circle cx="-4" cy="10" r="1.5" fill="#CE93D8" stroke="none" />
+                            <circle cx="4" cy="10" r="1.5" fill="#CE93D8" stroke="none" />
+                            <!-- Mustache -->
+                            <path d="M-7 16 Q-3 13 0 16 Q3 13 7 16" stroke-width="2" />
+                            <!-- Bow tie -->
+                            <path d="M-7 26 L0 23 L7 26 L0 29 Z" stroke-width="1.5" />
+                        </g>
+                        <text class="launcher-wedge-label" fill="#CE93D8" x="68" y="252">Concierge</text>
+                    </g>
+
+                    <!-- Browse & Edit wedge: bottom-right (60° → 180°) — amber -->
+                    <g class="launcher-wedge" data-mode="browseEdit" id="launchBrowseEdit">
+                        <path class="launcher-wedge-path" d="
+                            M 225.8,122
+                            L 296.8,81
+                            A 158,158 0 0,1 160,318
+                            L 160,236
+                            A 76,76 0 0,0 225.8,122 Z"
+                            fill="rgba(255, 183, 77, 0.18)" />
+                        <!-- Clipboard with pencil -->
+                        <g class="launcher-wedge-icon" stroke="#FFB74D" transform="translate(255, 194)">
+                            <!-- Clipboard body -->
+                            <rect x="-14" y="-10" width="28" height="34" rx="3" />
+                            <!-- Clipboard clip -->
+                            <rect x="-6" y="-14" width="12" height="8" rx="2" />
+                            <!-- Lines on clipboard -->
+                            <line x1="-8" y1="2" x2="8" y2="2" stroke-width="1.5" />
+                            <line x1="-8" y1="8" x2="8" y2="8" stroke-width="1.5" />
+                            <line x1="-8" y1="14" x2="4" y2="14" stroke-width="1.5" />
+                            <!-- Small pencil overlay -->
+                            <g transform="translate(8, 10) rotate(-30)">
+                                <rect x="-2" y="-10" width="4" height="14" rx="0.5" />
+                                <path d="M-2 4 L0 8 L2 4" />
+                            </g>
+                        </g>
+                        <text class="launcher-wedge-label" fill="#FFB74D" x="258" y="244">Browse</text>
+                        <text class="launcher-wedge-label" fill="#FFB74D" x="258" y="258">& Edit</text>
+                    </g>
+
+                    <!-- Divider lines between wedges -->
+                    <line class="launcher-divider" x1="94.2" y1="122" x2="23.2" y2="81" />
+                    <line class="launcher-divider" x1="225.8" y1="122" x2="296.8" y2="81" />
+                    <line class="launcher-divider" x1="160" y1="236" x2="160" y2="318" />
+                </svg>
 
                 <!-- Log a Visit (center) -->
                 <button class="launcher-center" id="launchLogVisit" data-mode="logVisit">
-                    <span class="launcher-center-icon">📍</span>
-                    <span class="launcher-center-label">Log Visit</span>
-                </button>
-
-                <!-- Concierge (bottom-left) -->
-                <button class="launcher-mode concierge" data-mode="concierge" id="launchConcierge">
-                    <div class="launcher-mode-icon">
-                        <svg viewBox="0 0 32 32">
-                            <!-- Butler -->
-                            <circle cx="16" cy="12" r="6" />
-                            <path d="M8 28 Q8 20 16 18 Q24 20 24 28" />
-                            <path d="M10 8 L22 8" stroke-width="2" />
-                            <line x1="16" y1="6" x2="16" y2="4" />
-                        </svg>
-                    </div>
-                    <span class="launcher-mode-label">Concierge</span>
-                </button>
-
-                <!-- Browse & Edit (bottom-right) -->
-                <button class="launcher-mode browse" data-mode="browseEdit" id="launchBrowseEdit">
-                    <div class="launcher-mode-icon">
-                        <svg viewBox="0 0 32 32">
-                            <!-- Pencil/gear -->
-                            <path d="M6 26 L22 10 L26 14 L10 30 Z" />
-                            <path d="M22 10 L24 8 L28 12 L26 14" />
-                            <line x1="6" y1="26" x2="10" y2="30" />
-                        </svg>
-                    </div>
-                    <span class="launcher-mode-label">Browse & Edit</span>
+                    <span class="launcher-center-icon">+</span>
+                    <span class="launcher-center-label">Log a Visit</span>
                 </button>
             </div>
         </div>
@@ -2098,7 +2558,112 @@
                 <span></span>
             </div>
             <div class="mode-body" id="browseEditBody">
-                <p style="color: #8a8aad; text-align: center; margin-top: 3rem;">Coming soon...</p>
+                <!-- Directory List View -->
+                <div id="beListView">
+                    <div class="be-toolbar">
+                        <input type="text" class="be-search be-field-input" id="beSearch" placeholder="Search bars...">
+                        <div class="be-filter-row">
+                            <select id="beSort">
+                                <option value="alpha">A → Z</option>
+                                <option value="quadrant">Quadrant</option>
+                                <option value="recent">Recent visit</option>
+                                <option value="incomplete">Least complete</option>
+                            </select>
+                            <select id="beQuadFilter">
+                                <option value="all">All Quadrants</option>
+                                <option value="NW">NW</option>
+                                <option value="NE">NE</option>
+                                <option value="SW">SW</option>
+                                <option value="SE">SE</option>
+                            </select>
+                            <select id="beVisitFilter">
+                                <option value="all">All</option>
+                                <option value="visited">Visited</option>
+                                <option value="unvisited">Unvisited</option>
+                                <option value="flagged">Flagged</option>
+                            </select>
+                            <button class="be-reset-btn" id="beResetFilters">Reset</button>
+                        </div>
+                    </div>
+                    <div class="be-count" id="beCount"></div>
+                    <div class="be-list" id="beList"></div>
+                </div>
+                <!-- Detail View (hidden by default) -->
+                <div class="be-detail" id="beDetailView">
+                    <div class="be-detail-header">
+                        <button class="be-detail-back" id="beDetailBack">←</button>
+                        <span class="be-detail-name" id="beDetailName"></span>
+                        <button class="be-detail-flag" id="beDetailFlag">🚩 Flag</button>
+                    </div>
+                    <div class="be-field-group">
+                        <label class="be-field-label">Bar Name</label>
+                        <input type="text" class="be-field-input" id="beEditName">
+                    </div>
+                    <div class="be-field-group">
+                        <label class="be-field-label">Address</label>
+                        <input type="text" class="be-field-input" id="beEditAddress">
+                    </div>
+                    <div class="be-field-row">
+                        <div class="be-field-group">
+                            <label class="be-field-label">Quadrant</label>
+                            <select class="be-field-input" id="beEditQuadrant">
+                                <option value="NW">NW</option>
+                                <option value="NE">NE</option>
+                                <option value="SW">SW</option>
+                                <option value="SE">SE</option>
+                            </select>
+                        </div>
+                        <div class="be-field-group">
+                            <label class="be-field-label">Link / URL</label>
+                            <input type="url" class="be-field-input" id="beEditUrl" placeholder="Website or Instagram">
+                        </div>
+                    </div>
+                    <div class="be-field-group">
+                        <label class="be-field-label">Hours</label>
+                        <textarea class="be-field-input" id="beEditHours" placeholder="e.g. 11am-2am daily, closed Mondays"></textarea>
+                    </div>
+                    <div class="be-field-row">
+                        <div class="be-field-group">
+                            <label class="be-field-label">Happy Hour Times</label>
+                            <input type="text" class="be-field-input" id="beEditHHTime" placeholder="e.g. 3-6pm Mon-Fri">
+                        </div>
+                        <div class="be-field-group">
+                            <label class="be-field-label">Happy Hour Deals</label>
+                            <input type="text" class="be-field-input" id="beEditHHDeals" placeholder="e.g. $4 wells">
+                        </div>
+                    </div>
+                    <div class="be-section-title">Ratings</div>
+                    <div id="beRatingsSection"></div>
+                    <div class="be-section-title">Tags</div>
+                    <div class="be-tags-container" id="beTagsSection"></div>
+                    <div class="be-section-title">Journal</div>
+                    <div class="be-journals" id="beJournalsSection"></div>
+                    <div class="be-journal-add">
+                        <textarea class="be-field-input" id="beNewJournal" placeholder="Add a note..."></textarea>
+                        <button class="be-journal-add-btn" id="beAddJournalBtn">Add</button>
+                    </div>
+                    <button class="be-save-btn" id="beSaveBtn">Save Changes</button>
+                </div>
+            </div>
+        </div>
+        <!-- Add Bar FAB (only visible in Browse & Edit list view) -->
+        <button class="be-add-btn" id="beAddBtn">+</button>
+        <!-- Add Bar Modal -->
+        <div class="be-add-modal" id="beAddModal">
+            <div class="be-add-modal-content">
+                <div class="be-add-modal-title">Add a Bar</div>
+                <div class="be-field-group">
+                    <label class="be-field-label">Bar Name *</label>
+                    <input type="text" class="be-field-input" id="beAddName" placeholder="Bar name">
+                </div>
+                <div class="be-field-group">
+                    <label class="be-field-label">Address *</label>
+                    <input type="text" class="be-field-input" id="beAddAddress" placeholder="Full address">
+                </div>
+                <div class="be-add-modal-actions">
+                    <button class="be-add-modal-cancel" id="beAddCancel">Cancel</button>
+                    <button class="be-add-modal-confirm" id="beAddConfirm" disabled>Add Bar</button>
+                </div>
             </div>
         </div>
 
@@ -4399,36 +4964,93 @@
                 btn.style.background = 'rgba(15, 52, 96, 0.3)';
             }
 
-            // Identity selection handlers
+            // Load saved avatars
+            loadSavedAvatars();
+
+            // Identity selection handlers (tap = select, long press = upload photo)
+            let identityPressTimer = null;
             document.querySelectorAll('.identity-option').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const identity = btn.dataset.identity;
-                    mobileIdentity = identity;
-                    localStorage.setItem('mobileIdentity', identity);
-
-                    // Animate selection
-                    btn.style.borderColor = '#2E7D32';
-                    btn.style.background = 'rgba(46, 125, 50, 0.2)';
-
-                    setTimeout(() => {
-                        showLauncher();
-                    }, 300);
-                });
+                btn.addEventListener('mousedown', (e) => startIdentityPress(e, btn));
+                btn.addEventListener('touchstart', (e) => startIdentityPress(e, btn), { passive: true });
+                btn.addEventListener('mouseup', () => clearTimeout(identityPressTimer));
+                btn.addEventListener('touchend', (e) => {
+                    if (identityPressTimer) {
+                        clearTimeout(identityPressTimer);
+                        // Short tap = select identity
+                        const identity = btn.dataset.identity;
+                        mobileIdentity = identity;
+                        localStorage.setItem('mobileIdentity', identity);
+                        btn.style.borderColor = '#2E7D32';
+                        btn.style.background = 'rgba(46, 125, 50, 0.2)';
+                        setTimeout(() => showLauncher(), 300);
+                    }
+                }, { passive: true });
+                btn.addEventListener('mouseleave', () => clearTimeout(identityPressTimer));
             });
 
-            // Launcher mode buttons
-            document.querySelectorAll('.launcher-mode, .launcher-center').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const mode = btn.dataset.mode;
-                    openMode(mode);
+            function startIdentityPress(e, btn) {
+                identityPressTimer = setTimeout(() => {
+                    identityPressTimer = null; // null it so touchend knows it was a long press
+                    const identity = btn.dataset.identity;
+                    const fileInput = document.getElementById(identity === 'bigDog' ? 'bigDogUpload' : 'choochUpload');
+                    fileInput.click();
+                }, 600);
+            }
+
+            // Avatar file upload handlers
+            document.getElementById('bigDogUpload').addEventListener('change', (e) => handleAvatarUpload(e, 'bigDog'));
+            document.getElementById('choochUpload').addEventListener('change', (e) => handleAvatarUpload(e, 'chooch'));
+
+            function handleAvatarUpload(event, identity) {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const dataUrl = e.target.result;
+                    localStorage.setItem(`avatar_${identity}`, dataUrl);
+                    setAvatarImage(identity, dataUrl);
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function loadSavedAvatars() {
+                ['bigDog', 'chooch'].forEach(identity => {
+                    const saved = localStorage.getItem(`avatar_${identity}`);
+                    if (saved) setAvatarImage(identity, saved);
+                });
+            }
+
+            function setAvatarImage(identity, dataUrl) {
+                const container = document.getElementById(identity === 'bigDog' ? 'bigDogAvatar' : 'choochAvatar');
+                container.innerHTML = `<img src="${dataUrl}" alt="${identity}">`;
+            }
+
+            // Launcher mode buttons (SVG wedges + center button)
+            document.querySelectorAll('.launcher-wedge, .launcher-center').forEach(el => {
+                el.addEventListener('click', () => {
+                    const mode = el.dataset.mode;
+                    if (mode) openMode(mode);
                 });
             });
 
             // Back buttons
             document.getElementById('exploreBack').addEventListener('click', showLauncher);
             document.getElementById('conciergeBack').addEventListener('click', showLauncher);
-            document.getElementById('browseEditBack').addEventListener('click', showLauncher);
+            document.getElementById('browseEditBack').addEventListener('click', () => {
+                // If in detail view, go back to list; else go to launcher
+                if (beCurrentBar) {
+                    if (beUnsavedChanges && !confirm('Discard unsaved changes?')) return;
+                    beShowList();
+                    renderBeDirectory();
+                } else {
+                    document.getElementById('beAddBtn').classList.remove('visible');
+                    showLauncher();
+                }
+            });
             document.getElementById('logVisitBack').addEventListener('click', showLauncher);
+
+            // Init Browse & Edit
+            initBrowseEdit();
 
             // Reset overlay
             document.getElementById('resetYes').addEventListener('click', () => {
@@ -4490,7 +5112,497 @@
             if (screenId) {
                 showScreen(screenId);
                 document.getElementById('swipeHint').style.display = 'block';
+                // Init Browse & Edit when entering that mode
+                if (mode === 'browseEdit') {
+                    beShowList();
+                    renderBeDirectory();
+                    document.getElementById('beAddBtn').classList.add('visible');
+                } else {
+                    document.getElementById('beAddBtn').classList.remove('visible');
+                }
             }
+        }
+
+        // ========================================
+        //  BROWSE & EDIT MODE
+        // ========================================
+
+        let beCurrentBar = null; // { bar, barNum } currently being edited
+        let beUnsavedChanges = false;
+
+        // Flags stored in localStorage
+        let beFlaggedBars = JSON.parse(localStorage.getItem('beFlaggedBars') || '{}');
+
+        function saveBeFlaggedBars() {
+            localStorage.setItem('beFlaggedBars', JSON.stringify(beFlaggedBars));
+        }
+
+        // Completeness scoring for a bar (0-6 segments: hours, HH, tags, ratings-BD, ratings-C, journals)
+        function beCompletenessScore(barNum) {
+            const data = barDataStore[barNum];
+            if (!data) return { score: 0, segments: [false, false, false, false, false, false] };
+            const hasHours = !!(data.hours && data.hours.trim());
+            const hasHH = !!(data.happyHourTimes && data.happyHourTimes.trim());
+            const hasTags = !!(data.tags && data.tags.length > 0);
+            const r = data.ratings || {};
+            const hasRatingsBD = (r.bigDogDrinks > 0 || r.bigDogVibes > 0);
+            const hasRatingsC = (r.choochDrinks > 0 || r.choochVibes > 0);
+            const j = data.journals || {};
+            const hasJournals = (j.bigDog && j.bigDog.length > 0) || (j.chooch && j.chooch.length > 0);
+            const segments = [hasHours, hasHH, hasTags, hasRatingsBD, hasRatingsC, hasJournals];
+            return { score: segments.filter(Boolean).length, segments };
+        }
+
+        function renderBeDirectory() {
+            const list = document.getElementById('beList');
+            const countEl = document.getElementById('beCount');
+            const searchQ = (document.getElementById('beSearch').value || '').trim().toLowerCase();
+            const sortBy = document.getElementById('beSort').value;
+            const quadF = document.getElementById('beQuadFilter').value;
+            const visitF = document.getElementById('beVisitFilter').value;
+
+            const quadColors = { NW: '#D32F2F', NE: '#1565C0', SW: '#F9A825', SE: '#2E7D32' };
+
+            // Filter
+            let filtered = barsData.filter(bar => {
+                if (searchQ && !bar.name.toLowerCase().includes(searchQ)) return false;
+                if (quadF !== 'all' && bar.q !== quadF) return false;
+                const visited = isBarVisited(bar.num);
+                if (visitF === 'visited' && !visited) return false;
+                if (visitF === 'unvisited' && visited) return false;
+                if (visitF === 'flagged' && !beFlaggedBars[bar.num]) return false;
+                return true;
+            });
+
+            // Sort
+            filtered.sort((a, b) => {
+                if (sortBy === 'alpha') return a.name.localeCompare(b.name);
+                if (sortBy === 'quadrant') {
+                    const qOrder = { NW: 0, NE: 1, SW: 2, SE: 3 };
+                    if (qOrder[a.q] !== qOrder[b.q]) return qOrder[a.q] - qOrder[b.q];
+                    return a.name.localeCompare(b.name);
+                }
+                if (sortBy === 'recent') {
+                    const dA = barDataStore[a.num] && barDataStore[a.num].lastVisited ? new Date(barDataStore[a.num].lastVisited).getTime() : 0;
+                    const dB = barDataStore[b.num] && barDataStore[b.num].lastVisited ? new Date(barDataStore[b.num].lastVisited).getTime() : 0;
+                    return dB - dA; // most recent first
+                }
+                if (sortBy === 'incomplete') {
+                    return beCompletenessScore(a.num).score - beCompletenessScore(b.num).score;
+                }
+                return 0;
+            });
+
+            countEl.textContent = `${filtered.length} of ${barsData.length} bars`;
+
+            list.innerHTML = '';
+            filtered.forEach(bar => {
+                const data = barDataStore[bar.num] || {};
+                const visited = isBarVisited(bar.num);
+                const { segments } = beCompletenessScore(bar.num);
+                const flagged = !!beFlaggedBars[bar.num];
+
+                const row = document.createElement('div');
+                row.className = 'be-bar-row';
+                row.style.borderLeftColor = quadColors[bar.q] || '#0f3460';
+
+                row.innerHTML = `
+                    <span class="be-visited-icon">${visited ? '⭐' : '○'}</span>
+                    <span class="be-bar-name">${escapeHtml(bar.name)}</span>
+                    ${flagged ? '<span class="be-flag-icon">🚩</span>' : ''}
+                    <span class="be-quad-badge" style="background:${quadColors[bar.q]}">${bar.q}</span>
+                    <span class="be-completeness">${segments.map(s => `<span class="be-completeness-dot${s ? ' filled' : ''}"></span>`).join('')}</span>
+                `;
+
+                row.addEventListener('click', () => beOpenDetail(bar));
+                list.appendChild(row);
+            });
+        }
+
+        function beShowList() {
+            document.getElementById('beListView').style.display = 'block';
+            document.getElementById('beDetailView').classList.remove('active');
+            document.getElementById('beAddBtn').classList.add('visible');
+            beCurrentBar = null;
+            beUnsavedChanges = false;
+        }
+
+        function beOpenDetail(bar) {
+            beCurrentBar = bar;
+            beUnsavedChanges = false;
+            const data = barDataStore[bar.num] || {};
+            const quadColors = { NW: '#D32F2F', NE: '#1565C0', SW: '#F9A825', SE: '#2E7D32' };
+
+            document.getElementById('beListView').style.display = 'none';
+            document.getElementById('beDetailView').classList.add('active');
+            document.getElementById('beAddBtn').classList.remove('visible');
+
+            // Populate fields
+            document.getElementById('beDetailName').textContent = bar.name;
+            document.getElementById('beDetailName').style.color = quadColors[bar.q] || '#e0e0e0';
+            document.getElementById('beEditName').value = bar.name;
+            document.getElementById('beEditAddress').value = bar.address || '';
+            document.getElementById('beEditQuadrant').value = bar.q;
+            document.getElementById('beEditUrl').value = data.url || '';
+            document.getElementById('beEditHours').value = data.hours || '';
+            document.getElementById('beEditHHTime').value = data.happyHourTimes || '';
+            document.getElementById('beEditHHDeals').value = data.happyHourDeals || '';
+
+            // Flag button
+            const flagBtn = document.getElementById('beDetailFlag');
+            if (beFlaggedBars[bar.num]) {
+                flagBtn.classList.add('flagged');
+                flagBtn.textContent = '🚩 Flagged';
+            } else {
+                flagBtn.classList.remove('flagged');
+                flagBtn.textContent = '🚩 Flag';
+            }
+
+            // Ratings
+            beRenderRatings(bar.num);
+
+            // Tags
+            beRenderTags(bar.num);
+
+            // Journals
+            beRenderJournals(bar.num);
+        }
+
+        function beRenderRatings(barNum) {
+            const container = document.getElementById('beRatingsSection');
+            const data = barDataStore[barNum] || {};
+            const r = data.ratings || {};
+
+            // Show current user's ratings prominently, other user's smaller
+            const isCurrentBD = mobileIdentity === 'bigDog';
+            const primaryLabel = isCurrentBD ? 'Big Dog' : 'Chooch';
+            const secondaryLabel = isCurrentBD ? 'Chooch' : 'Big Dog';
+            const pDrinks = isCurrentBD ? r.bigDogDrinks : r.choochDrinks;
+            const pVibes = isCurrentBD ? r.bigDogVibes : r.choochVibes;
+            const sDrinks = isCurrentBD ? r.choochDrinks : r.bigDogDrinks;
+            const sVibes = isCurrentBD ? r.choochVibes : r.bigDogVibes;
+
+            function starRow(label, value, dataKey) {
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    stars += `<span class="be-star${i <= value ? ' active' : ''}" data-rating-key="${dataKey}" data-val="${i}">★</span>`;
+                }
+                return `<div class="be-stars-row"><span class="be-stars-label">${label}</span>${stars}</div>`;
+            }
+
+            container.innerHTML = `
+                <div style="margin-bottom:0.5rem;font-size:0.85rem;color:#90caf9;">${primaryLabel} (you)</div>
+                ${starRow('Drinks', pDrinks, isCurrentBD ? 'bigDogDrinks' : 'choochDrinks')}
+                ${starRow('Vibes', pVibes, isCurrentBD ? 'bigDogVibes' : 'choochVibes')}
+                <div style="margin-top:0.75rem;margin-bottom:0.5rem;font-size:0.8rem;color:#8a8aad;">${secondaryLabel}</div>
+                ${starRow('Drinks', sDrinks, isCurrentBD ? 'choochDrinks' : 'bigDogDrinks')}
+                ${starRow('Vibes', sVibes, isCurrentBD ? 'choochVibes' : 'bigDogVibes')}
+            `;
+
+            // Star click handlers
+            container.querySelectorAll('.be-star').forEach(star => {
+                star.addEventListener('click', () => {
+                    const key = star.dataset.ratingKey;
+                    const val = parseInt(star.dataset.val);
+                    if (!barDataStore[barNum].ratings) barDataStore[barNum].ratings = {};
+                    barDataStore[barNum].ratings[key] = val;
+                    beUnsavedChanges = true;
+                    beRenderRatings(barNum);
+                });
+            });
+        }
+
+        function beRenderTags(barNum) {
+            const container = document.getElementById('beTagsSection');
+            const data = barDataStore[barNum] || {};
+            const currentTags = data.tags || [];
+
+            container.innerHTML = allPresetTags.map(tag => {
+                const selected = currentTags.includes(tag);
+                return `<span class="be-tag-chip${selected ? ' selected' : ''}" data-tag="${tag}">${tag}</span>`;
+            }).join('');
+
+            container.querySelectorAll('.be-tag-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const tag = chip.dataset.tag;
+                    if (!barDataStore[barNum].tags) barDataStore[barNum].tags = [];
+                    const idx = barDataStore[barNum].tags.indexOf(tag);
+                    if (idx > -1) {
+                        barDataStore[barNum].tags.splice(idx, 1);
+                    } else {
+                        barDataStore[barNum].tags.push(tag);
+                    }
+                    beUnsavedChanges = true;
+                    beRenderTags(barNum);
+                });
+            });
+        }
+
+        function beRenderJournals(barNum) {
+            const container = document.getElementById('beJournalsSection');
+            const data = barDataStore[barNum] || {};
+            const j = data.journals || {};
+            const allEntries = [];
+
+            (j.bigDog || []).forEach(e => allEntries.push({ user: 'Big Dog', text: typeof e === 'string' ? e : e.text, date: e.date || '' }));
+            (j.chooch || []).forEach(e => allEntries.push({ user: 'Chooch', text: typeof e === 'string' ? e : e.text, date: e.date || '' }));
+
+            // Sort by date desc
+            allEntries.sort((a, b) => {
+                if (!a.date && !b.date) return 0;
+                if (!a.date) return 1;
+                if (!b.date) return -1;
+                return new Date(b.date) - new Date(a.date);
+            });
+
+            if (allEntries.length === 0) {
+                container.innerHTML = '<div style="color:#8a8aad;font-size:0.85rem;">No journal entries yet.</div>';
+            } else {
+                container.innerHTML = allEntries.map(e => `
+                    <div class="be-journal-entry">
+                        <div class="be-journal-meta">${e.user}${e.date ? ' · ' + e.date : ''}</div>
+                        <div>${escapeHtml(e.text)}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function beSaveChanges() {
+            if (!beCurrentBar) return;
+            const bar = beCurrentBar;
+            const data = barDataStore[bar.num];
+
+            // Update bar metadata
+            const newName = document.getElementById('beEditName').value.trim();
+            const newAddress = document.getElementById('beEditAddress').value.trim();
+            const newQuad = document.getElementById('beEditQuadrant').value;
+
+            if (newName) bar.name = newName;
+            if (newAddress) bar.address = newAddress;
+            bar.q = newQuad;
+            const quadColors = { NW: '#D32F2F', NE: '#1565C0', SW: '#F9A825', SE: '#2E7D32' };
+            bar.color = quadColors[newQuad] || bar.color;
+
+            // Update bar data
+            data.hours = document.getElementById('beEditHours').value;
+            data.happyHourTimes = document.getElementById('beEditHHTime').value;
+            data.happyHourDeals = document.getElementById('beEditHHDeals').value;
+            data.url = document.getElementById('beEditUrl').value.trim();
+            data.lastModified = Date.now();
+
+            // Save locally
+            barManager.saveLocalData();
+            saveBarsData();
+
+            // Sync to Firebase
+            if (firebaseUrl) {
+                barManager.syncBarToCloud(bar.num);
+            }
+
+            // Update desktop views too
+            renderDirectory();
+            updateMarkers();
+
+            beUnsavedChanges = false;
+
+            // Brief visual confirmation
+            const btn = document.getElementById('beSaveBtn');
+            btn.textContent = '✓ Saved!';
+            btn.style.background = '#2E7D32';
+            setTimeout(() => {
+                btn.textContent = 'Save Changes';
+                btn.style.background = 'linear-gradient(135deg, #66BB6A, #2E7D32)';
+            }, 1200);
+        }
+
+        function beAddJournal() {
+            if (!beCurrentBar) return;
+            const textarea = document.getElementById('beNewJournal');
+            const text = textarea.value.trim();
+            if (!text) return;
+
+            const barNum = beCurrentBar.num;
+            const data = barDataStore[barNum];
+            if (!data.journals) data.journals = { bigDog: [], chooch: [] };
+
+            const userKey = mobileIdentity === 'bigDog' ? 'bigDog' : 'chooch';
+            if (!data.journals[userKey]) data.journals[userKey] = [];
+            data.journals[userKey].push({
+                text: text,
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+            });
+
+            data.lastModified = Date.now();
+            barManager.saveLocalData();
+            if (firebaseUrl) barManager.syncBarToCloud(barNum);
+
+            textarea.value = '';
+            beUnsavedChanges = false;
+            beRenderJournals(barNum);
+        }
+
+        function beAddNewBar(name, address) {
+            // Geocode address via Nominatim
+            const encodedAddr = encodeURIComponent(address + ', Portland, OR');
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodedAddr}&limit=1`)
+                .then(r => r.json())
+                .then(results => {
+                    let lat = 45.52, lng = -122.68; // Default to Portland center
+                    let quad = 'SE';
+                    if (results.length > 0) {
+                        lat = parseFloat(results[0].lat);
+                        lng = parseFloat(results[0].lon);
+                        // Auto-assign quadrant
+                        if (lat >= 45.5226) {
+                            quad = lng >= -122.6765 ? 'NE' : 'NW';
+                        } else {
+                            quad = lng >= -122.6765 ? 'SE' : 'SW';
+                        }
+                    }
+
+                    const quadColors = { NW: '#D32F2F', NE: '#1565C0', SW: '#F9A825', SE: '#2E7D32' };
+                    const maxNum = Math.max(...barsData.map(b => b.num), 0);
+                    const newNum = maxNum + 1;
+
+                    const newBar = { name, lat, lng, num: newNum, q: quad, color: quadColors[quad], address };
+                    barsData.push(newBar);
+                    saveBarsData();
+
+                    barDataStore[newNum] = {
+                        hours: '',
+                        happyHourTimes: '',
+                        happyHourDeals: '',
+                        lastVisited: '',
+                        tags: [],
+                        ratings: { bigDogDrinks: 0, bigDogVibes: 0, choochDrinks: 0, choochVibes: 0 },
+                        journals: { bigDog: [], chooch: [] },
+                        lastModified: Date.now()
+                    };
+                    barManager.saveLocalData();
+
+                    if (firebaseUrl) {
+                        barManager.syncBarToCloud(newNum);
+                    }
+
+                    // Refresh views
+                    renderDirectory();
+                    updateMarkers();
+                    renderBeDirectory();
+
+                    // Open the new bar's detail
+                    beOpenDetail(newBar);
+                })
+                .catch(() => {
+                    // Fallback: add with default coords
+                    const quadColors = { NW: '#D32F2F', NE: '#1565C0', SW: '#F9A825', SE: '#2E7D32' };
+                    const maxNum = Math.max(...barsData.map(b => b.num), 0);
+                    const newNum = maxNum + 1;
+                    const newBar = { name, lat: 45.52, lng: -122.68, num: newNum, q: 'SE', color: quadColors['SE'], address };
+                    barsData.push(newBar);
+                    saveBarsData();
+
+                    barDataStore[newNum] = {
+                        hours: '', happyHourTimes: '', happyHourDeals: '', lastVisited: '',
+                        tags: [],
+                        ratings: { bigDogDrinks: 0, bigDogVibes: 0, choochDrinks: 0, choochVibes: 0 },
+                        journals: { bigDog: [], chooch: [] },
+                        lastModified: Date.now()
+                    };
+                    barManager.saveLocalData();
+                    renderDirectory();
+                    updateMarkers();
+                    renderBeDirectory();
+                    beOpenDetail(newBar);
+                });
+        }
+
+        // Browse & Edit event listeners (set up once, outside initMobile)
+        function initBrowseEdit() {
+            // Search & filter listeners
+            document.getElementById('beSearch').addEventListener('input', renderBeDirectory);
+            document.getElementById('beSort').addEventListener('change', renderBeDirectory);
+            document.getElementById('beQuadFilter').addEventListener('change', renderBeDirectory);
+            document.getElementById('beVisitFilter').addEventListener('change', renderBeDirectory);
+            document.getElementById('beResetFilters').addEventListener('click', () => {
+                document.getElementById('beSearch').value = '';
+                document.getElementById('beSort').value = 'alpha';
+                document.getElementById('beQuadFilter').value = 'all';
+                document.getElementById('beVisitFilter').value = 'all';
+                renderBeDirectory();
+            });
+
+            // Detail back button
+            document.getElementById('beDetailBack').addEventListener('click', () => {
+                if (beUnsavedChanges) {
+                    if (confirm('Discard unsaved changes?')) {
+                        beShowList();
+                        renderBeDirectory();
+                    }
+                } else {
+                    beShowList();
+                    renderBeDirectory();
+                }
+            });
+
+            // Flag button
+            document.getElementById('beDetailFlag').addEventListener('click', () => {
+                if (!beCurrentBar) return;
+                if (beFlaggedBars[beCurrentBar.num]) {
+                    delete beFlaggedBars[beCurrentBar.num];
+                } else {
+                    beFlaggedBars[beCurrentBar.num] = true;
+                }
+                saveBeFlaggedBars();
+                const flagBtn = document.getElementById('beDetailFlag');
+                if (beFlaggedBars[beCurrentBar.num]) {
+                    flagBtn.classList.add('flagged');
+                    flagBtn.textContent = '🚩 Flagged';
+                } else {
+                    flagBtn.classList.remove('flagged');
+                    flagBtn.textContent = '🚩 Flag';
+                }
+            });
+
+            // Save button
+            document.getElementById('beSaveBtn').addEventListener('click', beSaveChanges);
+
+            // Journal add
+            document.getElementById('beAddJournalBtn').addEventListener('click', beAddJournal);
+
+            // Track unsaved changes on text inputs
+            ['beEditName', 'beEditAddress', 'beEditHours', 'beEditHHTime', 'beEditHHDeals', 'beEditUrl'].forEach(id => {
+                document.getElementById(id).addEventListener('input', () => { beUnsavedChanges = true; });
+            });
+
+            // Add Bar FAB
+            document.getElementById('beAddBtn').addEventListener('click', () => {
+                document.getElementById('beAddName').value = '';
+                document.getElementById('beAddAddress').value = '';
+                document.getElementById('beAddConfirm').disabled = true;
+                document.getElementById('beAddModal').classList.add('active');
+            });
+
+            // Add Bar modal validation
+            const validateAddForm = () => {
+                const name = document.getElementById('beAddName').value.trim();
+                const addr = document.getElementById('beAddAddress').value.trim();
+                document.getElementById('beAddConfirm').disabled = !(name && addr);
+            };
+            document.getElementById('beAddName').addEventListener('input', validateAddForm);
+            document.getElementById('beAddAddress').addEventListener('input', validateAddForm);
+
+            document.getElementById('beAddCancel').addEventListener('click', () => {
+                document.getElementById('beAddModal').classList.remove('active');
+            });
+
+            document.getElementById('beAddConfirm').addEventListener('click', () => {
+                const name = document.getElementById('beAddName').value.trim();
+                const addr = document.getElementById('beAddAddress').value.trim();
+                if (name && addr) {
+                    document.getElementById('beAddModal').classList.remove('active');
+                    beAddNewBar(name, addr);
+                }
+            });
         }
 
         function showResetOverlay() {
