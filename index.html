@@ -2174,25 +2174,152 @@
                 opacity: 1;
                 box-shadow: 0 0 0 2px #e0e0e0;
             }
-            .explore-gps-btn {
+            /* Quadrant nudge */
+            .explore-nudge {
+                position: absolute;
+                bottom: 8rem;
+                right: 0.75rem;
+                z-index: 9;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.25rem;
+                animation: nudgePulse 2s ease-in-out infinite;
+            }
+            .explore-nudge.hidden {
+                display: none;
+            }
+            .explore-nudge-text {
+                background: rgba(22, 33, 62, 0.92);
+                border: 1px solid #0f3460;
+                border-radius: 10px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.8rem;
+                color: #90caf9;
+                white-space: nowrap;
+                box-shadow: 0 3px 12px rgba(0,0,0,0.4);
+            }
+            .explore-nudge-arrow {
+                font-size: 1.4rem;
+                color: #90caf9;
+            }
+            @keyframes nudgePulse {
+                0%, 100% { opacity: 1; transform: translateY(0); }
+                50% { opacity: 0.7; transform: translateY(4px); }
+            }
+            /* Near Me button */
+            .explore-nearme-btn {
                 position: absolute;
                 bottom: 5.5rem;
                 left: 0.75rem;
                 z-index: 10;
-                width: 46px;
-                height: 46px;
-                border-radius: 50%;
-                background: rgba(22, 33, 62, 0.9);
-                border: 2px solid #0f3460;
                 display: flex;
                 align-items: center;
-                justify-content: center;
+                gap: 0.4rem;
+                padding: 0.5rem 0.85rem;
+                border-radius: 22px;
+                background: rgba(22, 33, 62, 0.92);
+                border: 2px solid #0f3460;
+                color: #90caf9;
+                font-size: 0.8rem;
+                font-weight: 600;
                 cursor: pointer;
                 box-shadow: 0 3px 12px rgba(0,0,0,0.5);
                 -webkit-tap-highlight-color: transparent;
+                font-family: inherit;
             }
-            .explore-gps-btn:active {
-                background: rgba(15, 52, 96, 0.9);
+            .explore-nearme-btn:active {
+                background: rgba(15, 52, 96, 0.95);
+            }
+            /* Near Me panel */
+            .explore-nearme-panel {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 20;
+                background: #16213e;
+                border-top: 1px solid #0f3460;
+                border-radius: 16px 16px 0 0;
+                padding: 1rem 1.2rem 1.5rem;
+                transform: translateY(100%);
+                transition: transform 0.25s ease;
+                max-height: 65vh;
+                overflow-y: auto;
+            }
+            .explore-nearme-panel.visible {
+                transform: translateY(0);
+            }
+            .explore-nearme-panel-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 0.75rem;
+            }
+            .explore-nearme-close {
+                background: none;
+                border: none;
+                color: #8a8aad;
+                font-size: 1.2rem;
+                cursor: pointer;
+                padding: 0.25rem;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .explore-nearme-status {
+                font-size: 0.85rem;
+                color: #8a8aad;
+                margin-bottom: 0.5rem;
+            }
+            .explore-nearme-results {
+                display: flex;
+                flex-direction: column;
+                gap: 0.3rem;
+                margin-bottom: 0.5rem;
+            }
+            .explore-nearme-bar {
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+                padding: 0.6rem;
+                background: rgba(15, 52, 96, 0.3);
+                border-radius: 8px;
+                cursor: pointer;
+            }
+            .explore-nearme-bar:active {
+                background: rgba(15, 52, 96, 0.6);
+            }
+            .explore-nearme-bar-name {
+                flex: 1;
+                font-size: 0.9rem;
+                color: #e0e0e0;
+            }
+            .explore-nearme-bar-dist {
+                font-size: 0.75rem;
+                color: #8a8aad;
+            }
+            .explore-nearme-or {
+                text-align: center;
+                font-size: 0.75rem;
+                color: #8a8aad;
+                margin: 0.75rem 0 0.5rem;
+            }
+            .explore-nearme-search-row {
+                display: flex;
+                gap: 0.5rem;
+            }
+            .explore-nearme-search-row input {
+                flex: 1;
+            }
+            .explore-nearme-go {
+                padding: 0.5rem 1rem;
+                border-radius: 8px;
+                border: none;
+                background: #2E7D32;
+                color: #fff;
+                font-size: 0.85rem;
+                font-weight: 600;
+                cursor: pointer;
+                white-space: nowrap;
             }
             .explore-info-card {
                 position: absolute;
@@ -2812,6 +2939,12 @@
                 <!-- Explore Map -->
                 <div id="exploreMap" style="width: 100%; height: 100%; z-index: 0;"></div>
 
+                <!-- Quadrant nudge (shown when no quadrant selected) -->
+                <div class="explore-nudge" id="exploreNudge">
+                    <div class="explore-nudge-arrow">↘</div>
+                    <div class="explore-nudge-text">Pick a quadrant to see bars</div>
+                </div>
+
                 <!-- Search bar overlay -->
                 <div class="explore-search-wrap" id="exploreSearchWrap">
                     <button class="explore-back-btn" id="exploreBack">←</button>
@@ -2836,12 +2969,28 @@
                     <button class="explore-quad-option" data-quad="SE" style="background:#2E7D32;">SE</button>
                 </div>
 
-                <!-- GPS button -->
-                <button class="explore-gps-btn" id="exploreGpsBtn" title="What's near me">
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#e0e0e0" stroke-width="2">
+                <!-- Near Me button -->
+                <button class="explore-nearme-btn" id="exploreNearMeBtn">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/>
                     </svg>
+                    Near Me
                 </button>
+
+                <!-- Near Me panel (appears after tapping Near Me) -->
+                <div class="explore-nearme-panel" id="exploreNearMePanel">
+                    <div class="explore-nearme-panel-header">
+                        <span style="font-weight:600;color:#e0e0e0;">What's nearby?</span>
+                        <button class="explore-nearme-close" id="exploreNearMeClose">✕</button>
+                    </div>
+                    <div class="explore-nearme-status" id="exploreNearMeStatus"></div>
+                    <div class="explore-nearme-results" id="exploreNearMeResults"></div>
+                    <div class="explore-nearme-or">— or search a location —</div>
+                    <div class="explore-nearme-search-row">
+                        <input type="text" class="be-field-input" id="exploreNearMeInput" placeholder="Enter a place or address...">
+                        <button class="explore-nearme-go" id="exploreNearMeGo">Go</button>
+                    </div>
+                </div>
 
                 <!-- Info card (slides up from bottom) -->
                 <div class="explore-info-card" id="exploreInfoCard">
@@ -3758,11 +3907,11 @@
             }).addTo(map);
 
             const portlandBounds = L.latLngBounds(
-                L.latLng(45.40, -122.85),
-                L.latLng(45.62, -122.50)
+                L.latLng(45.20, -123.20),
+                L.latLng(45.80, -122.20)
             );
-            map.setMaxBounds(portlandBounds.pad(0.1));
-            map.options.minZoom = 11;
+            map.setMaxBounds(portlandBounds.pad(0.2));
+            map.options.minZoom = 10;
 
             drawQuadrantLines();
             addMarkers();
@@ -5996,9 +6145,9 @@
                     maxZoom: 19
                 }).addTo(exploreMap);
 
-                const portlandBounds = L.latLngBounds(L.latLng(45.40, -122.85), L.latLng(45.62, -122.50));
-                exploreMap.setMaxBounds(portlandBounds.pad(0.1));
-                exploreMap.options.minZoom = 11;
+                const portlandBounds = L.latLngBounds(L.latLng(45.20, -123.20), L.latLng(45.80, -122.20));
+                exploreMap.setMaxBounds(portlandBounds.pad(0.2));
+                exploreMap.options.minZoom = 10;
 
                 // Close info card when tapping the map
                 exploreMap.on('click', () => exploreCloseInfoCard());
@@ -6015,6 +6164,8 @@
             document.getElementById('exploreSearch').value = '';
             document.getElementById('exploreSearchResults').classList.remove('visible');
             document.getElementById('exploreQuadPicker').classList.remove('visible');
+            document.getElementById('exploreNudge').classList.remove('hidden');
+            document.getElementById('exploreNearMePanel').classList.remove('visible');
             exploreUpdateQuadButton();
 
             // Invalidate map size after screen is visible
@@ -6039,6 +6190,7 @@
                     const quad = btn.dataset.quad;
                     exploreSelectedQuad = quad;
                     document.getElementById('exploreQuadPicker').classList.remove('visible');
+                    document.getElementById('exploreNudge').classList.add('hidden');
                     exploreUpdateQuadButton();
                     exploreLoadQuadrant(quad);
                 });
@@ -6064,20 +6216,46 @@
                 if (q.length >= 2) exploreRunSearch(q);
             });
 
-            // GPS button
-            document.getElementById('exploreGpsBtn').addEventListener('click', () => {
-                if (!navigator.geolocation) return;
+            // Near Me button — opens panel and tries GPS
+            document.getElementById('exploreNearMeBtn').addEventListener('click', () => {
+                const panel = document.getElementById('exploreNearMePanel');
+                const statusEl = document.getElementById('exploreNearMeStatus');
+                const resultsEl = document.getElementById('exploreNearMeResults');
+                resultsEl.innerHTML = '';
+                statusEl.textContent = 'Finding your location...';
+                panel.classList.add('visible');
+
+                if (!navigator.geolocation) {
+                    statusEl.textContent = "Location unavailable — try searching below.";
+                    return;
+                }
+
                 navigator.geolocation.getCurrentPosition(pos => {
                     const { latitude, longitude } = pos.coords;
-                    exploreMap.flyTo([latitude, longitude], 15, { duration: 0.8 });
+                    // Drop GPS marker on map
                     if (exploreGpsMarker) exploreMap.removeLayer(exploreGpsMarker);
                     exploreGpsMarker = L.circleMarker([latitude, longitude], {
                         radius: 8, fillColor: '#4FC3F7', fillOpacity: 0.9,
                         color: '#fff', weight: 2
                     }).addTo(exploreMap);
+                    exploreMap.flyTo([latitude, longitude], 15, { duration: 0.8 });
+
+                    // Find nearby bars from our data
+                    exploreShowNearbyBars(latitude, longitude, statusEl, resultsEl);
                 }, () => {
-                    // Silently fail if permission denied
+                    statusEl.textContent = "Couldn't get your location — try searching below.";
                 });
+            });
+
+            // Near Me panel close
+            document.getElementById('exploreNearMeClose').addEventListener('click', () => {
+                document.getElementById('exploreNearMePanel').classList.remove('visible');
+            });
+
+            // Near Me search — geocode a place name, then find bars near it
+            document.getElementById('exploreNearMeGo').addEventListener('click', exploreNearMeSearch);
+            document.getElementById('exploreNearMeInput').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') exploreNearMeSearch();
             });
 
             // Info card close
@@ -6140,7 +6318,8 @@
             exploreMarkers = [];
         }
 
-        function exploreLoadQuadrant(quad) {
+        // Add markers for a quadrant (shared by both load variants)
+        function exploreAddQuadrantMarkers(quad) {
             exploreClearMarkers();
             exploreCloseInfoCard();
 
@@ -6174,10 +6353,20 @@
                 marker.barNum = bar.num;
                 exploreMarkers.push(marker);
             });
+        }
 
-            // Fit map to quadrant bounds
-            const group = L.featureGroup(exploreMarkers);
-            exploreMap.flyToBounds(group.getBounds().pad(0.1), { duration: 0.6 });
+        function exploreLoadQuadrant(quad) {
+            exploreAddQuadrantMarkers(quad);
+            // Fit map to show all bars in the quadrant
+            if (exploreMarkers.length > 0) {
+                const group = L.featureGroup(exploreMarkers);
+                exploreMap.flyToBounds(group.getBounds().pad(0.1), { duration: 0.6 });
+            }
+        }
+
+        // Load markers without changing the map view (used when search will fly to a specific bar)
+        function exploreLoadQuadrantNoFly(quad) {
+            exploreAddQuadrantMarkers(quad);
         }
 
         function exploreShowInfoCard(bar) {
@@ -6315,20 +6504,22 @@
                         const bar = barsData.find(b => b.num === barNum);
                         if (!bar) return;
 
-                        // Switch to bar's quadrant if needed
-                        if (exploreSelectedQuad !== bar.q) {
-                            exploreSelectedQuad = bar.q;
-                            exploreUpdateQuadButton();
-                            exploreLoadQuadrant(bar.q);
-                        }
-
-                        // Show info card
-                        setTimeout(() => exploreShowInfoCard(bar), 300);
-
-                        // Close search
+                        // Close search immediately
                         document.getElementById('exploreSearch').value = '';
                         resultsEl.classList.remove('visible');
                         document.getElementById('exploreSearch').blur();
+
+                        // Load quadrant markers if needed (without flying to fit all)
+                        if (exploreSelectedQuad !== bar.q) {
+                            exploreSelectedQuad = bar.q;
+                            document.getElementById('exploreNudge').classList.add('hidden');
+                            exploreUpdateQuadButton();
+                            exploreLoadQuadrantNoFly(bar.q);
+                        }
+
+                        // Fly to this specific bar at a close zoom, then show info card
+                        exploreMap.flyTo([bar.lat, bar.lng], 16, { duration: 0.6 });
+                        setTimeout(() => exploreShowInfoCard(bar), 650);
                     });
                 });
             }
@@ -6343,6 +6534,102 @@
                     document.getElementById('exploreSearchResults').classList.remove('visible');
                 }
             });
+        }
+
+        function exploreShowNearbyBars(lat, lng, statusEl, resultsEl) {
+            // Calculate distance to all bars and find closest ones
+            function haversine(lat1, lng1, lat2, lng2) {
+                const R = 3959; // miles
+                const dLat = (lat2 - lat1) * Math.PI / 180;
+                const dLng = (lng2 - lng1) * Math.PI / 180;
+                const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                    Math.sin(dLng / 2) * Math.sin(dLng / 2);
+                return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            }
+
+            const nearby = barsData.map(bar => ({
+                bar,
+                dist: haversine(lat, lng, bar.lat, bar.lng)
+            })).filter(b => b.dist <= 1.5) // within 1.5 miles
+            .sort((a, b) => a.dist - b.dist)
+            .slice(0, 8);
+
+            if (nearby.length === 0) {
+                statusEl.textContent = "No bars found within 1.5 miles. Try searching below.";
+                return;
+            }
+
+            statusEl.textContent = `Found ${nearby.length} bar${nearby.length > 1 ? 's' : ''} nearby:`;
+            resultsEl.innerHTML = nearby.map(({ bar, dist }) => {
+                const visited = isBarVisited(bar.num);
+                return `
+                    <div class="explore-nearme-bar" data-bar-num="${bar.num}">
+                        <span style="font-size:0.85rem;">${visited ? '⭐' : '○'}</span>
+                        <span class="explore-nearme-bar-name">${escapeHtml(bar.name)}</span>
+                        <span class="explore-search-result-quad" style="background:${quadColors[bar.q]}">${bar.q}</span>
+                        <span class="explore-nearme-bar-dist">${dist < 0.1 ? Math.round(dist * 5280) + ' ft' : dist.toFixed(1) + ' mi'}</span>
+                    </div>
+                `;
+            }).join('');
+
+            // Click handlers on results
+            resultsEl.querySelectorAll('.explore-nearme-bar').forEach(el => {
+                el.addEventListener('click', () => {
+                    const barNum = parseInt(el.dataset.barNum);
+                    const bar = barsData.find(b => b.num === barNum);
+                    if (!bar) return;
+
+                    // Load quadrant if needed
+                    if (exploreSelectedQuad !== bar.q) {
+                        exploreSelectedQuad = bar.q;
+                        document.getElementById('exploreNudge').classList.add('hidden');
+                        exploreUpdateQuadButton();
+                        exploreLoadQuadrant(bar.q);
+                    }
+
+                    // Close panel, show info card
+                    document.getElementById('exploreNearMePanel').classList.remove('visible');
+                    setTimeout(() => exploreShowInfoCard(bar), 300);
+                });
+            });
+        }
+
+        function exploreNearMeSearch() {
+            const input = document.getElementById('exploreNearMeInput');
+            const query = input.value.trim();
+            if (!query) return;
+
+            const statusEl = document.getElementById('exploreNearMeStatus');
+            const resultsEl = document.getElementById('exploreNearMeResults');
+            statusEl.textContent = 'Searching...';
+            resultsEl.innerHTML = '';
+
+            // Geocode via Nominatim
+            const encoded = encodeURIComponent(query + ', Portland, OR');
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encoded}&limit=1`)
+                .then(r => r.json())
+                .then(results => {
+                    if (results.length === 0) {
+                        statusEl.textContent = "Couldn't find that place. Try a different name or address.";
+                        return;
+                    }
+                    const lat = parseFloat(results[0].lat);
+                    const lng = parseFloat(results[0].lon);
+
+                    // Drop marker and fly
+                    if (exploreGpsMarker) exploreMap.removeLayer(exploreGpsMarker);
+                    exploreGpsMarker = L.circleMarker([lat, lng], {
+                        radius: 8, fillColor: '#4FC3F7', fillOpacity: 0.9,
+                        color: '#fff', weight: 2
+                    }).addTo(exploreMap);
+                    exploreMap.flyTo([lat, lng], 15, { duration: 0.8 });
+
+                    exploreShowNearbyBars(lat, lng, statusEl, resultsEl);
+                })
+                .catch(() => {
+                    statusEl.textContent = "Search failed — check your connection and try again.";
+                });
         }
 
         function showResetOverlay() {
