@@ -1584,8 +1584,8 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                width: 136px;
-                height: 136px;
+                width: 148px;
+                height: 148px;
                 border-radius: 50%;
                 background: radial-gradient(circle at 40% 38%, #66BB6A, #2E7D32 70%);
                 border: 4px solid #0a0a1a;
@@ -1606,9 +1606,10 @@
             }
 
             .launcher-center-icon {
-                font-size: 2.8rem;
+                font-size: 3.5rem;
                 line-height: 1;
                 color: #FFD700;
+                font-weight: 300;
                 text-shadow: 0 2px 6px rgba(0,0,0,0.4);
             }
 
@@ -2047,9 +2048,11 @@
         <div class="mobile-screen launcher-screen" id="launcherScreen">
             <div class="launcher-greeting" id="launcherGreeting">What's the move?</div>
             <div class="launcher-container">
-                <!-- Simon Says circle: 3 chunky wedge sectors + center button -->
-                <!-- viewBox 320x320, center (160,160), outer r=158, inner r=70 -->
+                <!-- Simon Says circle: 3 wedge sectors + center button -->
+                <!-- viewBox 320x320, center (160,160), outer r=158, inner r=76 -->
                 <!-- Wedge boundaries at 300°, 60°, 180° (0°=top, clockwise) -->
+                <!-- Boundary points at r=76: (94.2,122), (225.8,122), (160,236) -->
+                <!-- Boundary points at r=158: (23.2,81), (296.8,81), (160,318) -->
                 <svg class="launcher-wedges" viewBox="0 0 320 320">
                     <!-- Outer circle rim -->
                     <circle cx="160" cy="160" r="158" fill="none" stroke="#0a0a1a" stroke-width="4" />
@@ -2057,75 +2060,93 @@
                     <!-- Explore wedge: top (300° → 60°) — teal -->
                     <g class="launcher-wedge" data-mode="explore" id="launchExplore">
                         <path class="launcher-wedge-path" d="
-                            M 99.4,125
+                            M 94.2,122
                             L 23.2,81
                             A 158,158 0 0,1 296.8,81
-                            L 220.6,125
-                            A 70,70 0 0,0 99.4,125 Z"
+                            L 225.8,122
+                            A 76,76 0 0,0 94.2,122 Z"
                             fill="rgba(0, 150, 136, 0.18)" />
-                        <!-- Binoculars (profile view) -->
-                        <g class="launcher-wedge-icon" stroke="#4DB6AC" transform="translate(160, 42) scale(1.1)">
-                            <ellipse cx="3" cy="6" rx="10" ry="11" />
-                            <ellipse cx="-9" cy="4" rx="7.5" ry="9" />
-                            <path d="M-5 -2 Q-1 -6 5 -4" />
-                            <rect x="-2" y="-8" width="6" height="4" rx="1" />
+                        <!-- Compass/spyglass (cleaner explore icon) -->
+                        <g class="launcher-wedge-icon" stroke="#4DB6AC" transform="translate(160, 48)">
+                            <!-- Spyglass body -->
+                            <rect x="-18" y="-5" width="36" height="10" rx="5" />
+                            <!-- Large lens end -->
+                            <circle cx="-18" cy="0" r="10" />
+                            <circle cx="-18" cy="0" r="6" />
+                            <!-- Small eyepiece -->
+                            <rect x="16" y="-3" width="8" height="6" rx="2" />
                         </g>
-                        <text class="launcher-wedge-label" fill="#4DB6AC" x="160" y="76">Explore</text>
+                        <text class="launcher-wedge-label" fill="#4DB6AC" x="160" y="80">Explore</text>
                     </g>
 
                     <!-- Concierge wedge: bottom-left (180° → 300°) — purple -->
                     <g class="launcher-wedge" data-mode="concierge" id="launchConcierge">
                         <path class="launcher-wedge-path" d="
                             M 160,318
-                            L 160,230
-                            A 70,70 0 0,0 99.4,125
+                            L 160,236
+                            A 76,76 0 0,0 94.2,122
                             L 23.2,81
                             A 158,158 0 0,1 160,318 Z"
                             fill="rgba(156, 39, 176, 0.18)" />
-                        <!-- Butler: top hat, head, mustache -->
-                        <g class="launcher-wedge-icon" stroke="#CE93D8" transform="translate(62, 208) scale(0.9)">
-                            <!-- Top hat -->
-                            <rect x="-9" y="-16" width="18" height="13" rx="1" />
-                            <rect x="-13" y="-4" width="26" height="4" rx="1.5" />
-                            <!-- Head -->
-                            <circle cx="0" cy="9" r="9" />
-                            <!-- Monocle -->
-                            <circle cx="6" cy="7" r="3.5" />
-                            <line x1="9.5" y1="7" x2="13" y2="14" />
+                        <!-- Butler: top hat on head, bow tie below -->
+                        <g class="launcher-wedge-icon" stroke="#CE93D8" transform="translate(62, 200)">
+                            <!-- Top hat brim -->
+                            <line x1="-16" y1="0" x2="16" y2="0" stroke-width="2.5" />
+                            <!-- Top hat crown -->
+                            <rect x="-10" y="-18" width="20" height="18" rx="2" />
+                            <!-- Hat band -->
+                            <line x1="-10" y1="-4" x2="10" y2="-4" stroke-width="1.5" />
+                            <!-- Face (circle) -->
+                            <circle cx="0" cy="12" r="11" />
+                            <!-- Eyes -->
+                            <circle cx="-4" cy="10" r="1.5" fill="#CE93D8" stroke="none" />
+                            <circle cx="4" cy="10" r="1.5" fill="#CE93D8" stroke="none" />
                             <!-- Mustache -->
-                            <path d="M-5 13 Q-2 10 0 13 Q2 10 5 13" stroke-width="2" />
+                            <path d="M-7 16 Q-3 13 0 16 Q3 13 7 16" stroke-width="2" />
+                            <!-- Bow tie -->
+                            <path d="M-7 26 L0 23 L7 26 L0 29 Z" stroke-width="1.5" />
                         </g>
-                        <text class="launcher-wedge-label" fill="#CE93D8" x="68" y="248">Concierge</text>
+                        <text class="launcher-wedge-label" fill="#CE93D8" x="68" y="252">Concierge</text>
                     </g>
 
                     <!-- Browse & Edit wedge: bottom-right (60° → 180°) — amber -->
                     <g class="launcher-wedge" data-mode="browseEdit" id="launchBrowseEdit">
                         <path class="launcher-wedge-path" d="
-                            M 220.6,125
+                            M 225.8,122
                             L 296.8,81
                             A 158,158 0 0,1 160,318
-                            L 160,230
-                            A 70,70 0 0,0 220.6,125 Z"
+                            L 160,236
+                            A 76,76 0 0,0 225.8,122 Z"
                             fill="rgba(255, 183, 77, 0.18)" />
-                        <!-- Pencil -->
-                        <g class="launcher-wedge-icon" stroke="#FFB74D" transform="translate(256, 204) scale(1)">
-                            <path d="M-7 10 L7 -10 L12 -5 L-2 15 Z" />
-                            <path d="M7 -10 L10 -13 L15 -8 L12 -5" />
-                            <line x1="-7" y1="10" x2="-2" y2="15" />
+                        <!-- Clipboard with pencil -->
+                        <g class="launcher-wedge-icon" stroke="#FFB74D" transform="translate(255, 194)">
+                            <!-- Clipboard body -->
+                            <rect x="-14" y="-10" width="28" height="34" rx="3" />
+                            <!-- Clipboard clip -->
+                            <rect x="-6" y="-14" width="12" height="8" rx="2" />
+                            <!-- Lines on clipboard -->
+                            <line x1="-8" y1="2" x2="8" y2="2" stroke-width="1.5" />
+                            <line x1="-8" y1="8" x2="8" y2="8" stroke-width="1.5" />
+                            <line x1="-8" y1="14" x2="4" y2="14" stroke-width="1.5" />
+                            <!-- Small pencil overlay -->
+                            <g transform="translate(8, 10) rotate(-30)">
+                                <rect x="-2" y="-10" width="4" height="14" rx="0.5" />
+                                <path d="M-2 4 L0 8 L2 4" />
+                            </g>
                         </g>
-                        <text class="launcher-wedge-label" fill="#FFB74D" x="258" y="240">Browse</text>
-                        <text class="launcher-wedge-label" fill="#FFB74D" x="258" y="255">& Edit</text>
+                        <text class="launcher-wedge-label" fill="#FFB74D" x="258" y="244">Browse</text>
+                        <text class="launcher-wedge-label" fill="#FFB74D" x="258" y="258">& Edit</text>
                     </g>
 
                     <!-- Divider lines between wedges -->
-                    <line class="launcher-divider" x1="99.4" y1="125" x2="23.2" y2="81" />
-                    <line class="launcher-divider" x1="220.6" y1="125" x2="296.8" y2="81" />
-                    <line class="launcher-divider" x1="160" y1="230" x2="160" y2="318" />
+                    <line class="launcher-divider" x1="94.2" y1="122" x2="23.2" y2="81" />
+                    <line class="launcher-divider" x1="225.8" y1="122" x2="296.8" y2="81" />
+                    <line class="launcher-divider" x1="160" y1="236" x2="160" y2="318" />
                 </svg>
 
                 <!-- Log a Visit (center) -->
                 <button class="launcher-center" id="launchLogVisit" data-mode="logVisit">
-                    <span class="launcher-center-icon">✦</span>
+                    <span class="launcher-center-icon">+</span>
                     <span class="launcher-center-label">Log a Visit</span>
                 </button>
             </div>
