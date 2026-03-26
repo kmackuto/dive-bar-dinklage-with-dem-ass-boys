@@ -1721,6 +1721,76 @@
                 gap: 0.4rem;
                 padding-bottom: 5rem;
             }
+
+            /* ---- Browse & Edit: Flagged Section ---- */
+            .be-flagged-section {
+                display: none;
+                margin-bottom: 0.75rem;
+            }
+            .be-flagged-section.visible {
+                display: block;
+            }
+            .be-flagged-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.5rem 0.25rem;
+                cursor: pointer;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .be-flagged-label {
+                font-size: 0.85rem;
+                font-weight: 600;
+                color: #ef5350;
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+            }
+            .be-flagged-count {
+                background: #ef5350;
+                color: #fff;
+                font-size: 0.7rem;
+                font-weight: 700;
+                padding: 0.1rem 0.45rem;
+                border-radius: 10px;
+                min-width: 1.2rem;
+                text-align: center;
+            }
+            .be-flagged-toggle {
+                font-size: 0.75rem;
+                color: #8a8aad;
+                transition: transform 0.2s ease;
+            }
+            .be-flagged-toggle.open {
+                transform: rotate(180deg);
+            }
+            .be-flagged-list {
+                display: none;
+                flex-direction: column;
+                gap: 0.35rem;
+                padding-top: 0.4rem;
+            }
+            .be-flagged-list.open {
+                display: flex;
+            }
+            .be-flagged-row {
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+                padding: 0.6rem 0.75rem;
+                background: rgba(239, 83, 80, 0.08);
+                border-radius: 10px;
+                border-left: 3px solid #ef5350;
+                cursor: pointer;
+            }
+            .be-flagged-row:active {
+                background: rgba(239, 83, 80, 0.18);
+            }
+            .be-flagged-row .be-bar-name {
+                flex: 1;
+                font-size: 0.9rem;
+            }
+
             .be-bar-row {
                 display: flex;
                 align-items: center;
@@ -1774,6 +1844,57 @@
                 color: #ef5350;
                 font-size: 0.75rem;
                 flex-shrink: 0;
+            }
+
+            /* ---- Browse & Edit: Copy Name Button ---- */
+            .be-copy-btn {
+                background: none;
+                border: 1px solid #0f3460;
+                border-radius: 8px;
+                padding: 0.3rem 0.5rem;
+                font-size: 0.75rem;
+                color: #8a8aad;
+                cursor: pointer;
+                -webkit-tap-highlight-color: transparent;
+                flex-shrink: 0;
+                white-space: nowrap;
+            }
+            .be-copy-btn.copied {
+                border-color: #66BB6A;
+                color: #66BB6A;
+            }
+
+            /* ---- Browse & Edit: Long-Press Context Menu ---- */
+            .be-ctx-menu {
+                position: fixed;
+                z-index: 2500;
+                background: #16213e;
+                border: 1px solid #1a3a6e;
+                border-radius: 12px;
+                padding: 0.4rem 0;
+                min-width: 160px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+                display: none;
+            }
+            .be-ctx-menu.active {
+                display: block;
+            }
+            .be-ctx-item {
+                padding: 0.7rem 1rem;
+                font-size: 0.9rem;
+                color: #e0e0e0;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+            }
+            .be-ctx-item:active {
+                background: rgba(21, 101, 192, 0.2);
+            }
+            .be-ctx-separator {
+                height: 1px;
+                background: #0f3460;
+                margin: 0.25rem 0;
             }
             .be-add-btn {
                 position: fixed;
@@ -1982,6 +2103,102 @@
                 font-weight: 600;
                 padding-top: 0.5rem;
                 border-top: 1px solid #0f3460;
+            }
+
+            /* ---- Browse & Edit: Duplicate Warning ---- */
+            .be-add-dupe-warning {
+                display: none;
+                background: rgba(239, 83, 80, 0.15);
+                border: 1px solid #ef5350;
+                border-radius: 10px;
+                padding: 0.75rem;
+                font-size: 0.85rem;
+                color: #ef9a9a;
+                line-height: 1.4;
+            }
+            .be-add-dupe-warning.visible {
+                display: block;
+            }
+            .be-add-dupe-warning strong {
+                color: #ef5350;
+            }
+
+            /* ---- Browse & Edit: Delete Bar ---- */
+            .be-delete-btn {
+                background: none;
+                border: 1px solid #424242;
+                border-radius: 12px;
+                padding: 0.75rem;
+                font-size: 0.9rem;
+                color: #999;
+                cursor: pointer;
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+            .be-delete-btn:active {
+                border-color: #ef5350;
+                color: #ef5350;
+            }
+            .be-delete-modal {
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.7);
+                z-index: 3000;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                padding: 2rem;
+            }
+            .be-delete-modal.active {
+                display: flex;
+            }
+            .be-delete-modal-content {
+                background: #16213e;
+                border: 1px solid #ef5350;
+                border-radius: 16px;
+                padding: 1.5rem;
+                max-width: 320px;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .be-delete-modal-title {
+                font-size: 1.1rem;
+                color: #ef5350;
+                font-weight: 600;
+                text-align: center;
+            }
+            .be-delete-modal-text {
+                font-size: 0.9rem;
+                color: #b0bec5;
+                text-align: center;
+                line-height: 1.4;
+            }
+            .be-delete-modal-actions {
+                display: flex;
+                gap: 0.75rem;
+            }
+            .be-delete-modal-cancel {
+                flex: 1;
+                padding: 0.7rem;
+                border-radius: 10px;
+                background: #1a1a2e;
+                border: 1px solid #333;
+                color: #e0e0e0;
+                font-size: 0.9rem;
+                cursor: pointer;
+            }
+            .be-delete-modal-confirm {
+                flex: 1;
+                padding: 0.7rem;
+                border-radius: 10px;
+                background: linear-gradient(135deg, #ef5350, #c62828);
+                border: none;
+                color: #fff;
+                font-size: 0.9rem;
+                font-weight: 600;
+                cursor: pointer;
             }
 
             /* ---- Browse & Edit: Add Bar Modal ---- */
@@ -3307,6 +3524,13 @@
                         </div>
                     </div>
                     <div class="be-count" id="beCount"></div>
+                    <div class="be-flagged-section" id="beFlaggedSection">
+                        <div class="be-flagged-header" id="beFlaggedHeader">
+                            <span class="be-flagged-label">🚩 Flagged <span class="be-flagged-count" id="beFlaggedCount">0</span></span>
+                            <span class="be-flagged-toggle" id="beFlaggedToggle">▼</span>
+                        </div>
+                        <div class="be-flagged-list" id="beFlaggedList"></div>
+                    </div>
                     <div class="be-list" id="beList"></div>
                 </div>
                 <!-- Detail View (hidden by default) -->
@@ -3314,6 +3538,7 @@
                     <div class="be-detail-header">
                         <button class="be-detail-back" id="beDetailBack">←</button>
                         <span class="be-detail-name" id="beDetailName"></span>
+                        <button class="be-copy-btn" id="beCopyName">Copy Name</button>
                         <button class="be-detail-flag" id="beDetailFlag">🚩 Flag</button>
                     </div>
                     <div class="be-field-group">
@@ -3364,6 +3589,7 @@
                         <button class="be-journal-add-btn" id="beAddJournalBtn">Add</button>
                     </div>
                     <button class="be-save-btn" id="beSaveBtn">Save Changes</button>
+                    <button class="be-delete-btn" id="beDeleteBtn">Delete This Bar</button>
                 </div>
             </div>
         </div>
@@ -3381,11 +3607,32 @@
                     <label class="be-field-label">Address *</label>
                     <input type="text" class="be-field-input" id="beAddAddress" placeholder="Full address">
                 </div>
+                <div class="be-add-dupe-warning" id="beAddDupeWarning"></div>
                 <div class="be-add-modal-actions">
                     <button class="be-add-modal-cancel" id="beAddCancel">Cancel</button>
                     <button class="be-add-modal-confirm" id="beAddConfirm" disabled>Add Bar</button>
                 </div>
             </div>
+        </div>
+        <!-- Delete Bar Confirmation Modal -->
+        <div class="be-delete-modal" id="beDeleteModal">
+            <div class="be-delete-modal-content">
+                <div class="be-delete-modal-title">Delete This Bar?</div>
+                <div class="be-delete-modal-text" id="beDeleteText"></div>
+                <div class="be-delete-modal-actions">
+                    <button class="be-delete-modal-cancel" id="beDeleteCancel">Keep It</button>
+                    <button class="be-delete-modal-confirm" id="beDeleteConfirm">Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Long-Press Context Menu -->
+        <div class="be-ctx-menu" id="beCtxMenu">
+            <div class="be-ctx-item" id="beCtxCopy">📋 Copy Name</div>
+            <div class="be-ctx-separator"></div>
+            <div class="be-ctx-item" id="beCtxEdit">✏️ Edit</div>
+            <div class="be-ctx-separator"></div>
+            <div class="be-ctx-item" id="beCtxFlag">🚩 Flag</div>
         </div>
 
         <!-- Mode: Log a Visit -->
@@ -4113,18 +4360,11 @@
         let barManager = new BarManager();
 
         function isBarVisited(barNum) {
+            // A bar is only "visited" (gold star) when BOTH users have submitted all star ratings
             const data = barDataStore[barNum];
-            if (!data) return false;
-
-            if (data.journals && data.journals.bigDog && data.journals.bigDog.length > 0) return true;
-            if (data.journals && data.journals.chooch && data.journals.chooch.length > 0) return true;
-
-            if (data.ratings) {
-                if (data.ratings.bigDogDrinks > 0 || data.ratings.bigDogVibes > 0) return true;
-                if (data.ratings.choochDrinks > 0 || data.ratings.choochVibes > 0) return true;
-            }
-
-            return false;
+            if (!data || !data.ratings) return false;
+            const r = data.ratings;
+            return r.bigDogDrinks > 0 && r.bigDogVibes > 0 && r.choochDrinks > 0 && r.choochVibes > 0;
         }
 
         function isBarIncomplete(barNum) {
@@ -6052,6 +6292,30 @@
 
             countEl.textContent = `${filtered.length} of ${barsData.length} bars`;
 
+            // Render flagged section
+            const flaggedBars = barsData.filter(b => beFlaggedBars[b.num]);
+            const flaggedSection = document.getElementById('beFlaggedSection');
+            const flaggedCountEl = document.getElementById('beFlaggedCount');
+            const flaggedList = document.getElementById('beFlaggedList');
+            if (flaggedBars.length > 0) {
+                flaggedSection.classList.add('visible');
+                flaggedCountEl.textContent = flaggedBars.length;
+                flaggedList.innerHTML = '';
+                flaggedBars.sort((a, b) => a.name.localeCompare(b.name));
+                flaggedBars.forEach(bar => {
+                    const row = document.createElement('div');
+                    row.className = 'be-flagged-row';
+                    row.innerHTML = `
+                        <span class="be-bar-name">${escapeHtml(bar.name)}</span>
+                        <span class="be-quad-badge" style="background:${quadColors[bar.q]}">${bar.q}</span>
+                    `;
+                    row.addEventListener('click', () => beOpenDetail(bar));
+                    flaggedList.appendChild(row);
+                });
+            } else {
+                flaggedSection.classList.remove('visible');
+            }
+
             list.innerHTML = '';
             filtered.forEach(bar => {
                 const data = barDataStore[bar.num] || {};
@@ -6071,9 +6335,94 @@
                     <span class="be-completeness">${segments.map(s => `<span class="be-completeness-dot${s ? ' filled' : ''}"></span>`).join('')}</span>
                 `;
 
-                row.addEventListener('click', () => beOpenDetail(bar));
+                // Tap = open detail, long-press = context menu
+                let rowPressTimer = null;
+                let rowDidLongPress = false;
+                const startRowPress = (e) => {
+                    rowDidLongPress = false;
+                    rowPressTimer = setTimeout(() => {
+                        rowDidLongPress = true;
+                        beShowCtxMenu(bar, e);
+                    }, 500);
+                };
+                const endRowPress = () => {
+                    clearTimeout(rowPressTimer);
+                };
+                row.addEventListener('mousedown', startRowPress);
+                row.addEventListener('touchstart', startRowPress, { passive: true });
+                row.addEventListener('mouseup', endRowPress);
+                row.addEventListener('touchend', (e) => {
+                    endRowPress();
+                    if (rowDidLongPress) { e.preventDefault(); return; }
+                });
+                row.addEventListener('click', (e) => {
+                    if (rowDidLongPress) { rowDidLongPress = false; return; }
+                    beOpenDetail(bar);
+                });
                 list.appendChild(row);
             });
+        }
+
+        // ---- Context Menu for long-press on bar rows ----
+        let beCtxBar = null;
+
+        function beShowCtxMenu(bar, e) {
+            beCtxBar = bar;
+            const menu = document.getElementById('beCtxMenu');
+            // Update flag label
+            const flagged = !!beFlaggedBars[bar.num];
+            document.getElementById('beCtxFlag').textContent = flagged ? '🚩 Unflag' : '🚩 Flag';
+            // Position near the press point
+            let clientY, clientX;
+            if (e.touches && e.touches.length > 0) {
+                clientY = e.touches[0].clientY;
+                clientX = e.touches[0].clientX;
+            } else {
+                clientY = e.clientY || e.pageY;
+                clientX = e.clientX || e.pageX;
+            }
+            menu.style.top = Math.min(clientY, window.innerHeight - 180) + 'px';
+            menu.style.left = Math.min(clientX, window.innerWidth - 180) + 'px';
+            menu.classList.add('active');
+        }
+
+        function beHideCtxMenu() {
+            document.getElementById('beCtxMenu').classList.remove('active');
+            beCtxBar = null;
+        }
+
+        // Copy bar name to clipboard
+        function beCopyBarName(name, feedbackEl) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(name).then(() => {
+                    if (feedbackEl) {
+                        feedbackEl.textContent = 'Copied!';
+                        feedbackEl.classList.add('copied');
+                        setTimeout(() => {
+                            feedbackEl.textContent = 'Copy Name';
+                            feedbackEl.classList.remove('copied');
+                        }, 1500);
+                    }
+                });
+            } else {
+                // Fallback for older browsers
+                const ta = document.createElement('textarea');
+                ta.value = name;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                if (feedbackEl) {
+                    feedbackEl.textContent = 'Copied!';
+                    feedbackEl.classList.add('copied');
+                    setTimeout(() => {
+                        feedbackEl.textContent = 'Copy Name';
+                        feedbackEl.classList.remove('copied');
+                    }, 1500);
+                }
+            }
         }
 
         function beShowList() {
@@ -6388,6 +6737,12 @@
                 renderBeDirectory();
             });
 
+            // Flagged section toggle
+            document.getElementById('beFlaggedHeader').addEventListener('click', () => {
+                document.getElementById('beFlaggedList').classList.toggle('open');
+                document.getElementById('beFlaggedToggle').classList.toggle('open');
+            });
+
             // Detail back button
             document.getElementById('beDetailBack').addEventListener('click', () => {
                 if (beUnsavedChanges) {
@@ -6439,10 +6794,32 @@
                 document.getElementById('beAddModal').classList.add('active');
             });
 
-            // Add Bar modal validation
+            // Add Bar modal validation + duplicate detection
             const validateAddForm = () => {
                 const name = document.getElementById('beAddName').value.trim();
                 const addr = document.getElementById('beAddAddress').value.trim();
+                const dupeWarn = document.getElementById('beAddDupeWarning');
+
+                // Check for duplicate names (fuzzy: case-insensitive, ignore "the"/"bar"/"tavern" etc)
+                if (name.length > 2) {
+                    const normalize = s => s.toLowerCase().replace(/^the\s+/, '').replace(/\s+(bar|tavern|pub|lounge|saloon)$/i, '').trim();
+                    const normName = normalize(name);
+                    const dupes = barsData.filter(b => {
+                        const normExisting = normalize(b.name);
+                        return normExisting === normName || b.name.toLowerCase() === name.toLowerCase();
+                    });
+                    if (dupes.length > 0) {
+                        dupeWarn.innerHTML = '<strong>Possible duplicate:</strong> ' +
+                            dupes.map(d => d.name + ' (#' + d.num + ', ' + d.q + ')').join(', ') +
+                            ' already exists. Add anyway?';
+                        dupeWarn.classList.add('visible');
+                    } else {
+                        dupeWarn.classList.remove('visible');
+                    }
+                } else {
+                    dupeWarn.classList.remove('visible');
+                }
+
                 document.getElementById('beAddConfirm').disabled = !(name && addr);
             };
             document.getElementById('beAddName').addEventListener('input', validateAddForm);
@@ -6450,6 +6827,7 @@
 
             document.getElementById('beAddCancel').addEventListener('click', () => {
                 document.getElementById('beAddModal').classList.remove('active');
+                document.getElementById('beAddDupeWarning').classList.remove('visible');
             });
 
             document.getElementById('beAddConfirm').addEventListener('click', () => {
@@ -6457,7 +6835,94 @@
                 const addr = document.getElementById('beAddAddress').value.trim();
                 if (name && addr) {
                     document.getElementById('beAddModal').classList.remove('active');
+                    document.getElementById('beAddDupeWarning').classList.remove('visible');
                     beAddNewBar(name, addr);
+                }
+            });
+
+            // Delete bar button
+            document.getElementById('beDeleteBtn').addEventListener('click', () => {
+                if (!beCurrentBar) return;
+                document.getElementById('beDeleteText').textContent =
+                    'This will permanently remove "' + beCurrentBar.name + '" from the directory. This cannot be undone.';
+                document.getElementById('beDeleteModal').classList.add('active');
+            });
+
+            document.getElementById('beDeleteCancel').addEventListener('click', () => {
+                document.getElementById('beDeleteModal').classList.remove('active');
+            });
+
+            document.getElementById('beDeleteConfirm').addEventListener('click', () => {
+                if (!beCurrentBar) return;
+                const barNum = beCurrentBar.num;
+                const barName = beCurrentBar.name;
+
+                // Remove from barsData array
+                const idx = barsData.findIndex(b => b.num === barNum);
+                if (idx !== -1) barsData.splice(idx, 1);
+                saveBarsData();
+
+                // Remove from barDataStore
+                delete barDataStore[barNum];
+                barManager.saveLocalData();
+
+                // Remove from cloud if synced
+                if (firebaseUrl) {
+                    fetch(firebaseUrl + '/bars/' + barNum + '.json', { method: 'DELETE' }).catch(() => {});
+                }
+
+                // Remove from flagged bars
+                const flagIdx = beFlaggedBars.indexOf(barNum);
+                if (flagIdx !== -1) {
+                    beFlaggedBars.splice(flagIdx, 1);
+                    localStorage.setItem('beFlaggedBars', JSON.stringify(beFlaggedBars));
+                }
+
+                // Close modal, go back to list
+                document.getElementById('beDeleteModal').classList.remove('active');
+                beCurrentBar = null;
+                beUnsavedChanges = false;
+                beShowList();
+                renderBeDirectory();
+
+                // Refresh desktop views
+                renderDirectory();
+                updateMarkers();
+            });
+
+            // Copy Name button in detail header
+            document.getElementById('beCopyName').addEventListener('click', () => {
+                if (!beCurrentBar) return;
+                beCopyBarName(beCurrentBar.name, document.getElementById('beCopyName'));
+            });
+
+            // Context menu items
+            document.getElementById('beCtxCopy').addEventListener('click', () => {
+                if (beCtxBar) beCopyBarName(beCtxBar.name, null);
+                beHideCtxMenu();
+            });
+            document.getElementById('beCtxEdit').addEventListener('click', () => {
+                if (beCtxBar) beOpenDetail(beCtxBar);
+                beHideCtxMenu();
+            });
+            document.getElementById('beCtxFlag').addEventListener('click', () => {
+                if (beCtxBar) {
+                    if (beFlaggedBars[beCtxBar.num]) {
+                        delete beFlaggedBars[beCtxBar.num];
+                    } else {
+                        beFlaggedBars[beCtxBar.num] = true;
+                    }
+                    saveBeFlaggedBars();
+                    renderBeDirectory();
+                }
+                beHideCtxMenu();
+            });
+
+            // Dismiss context menu on tap outside
+            document.addEventListener('click', (e) => {
+                const menu = document.getElementById('beCtxMenu');
+                if (menu.classList.contains('active') && !menu.contains(e.target)) {
+                    beHideCtxMenu();
                 }
             });
         }
