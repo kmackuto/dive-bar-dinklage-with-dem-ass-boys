@@ -5059,19 +5059,26 @@
             });
             document.getElementById('resetNevermind').addEventListener('click', hideResetOverlay);
 
-            // Swipe-up detection
+            // Swipe-up detection (disabled in Browse & Edit — that mode uses its own back nav)
             let touchStartY = 0;
+            let touchStartTime = 0;
             document.getElementById('mobileShell').addEventListener('touchstart', (e) => {
                 touchStartY = e.touches[0].clientY;
+                touchStartTime = Date.now();
             }, { passive: true });
 
             document.getElementById('mobileShell').addEventListener('touchend', (e) => {
                 const touchEndY = e.changedTouches[0].clientY;
                 const swipeDistance = touchStartY - touchEndY;
+                const swipeDuration = Date.now() - touchStartTime;
                 const screenHeight = window.innerHeight;
 
-                // Swipe up from bottom 20% of screen, at least 60px
-                if (touchStartY > screenHeight * 0.8 && swipeDistance > 60 && currentMobileMode) {
+                // Must be in a mode (not Browse & Edit), start from bottom 10% of screen,
+                // swipe at least 100px, and complete within 500ms (deliberate fast swipe)
+                if (currentMobileMode && currentMobileMode !== 'browseEdit'
+                    && touchStartY > screenHeight * 0.9
+                    && swipeDistance > 100
+                    && swipeDuration < 500) {
                     showResetOverlay();
                 }
             }, { passive: true });
@@ -5111,7 +5118,8 @@
             const screenId = modeScreenMap[mode];
             if (screenId) {
                 showScreen(screenId);
-                document.getElementById('swipeHint').style.display = 'block';
+                // Show swipe hint only for modes that support the swipe gesture
+                document.getElementById('swipeHint').style.display = (mode === 'browseEdit') ? 'none' : 'block';
                 // Init Browse & Edit when entering that mode
                 if (mode === 'browseEdit') {
                     beShowList();
