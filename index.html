@@ -2428,6 +2428,283 @@
                 opacity: 0.7;
             }
 
+            /* ---- Log a Visit Mode ---- */
+            .lv-step { display: flex; flex-direction: column; gap: 1rem; }
+            .lv-step-title {
+                font-size: 1.4rem;
+                font-weight: 600;
+                color: #e0e0e0;
+                text-align: center;
+                margin-bottom: 0.5rem;
+            }
+            .lv-option-btn {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 1rem;
+                border-radius: 12px;
+                border: 2px solid #0f3460;
+                background: rgba(15, 52, 96, 0.2);
+                color: #e0e0e0;
+                font-size: 1rem;
+                cursor: pointer;
+                -webkit-tap-highlight-color: transparent;
+                font-family: inherit;
+                text-align: left;
+            }
+            .lv-option-btn:active { background: rgba(15, 52, 96, 0.5); }
+            .lv-option-icon { font-size: 1.3rem; }
+            .lv-add-btn { border-color: #2E7D32; }
+            .lv-add-btn .lv-option-icon { color: #66BB6A; font-weight: 700; }
+            .lv-search-wrap { position: relative; }
+            .lv-search-results {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #16213e;
+                border: 1px solid #0f3460;
+                border-radius: 0 0 10px 10px;
+                max-height: 200px;
+                overflow-y: auto;
+                z-index: 5;
+            }
+            .lv-search-results.visible { display: block; }
+            .lv-search-result {
+                padding: 0.6rem 0.75rem;
+                font-size: 0.9rem;
+                color: #e0e0e0;
+                cursor: pointer;
+                border-bottom: 1px solid rgba(15,52,96,0.4);
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .lv-search-result:active { background: rgba(15,52,96,0.5); }
+            .lv-gps-results {
+                display: none;
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+            .lv-gps-results.visible { display: flex; }
+            .lv-gps-status {
+                font-size: 0.85rem;
+                color: #8a8aad;
+                text-align: center;
+            }
+            .lv-gps-bar {
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+                padding: 0.65rem;
+                background: rgba(15, 52, 96, 0.3);
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 0.9rem;
+                color: #e0e0e0;
+            }
+            .lv-gps-bar:active { background: rgba(15, 52, 96, 0.6); }
+            .lv-add-form {
+                display: none;
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 1rem;
+                background: rgba(15, 52, 96, 0.2);
+                border-radius: 12px;
+                border: 1px solid #0f3460;
+            }
+            .lv-add-form.visible { display: flex; }
+            .lv-add-confirm {
+                padding: 0.7rem;
+                border-radius: 10px;
+                border: none;
+                background: linear-gradient(135deg, #66BB6A, #2E7D32);
+                color: #fff;
+                font-size: 0.95rem;
+                font-weight: 600;
+                cursor: pointer;
+            }
+            /* Logging Grid */
+            .lv-bar-name {
+                font-size: 1.3rem;
+                font-weight: 600;
+                color: #66BB6A;
+                text-align: center;
+                padding-bottom: 0.5rem;
+                border-bottom: 1px solid #0f3460;
+            }
+            .lv-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+            }
+            .lv-grid-cell {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                padding: 1.5rem 1rem;
+                border-radius: 14px;
+                border: 2px solid #0f3460;
+                background: rgba(15, 52, 96, 0.15);
+                cursor: pointer;
+                position: relative;
+                -webkit-tap-highlight-color: transparent;
+                font-family: inherit;
+                color: #e0e0e0;
+            }
+            .lv-grid-cell:active { background: rgba(15, 52, 96, 0.4); }
+            .lv-grid-cell.done {
+                border-color: #2E7D32;
+                background: rgba(46, 125, 50, 0.1);
+            }
+            .lv-cell-icon { font-size: 1.8rem; }
+            .lv-cell-label { font-size: 0.85rem; color: #c0c0c0; }
+            .lv-cell-check {
+                position: absolute;
+                top: 0.4rem;
+                right: 0.5rem;
+                font-size: 0.9rem;
+                color: #66BB6A;
+            }
+            .lv-submit-btn {
+                width: 100%;
+                padding: 1rem;
+                border-radius: 14px;
+                border: none;
+                background: linear-gradient(135deg, #66BB6A, #2E7D32);
+                color: #fff;
+                font-size: 1.1rem;
+                font-weight: 700;
+                cursor: pointer;
+                font-family: inherit;
+                margin-top: 0.25rem;
+            }
+            .lv-submit-btn:disabled {
+                opacity: 0.3;
+                background: #0f3460;
+            }
+            /* Category overlays */
+            .lv-cat-overlay {
+                display: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: #1a1a2e;
+                z-index: 20;
+                flex-direction: column;
+                padding: 1.5rem;
+            }
+            .lv-cat-overlay.active {
+                display: flex;
+            }
+            .lv-cat-header {
+                font-size: 1.2rem;
+                font-weight: 600;
+                color: #e0e0e0;
+                text-align: center;
+                margin-bottom: 1.5rem;
+            }
+            .lv-cat-body {
+                flex: 1;
+                overflow-y: auto;
+            }
+            .lv-cat-confirm {
+                padding: 0.85rem;
+                border-radius: 12px;
+                border: none;
+                background: #2E7D32;
+                color: #fff;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                margin-top: 1rem;
+            }
+            /* Ceremony */
+            .lv-ceremony {
+                position: relative;
+                align-items: center;
+                justify-content: center;
+                min-height: 100%;
+            }
+            #lvConfettiCanvas {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 1;
+            }
+            .lv-ceremony-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+                z-index: 2;
+                text-align: center;
+                opacity: 0;
+                animation: ceremonyFadeIn 0.8s ease 0.3s forwards;
+            }
+            @keyframes ceremonyFadeIn {
+                to { opacity: 1; }
+            }
+            .lv-ceremony-check {
+                width: 72px;
+                height: 72px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #66BB6A, #2E7D32);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2.2rem;
+                color: #fff;
+                box-shadow: 0 4px 20px rgba(46, 125, 50, 0.4);
+            }
+            .lv-ceremony-title {
+                font-size: 1.6rem;
+                font-weight: 700;
+                color: #e0e0e0;
+            }
+            .lv-ceremony-bar {
+                font-size: 1.1rem;
+                color: #90caf9;
+            }
+            .lv-ceremony-progress {
+                font-size: 0.9rem;
+                color: #8a8aad;
+                margin-bottom: 0.5rem;
+            }
+            .lv-ceremony-actions {
+                display: flex;
+                gap: 0.75rem;
+                width: 100%;
+                max-width: 320px;
+            }
+            .lv-ceremony-btn {
+                flex: 1;
+                padding: 0.85rem;
+                border-radius: 12px;
+                border: none;
+                font-size: 0.95rem;
+                font-weight: 600;
+                cursor: pointer;
+                font-family: inherit;
+            }
+            .lv-party-on {
+                background: linear-gradient(135deg, #66BB6A, #2E7D32);
+                color: #fff;
+            }
+            .lv-party-over {
+                background: transparent;
+                border: 2px solid #0f3460;
+                color: #90caf9;
+            }
+
             /* ---- Swipe-up Reset Hint ---- */
             .swipe-hint {
                 position: fixed;
@@ -3119,7 +3396,121 @@
                 <span></span>
             </div>
             <div class="mode-body" id="logVisitBody">
-                <p style="color: #8a8aad; text-align: center; margin-top: 3rem;">Coming soon...</p>
+                <!-- Step 1: Which bar? -->
+                <div class="lv-step" id="lvStep1">
+                    <div class="lv-step-title">Which bar?</div>
+
+                    <button class="lv-option-btn" id="lvHereNow">
+                        <span class="lv-option-icon">📍</span>
+                        <span class="lv-option-label">I'm here now</span>
+                    </button>
+
+                    <div class="lv-search-wrap">
+                        <input type="text" class="be-field-input" id="lvSearch" placeholder="Search for a bar...">
+                        <div class="lv-search-results" id="lvSearchResults"></div>
+                    </div>
+
+                    <button class="lv-option-btn lv-add-btn" id="lvAddNew">
+                        <span class="lv-option-icon">+</span>
+                        <span class="lv-option-label">Add a new spot</span>
+                    </button>
+
+                    <!-- GPS results -->
+                    <div class="lv-gps-results" id="lvGpsResults"></div>
+
+                    <!-- Add new bar inline form -->
+                    <div class="lv-add-form" id="lvAddForm">
+                        <input type="text" class="be-field-input" id="lvAddName" placeholder="Bar name">
+                        <input type="text" class="be-field-input" id="lvAddAddress" placeholder="Address">
+                        <button class="lv-add-confirm" id="lvAddConfirm">Add & Log</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Logging Grid -->
+                <div class="lv-step" id="lvStep2" style="display:none;">
+                    <div class="lv-bar-name" id="lvBarName"></div>
+                    <div class="lv-grid">
+                        <button class="lv-grid-cell" id="lvCellStars" data-cat="stars">
+                            <span class="lv-cell-icon">⭐</span>
+                            <span class="lv-cell-label">Stars</span>
+                            <span class="lv-cell-check" id="lvCheckStars"></span>
+                        </button>
+                        <button class="lv-grid-cell" id="lvCellTags" data-cat="tags">
+                            <span class="lv-cell-icon">🏷️</span>
+                            <span class="lv-cell-label">Tags</span>
+                            <span class="lv-cell-check" id="lvCheckTags"></span>
+                        </button>
+                        <button class="lv-grid-cell" id="lvCellHH" data-cat="hh">
+                            <span class="lv-cell-icon">🍻</span>
+                            <span class="lv-cell-label">Happy Hour</span>
+                            <span class="lv-cell-check" id="lvCheckHH"></span>
+                        </button>
+                        <button class="lv-grid-cell" id="lvCellJournal" data-cat="journal">
+                            <span class="lv-cell-icon">📝</span>
+                            <span class="lv-cell-label">Journal</span>
+                            <span class="lv-cell-check" id="lvCheckJournal"></span>
+                        </button>
+                    </div>
+                    <button class="lv-submit-btn" id="lvSubmitBtn" disabled>Submit</button>
+                </div>
+
+                <!-- Category overlays (modal on top of grid) -->
+                <div class="lv-cat-overlay" id="lvCatStars">
+                    <div class="lv-cat-header">Rate this spot</div>
+                    <div class="lv-cat-body">
+                        <div class="be-field-label" style="margin-bottom:0.5rem;">Drinks</div>
+                        <div class="be-stars-row" id="lvStarsDrinks"></div>
+                        <div class="be-field-label" style="margin:1rem 0 0.5rem;">Vibes</div>
+                        <div class="be-stars-row" id="lvStarsVibes"></div>
+                    </div>
+                    <button class="lv-cat-confirm" id="lvConfirmStars">Done</button>
+                </div>
+
+                <div class="lv-cat-overlay" id="lvCatTags">
+                    <div class="lv-cat-header">Tag it</div>
+                    <div class="lv-cat-body">
+                        <div class="be-tags-container" id="lvTagChips"></div>
+                    </div>
+                    <button class="lv-cat-confirm" id="lvConfirmTags">Done</button>
+                </div>
+
+                <div class="lv-cat-overlay" id="lvCatHH">
+                    <div class="lv-cat-header">Happy Hour</div>
+                    <div class="lv-cat-body">
+                        <div class="be-field-group">
+                            <label class="be-field-label">Times</label>
+                            <input type="text" class="be-field-input" id="lvHHTime" placeholder="e.g. 3-6pm Mon-Fri">
+                        </div>
+                        <div class="be-field-group" style="margin-top:0.75rem;">
+                            <label class="be-field-label">Deals</label>
+                            <input type="text" class="be-field-input" id="lvHHDeals" placeholder="e.g. $4 wells, $1 off drafts">
+                        </div>
+                    </div>
+                    <button class="lv-cat-confirm" id="lvConfirmHH">Done</button>
+                </div>
+
+                <div class="lv-cat-overlay" id="lvCatJournal">
+                    <div class="lv-cat-header">What's the story?</div>
+                    <div class="lv-cat-body">
+                        <textarea class="be-field-input" id="lvJournalText" placeholder="Tell the tale..." style="min-height:8rem;"></textarea>
+                    </div>
+                    <button class="lv-cat-confirm" id="lvConfirmJournal">Done</button>
+                </div>
+
+                <!-- Step 3: Ceremony -->
+                <div class="lv-step lv-ceremony" id="lvStep3" style="display:none;">
+                    <canvas id="lvConfettiCanvas"></canvas>
+                    <div class="lv-ceremony-content" id="lvCeremonyContent">
+                        <div class="lv-ceremony-check">✓</div>
+                        <div class="lv-ceremony-title">Visit Logged!</div>
+                        <div class="lv-ceremony-bar" id="lvCeremonyBar"></div>
+                        <div class="lv-ceremony-progress" id="lvCeremonyProgress"></div>
+                        <div class="lv-ceremony-actions">
+                            <button class="lv-ceremony-btn lv-party-on" id="lvPartyOn">🎉 Party On</button>
+                            <button class="lv-ceremony-btn lv-party-over" id="lvPartyOver">Party's Over</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -5499,6 +5890,9 @@
             // Init Explore (global listeners only; map created on first open)
             initExplore();
 
+            // Init Log a Visit
+            initLogVisit();
+
             // Reset overlay
             document.getElementById('resetYes').addEventListener('click', () => {
                 hideResetOverlay();
@@ -5578,6 +5972,10 @@
                 // Init Explore when entering that mode
                 if (mode === 'explore') {
                     initExploreMode();
+                }
+                // Reset Log a Visit when entering that mode
+                if (mode === 'logVisit') {
+                    lvReset();
                 }
             }
         }
@@ -6599,6 +6997,432 @@
                 .catch(() => {
                     statusEl.textContent = "Search failed — check your connection and try again.";
                 });
+        }
+
+        // ========================================
+        //  LOG A VISIT MODE
+        // ========================================
+
+        let lvSelectedBar = null; // bar object for current log
+        let lvDone = { stars: false, tags: false, hh: false, journal: false };
+        let lvRatings = { drinks: 0, vibes: 0 };
+        let lvTags = [];
+        let lvHHTime = '';
+        let lvHHDeals = '';
+        let lvJournalText = '';
+
+        function initLogVisit() {
+            // "I'm here now" button
+            document.getElementById('lvHereNow').addEventListener('click', lvGpsDetect);
+
+            // Search
+            const searchInput = document.getElementById('lvSearch');
+            searchInput.addEventListener('input', () => {
+                const q = searchInput.value.trim().toLowerCase();
+                const resultsEl = document.getElementById('lvSearchResults');
+                if (q.length < 2) { resultsEl.classList.remove('visible'); return; }
+                const results = barsData.filter(b => b.name.toLowerCase().includes(q)).slice(0, 6);
+                if (results.length === 0) {
+                    resultsEl.innerHTML = '<div class="lv-search-result" style="color:#8a8aad;">No results</div>';
+                } else {
+                    resultsEl.innerHTML = results.map(bar => `
+                        <div class="lv-search-result" data-bar-num="${bar.num}">
+                            <span class="explore-search-result-quad" style="background:${quadColors[bar.q]}">${bar.q}</span>
+                            ${escapeHtml(bar.name)}
+                        </div>
+                    `).join('');
+                    resultsEl.querySelectorAll('.lv-search-result[data-bar-num]').forEach(el => {
+                        el.addEventListener('click', () => {
+                            const bar = barsData.find(b => b.num === parseInt(el.dataset.barNum));
+                            if (bar) lvSelectBar(bar);
+                            searchInput.value = '';
+                            resultsEl.classList.remove('visible');
+                        });
+                    });
+                }
+                resultsEl.classList.add('visible');
+            });
+
+            // Add new spot
+            document.getElementById('lvAddNew').addEventListener('click', () => {
+                const form = document.getElementById('lvAddForm');
+                form.classList.toggle('visible');
+                document.getElementById('lvAddName').value = '';
+                document.getElementById('lvAddAddress').value = '';
+            });
+
+            document.getElementById('lvAddConfirm').addEventListener('click', () => {
+                const name = document.getElementById('lvAddName').value.trim();
+                const address = document.getElementById('lvAddAddress').value.trim();
+                if (!name) return;
+
+                // Geocode & create bar, then flow into logging
+                const encoded = encodeURIComponent((address || name) + ', Portland, OR');
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encoded}&limit=1`)
+                    .then(r => r.json())
+                    .then(results => {
+                        let lat = 45.52, lng = -122.68, quad = 'SE';
+                        if (results.length > 0) {
+                            lat = parseFloat(results[0].lat);
+                            lng = parseFloat(results[0].lon);
+                            quad = (lat >= 45.5226) ? (lng >= -122.6765 ? 'NE' : 'NW') : (lng >= -122.6765 ? 'SE' : 'SW');
+                        }
+                        const maxNum = Math.max(...barsData.map(b => b.num), 0) + 1;
+                        const newBar = { name, lat, lng, num: maxNum, q: quad, color: quadColors[quad], address: address || '' };
+                        barsData.push(newBar);
+                        saveBarsData();
+                        barDataStore[maxNum] = {
+                            hours: '', happyHourTimes: '', happyHourDeals: '', lastVisited: '',
+                            tags: [], ratings: { bigDogDrinks: 0, bigDogVibes: 0, choochDrinks: 0, choochVibes: 0 },
+                            journals: { bigDog: [], chooch: [] }, lastModified: Date.now()
+                        };
+                        barManager.saveLocalData();
+                        if (firebaseUrl) barManager.syncBarToCloud(maxNum);
+                        renderDirectory();
+                        updateMarkers();
+                        lvSelectBar(newBar);
+                    })
+                    .catch(() => {
+                        // Fallback: create with defaults
+                        const maxNum = Math.max(...barsData.map(b => b.num), 0) + 1;
+                        const newBar = { name, lat: 45.52, lng: -122.68, num: maxNum, q: 'SE', color: quadColors['SE'], address: address || '' };
+                        barsData.push(newBar);
+                        saveBarsData();
+                        barDataStore[maxNum] = {
+                            hours: '', happyHourTimes: '', happyHourDeals: '', lastVisited: '',
+                            tags: [], ratings: { bigDogDrinks: 0, bigDogVibes: 0, choochDrinks: 0, choochVibes: 0 },
+                            journals: { bigDog: [], chooch: [] }, lastModified: Date.now()
+                        };
+                        barManager.saveLocalData();
+                        renderDirectory();
+                        updateMarkers();
+                        lvSelectBar(newBar);
+                    });
+            });
+
+            // Grid cell clicks
+            document.querySelectorAll('.lv-grid-cell').forEach(cell => {
+                cell.addEventListener('click', () => {
+                    const cat = cell.dataset.cat;
+                    lvOpenCategory(cat);
+                });
+            });
+
+            // Category confirm buttons
+            document.getElementById('lvConfirmStars').addEventListener('click', () => {
+                if (lvRatings.drinks > 0 && lvRatings.vibes > 0) {
+                    lvDone.stars = true;
+                    document.getElementById('lvCheckStars').textContent = '✓';
+                    document.getElementById('lvCellStars').classList.add('done');
+                }
+                lvCloseCategory('lvCatStars');
+                lvUpdateSubmit();
+            });
+
+            document.getElementById('lvConfirmTags').addEventListener('click', () => {
+                if (lvTags.length > 0) {
+                    lvDone.tags = true;
+                    document.getElementById('lvCheckTags').textContent = '✓';
+                    document.getElementById('lvCellTags').classList.add('done');
+                }
+                lvCloseCategory('lvCatTags');
+                lvUpdateSubmit();
+            });
+
+            document.getElementById('lvConfirmHH').addEventListener('click', () => {
+                lvHHTime = document.getElementById('lvHHTime').value.trim();
+                lvHHDeals = document.getElementById('lvHHDeals').value.trim();
+                // HH counts as done even if left blank (means "no HH info")
+                lvDone.hh = true;
+                document.getElementById('lvCheckHH').textContent = '✓';
+                document.getElementById('lvCellHH').classList.add('done');
+                lvCloseCategory('lvCatHH');
+                lvUpdateSubmit();
+            });
+
+            document.getElementById('lvConfirmJournal').addEventListener('click', () => {
+                lvJournalText = document.getElementById('lvJournalText').value.trim();
+                if (lvJournalText) {
+                    lvDone.journal = true;
+                    document.getElementById('lvCheckJournal').textContent = '✓';
+                    document.getElementById('lvCellJournal').classList.add('done');
+                }
+                lvCloseCategory('lvCatJournal');
+            });
+
+            // Submit
+            document.getElementById('lvSubmitBtn').addEventListener('click', lvSubmit);
+
+            // Ceremony buttons
+            document.getElementById('lvPartyOn').addEventListener('click', () => {
+                // For now, go back to launcher (Concierge not built yet)
+                showLauncher();
+            });
+            document.getElementById('lvPartyOver').addEventListener('click', () => {
+                showLauncher();
+            });
+        }
+
+        function lvReset() {
+            lvSelectedBar = null;
+            lvDone = { stars: false, tags: false, hh: false, journal: false };
+            lvRatings = { drinks: 0, vibes: 0 };
+            lvTags = [];
+            lvHHTime = '';
+            lvHHDeals = '';
+            lvJournalText = '';
+
+            document.getElementById('lvStep1').style.display = 'flex';
+            document.getElementById('lvStep2').style.display = 'none';
+            document.getElementById('lvStep3').style.display = 'none';
+            document.getElementById('lvSearch').value = '';
+            document.getElementById('lvSearchResults').classList.remove('visible');
+            document.getElementById('lvGpsResults').classList.remove('visible');
+            document.getElementById('lvAddForm').classList.remove('visible');
+
+            // Reset grid cells
+            document.querySelectorAll('.lv-grid-cell').forEach(c => c.classList.remove('done'));
+            document.querySelectorAll('.lv-cell-check').forEach(c => c.textContent = '');
+            document.getElementById('lvSubmitBtn').disabled = true;
+
+            // Close any open category overlays
+            document.querySelectorAll('.lv-cat-overlay').forEach(o => o.classList.remove('active'));
+        }
+
+        function lvSelectBar(bar) {
+            lvSelectedBar = bar;
+            document.getElementById('lvBarName').textContent = bar.name;
+            document.getElementById('lvStep1').style.display = 'none';
+            document.getElementById('lvStep2').style.display = 'flex';
+
+            // Pre-fill from existing data
+            const data = barDataStore[bar.num] || {};
+            document.getElementById('lvHHTime').value = data.happyHourTimes || '';
+            document.getElementById('lvHHDeals').value = data.happyHourDeals || '';
+            document.getElementById('lvJournalText').value = '';
+        }
+
+        function lvGpsDetect() {
+            const gpsEl = document.getElementById('lvGpsResults');
+            gpsEl.classList.add('visible');
+            gpsEl.innerHTML = '<div class="lv-gps-status">Finding your location...</div>';
+
+            if (!navigator.geolocation) {
+                gpsEl.innerHTML = '<div class="lv-gps-status">Location unavailable. Use search instead.</div>';
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(pos => {
+                const { latitude, longitude } = pos.coords;
+
+                // Haversine
+                function haversine(lat1, lng1, lat2, lng2) {
+                    const R = 3959;
+                    const dLat = (lat2 - lat1) * Math.PI / 180;
+                    const dLng = (lng2 - lng1) * Math.PI / 180;
+                    const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+                    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                }
+
+                const nearby = barsData.map(bar => ({
+                    bar, dist: haversine(latitude, longitude, bar.lat, bar.lng)
+                })).filter(b => b.dist <= 0.5).sort((a, b) => a.dist - b.dist).slice(0, 5);
+
+                if (nearby.length === 0) {
+                    gpsEl.innerHTML = '<div class="lv-gps-status">No bars found nearby. Try searching instead.</div>';
+                } else {
+                    gpsEl.innerHTML = '<div class="lv-gps-status">Nearby bars:</div>' +
+                        nearby.map(({ bar, dist }) => `
+                            <div class="lv-gps-bar" data-bar-num="${bar.num}">
+                                <span>${isBarVisited(bar.num) ? '⭐' : '○'}</span>
+                                <span style="flex:1;">${escapeHtml(bar.name)}</span>
+                                <span style="font-size:0.75rem;color:#8a8aad;">${dist < 0.1 ? Math.round(dist * 5280) + ' ft' : dist.toFixed(1) + ' mi'}</span>
+                            </div>
+                        `).join('');
+
+                    gpsEl.querySelectorAll('.lv-gps-bar').forEach(el => {
+                        el.addEventListener('click', () => {
+                            const bar = barsData.find(b => b.num === parseInt(el.dataset.barNum));
+                            if (bar) lvSelectBar(bar);
+                        });
+                    });
+                }
+            }, () => {
+                gpsEl.innerHTML = '<div class="lv-gps-status">Couldn\'t get location. Use search instead.</div>';
+            });
+        }
+
+        function lvOpenCategory(cat) {
+            const overlayMap = { stars: 'lvCatStars', tags: 'lvCatTags', hh: 'lvCatHH', journal: 'lvCatJournal' };
+            const overlayId = overlayMap[cat];
+            if (!overlayId) return;
+
+            // Prepare content
+            if (cat === 'stars') lvRenderStars();
+            if (cat === 'tags') lvRenderTags();
+
+            document.getElementById(overlayId).classList.add('active');
+        }
+
+        function lvCloseCategory(overlayId) {
+            document.getElementById(overlayId).classList.remove('active');
+        }
+
+        function lvRenderStars() {
+            function buildRow(containerId, currentVal, onChange) {
+                const container = document.getElementById(containerId);
+                let html = '';
+                for (let i = 1; i <= 5; i++) {
+                    html += `<span class="be-star${i <= currentVal ? ' active' : ''}" data-val="${i}">★</span>`;
+                }
+                container.innerHTML = html;
+                container.querySelectorAll('.be-star').forEach(star => {
+                    star.addEventListener('click', () => {
+                        onChange(parseInt(star.dataset.val));
+                        lvRenderStars(); // Re-render
+                    });
+                });
+            }
+            buildRow('lvStarsDrinks', lvRatings.drinks, v => { lvRatings.drinks = v; });
+            buildRow('lvStarsVibes', lvRatings.vibes, v => { lvRatings.vibes = v; });
+        }
+
+        function lvRenderTags() {
+            const container = document.getElementById('lvTagChips');
+            container.innerHTML = allPresetTags.map(tag => {
+                const selected = lvTags.includes(tag);
+                return `<span class="be-tag-chip${selected ? ' selected' : ''}" data-tag="${tag}">${tag}</span>`;
+            }).join('');
+            container.querySelectorAll('.be-tag-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const tag = chip.dataset.tag;
+                    const idx = lvTags.indexOf(tag);
+                    if (idx > -1) { lvTags.splice(idx, 1); chip.classList.remove('selected'); }
+                    else { lvTags.push(tag); chip.classList.add('selected'); }
+                });
+            });
+        }
+
+        function lvUpdateSubmit() {
+            document.getElementById('lvSubmitBtn').disabled = !(lvDone.stars && lvDone.tags && lvDone.hh);
+        }
+
+        function lvSubmit() {
+            if (!lvSelectedBar) return;
+            const bar = lvSelectedBar;
+            const data = barDataStore[bar.num];
+            if (!data) return;
+
+            // Save ratings
+            const isCurrentBD = mobileIdentity === 'bigDog';
+            if (isCurrentBD) {
+                data.ratings.bigDogDrinks = lvRatings.drinks;
+                data.ratings.bigDogVibes = lvRatings.vibes;
+            } else {
+                data.ratings.choochDrinks = lvRatings.drinks;
+                data.ratings.choochVibes = lvRatings.vibes;
+            }
+
+            // Save tags (merge with existing)
+            if (!data.tags) data.tags = [];
+            lvTags.forEach(tag => {
+                if (!data.tags.includes(tag)) data.tags.push(tag);
+            });
+
+            // Save HH
+            if (lvHHTime) data.happyHourTimes = lvHHTime;
+            if (lvHHDeals) data.happyHourDeals = lvHHDeals;
+
+            // Save journal
+            if (lvJournalText) {
+                const userKey = isCurrentBD ? 'bigDog' : 'chooch';
+                if (!data.journals) data.journals = { bigDog: [], chooch: [] };
+                if (!data.journals[userKey]) data.journals[userKey] = [];
+                data.journals[userKey].push({
+                    text: lvJournalText,
+                    date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                });
+            }
+
+            // Update last visited
+            data.lastVisited = new Date().toISOString();
+            data.lastModified = Date.now();
+
+            // Persist
+            barManager.saveLocalData();
+            if (firebaseUrl) barManager.syncBarToCloud(bar.num);
+            renderDirectory();
+            updateMarkers();
+            updateProgressBar();
+
+            // Show ceremony
+            lvShowCeremony(bar);
+        }
+
+        function lvShowCeremony(bar) {
+            document.getElementById('lvStep2').style.display = 'none';
+            document.getElementById('lvStep3').style.display = 'flex';
+
+            document.getElementById('lvCeremonyBar').textContent = bar.name;
+
+            // Progress
+            const total = barsData.length;
+            const visited = barsData.filter(b => isBarVisited(b.num)).length;
+            const pct = Math.round((visited / total) * 100);
+            document.getElementById('lvCeremonyProgress').textContent = `${visited} of ${total} bars visited (${pct}%)`;
+
+            // Confetti
+            lvFireConfetti();
+        }
+
+        function lvFireConfetti() {
+            const canvas = document.getElementById('lvConfettiCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+
+            const colors = ['#FFD700', '#66BB6A', '#90caf9', '#ef5350', '#F9A825', '#CE93D8'];
+            const pieces = [];
+
+            for (let i = 0; i < 80; i++) {
+                pieces.push({
+                    x: Math.random() * canvas.width,
+                    y: -10 - Math.random() * canvas.height * 0.5,
+                    w: 4 + Math.random() * 6,
+                    h: 8 + Math.random() * 10,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    vx: (Math.random() - 0.5) * 3,
+                    vy: 2 + Math.random() * 4,
+                    rot: Math.random() * Math.PI * 2,
+                    rotV: (Math.random() - 0.5) * 0.2,
+                    opacity: 1
+                });
+            }
+
+            let frame = 0;
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+                pieces.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.05;
+                    p.rot += p.rotV;
+                    if (frame > 60) p.opacity -= 0.01;
+                    if (p.opacity <= 0) return;
+                    alive = true;
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rot);
+                    ctx.globalAlpha = Math.max(0, p.opacity);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                    ctx.restore();
+                });
+                frame++;
+                if (alive && frame < 200) requestAnimationFrame(animate);
+            }
+            requestAnimationFrame(animate);
         }
 
         function showResetOverlay() {
