@@ -1611,6 +1611,260 @@
         }
         .recommend-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.6); }
 
+        /* ===== Concierge / Matchmaker v2 ===== */
+        .concierge-btn {
+            position: absolute; bottom: 1rem; left: 1rem; z-index: 1000;
+            background: linear-gradient(135deg, #7e57c2, #1565C0); color: #fff;
+            border: none; padding: 0.6rem 1.1rem; border-radius: 22px;
+            cursor: pointer; font-size: 0.92rem; font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            transition: all 0.2s;
+        }
+        .concierge-btn:hover { transform: scale(1.05); box-shadow: 0 4px 14px rgba(126,87,194,0.45); }
+
+        #conciergeModal {
+            position: fixed; inset: 0; z-index: 10002;
+            background: #0d1b2a;
+            display: none; flex-direction: column;
+            align-items: center; overflow-y: auto;
+            padding: 1.5rem 1rem 2rem;
+            transition: opacity 0.3s ease;
+        }
+        #conciergeModal.active { display: flex; }
+        #conciergeModal .concierge-header {
+            width: 100%; max-width: 440px;
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+        #conciergeModal .concierge-header h2 {
+            font-size: 1.3rem; color: #e0e0e0; margin: 0;
+        }
+        #conciergeModal .concierge-close {
+            background: none; border: none; color: #8a8aad;
+            font-size: 1.6rem; cursor: pointer; padding: 0.2rem 0.6rem;
+            line-height: 1;
+        }
+        .concierge-section { width: 100%; max-width: 440px; margin-bottom: 1.1rem; }
+        .concierge-section-label {
+            font-size: 0.7rem; color: #6a6a8a; text-transform: uppercase;
+            letter-spacing: 0.05em; margin-bottom: 0.45rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .concierge-edit-vibes-link {
+            background: none; border: none; color: #7e57c2;
+            font-size: 0.7rem; text-transform: none; letter-spacing: 0;
+            cursor: pointer; padding: 0; text-decoration: underline;
+        }
+        .concierge-vibe-chip {
+            background: #16213e; color: #c0c0e0;
+            border: 2px solid #0f3460;
+            padding: 0.55rem 0.95rem; border-radius: 18px;
+            cursor: pointer; font-size: 0.88rem; font-weight: 600;
+            user-select: none; transition: all 0.15s;
+            margin: 0 0.35rem 0.45rem 0;
+            display: inline-block;
+        }
+        .concierge-vibe-chip:hover { border-color: #7e57c2; }
+        .concierge-vibe-chip.selected {
+            background: linear-gradient(135deg, #7e57c2, #1565C0);
+            border-color: #7e57c2; color: #fff;
+        }
+        .concierge-filter-row {
+            display: flex; flex-wrap: wrap; gap: 0.5rem;
+        }
+        .concierge-filter-toggle {
+            background: #0d1b2a; color: #8a8aad;
+            border: 1px solid #1a2a4a;
+            padding: 0.45rem 0.8rem; border-radius: 16px;
+            cursor: pointer; font-size: 0.8rem;
+            user-select: none; transition: all 0.15s;
+        }
+        .concierge-filter-toggle:hover { border-color: #1565C0; color: #c0c0e0; }
+        .concierge-filter-toggle.active {
+            background: #1565C0; border-color: #1565C0; color: #fff;
+        }
+        .concierge-quadrant-select {
+            background: #0d1b2a; color: #c0c0e0;
+            border: 1px solid #1a2a4a;
+            padding: 0.45rem 0.7rem; border-radius: 16px;
+            font-size: 0.8rem; cursor: pointer; outline: none;
+        }
+        .concierge-show-btn {
+            width: 100%; max-width: 440px;
+            padding: 0.85rem; margin-top: 0.5rem;
+            background: linear-gradient(135deg, #7e57c2, #1565C0); color: #fff;
+            border: none; border-radius: 22px;
+            font-size: 1rem; font-weight: 600; cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+            transition: all 0.2s;
+        }
+        .concierge-show-btn:hover { transform: scale(1.02); }
+        .concierge-show-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .concierge-empty-msg {
+            color: #6a6a8a; font-size: 0.8rem; text-align: center;
+            max-width: 340px; margin: 0.5rem auto 0;
+        }
+
+        /* Dimmed markers in results mode */
+        .marker-icon.concierge-dimmed {
+            opacity: 0.12 !important;
+            filter: grayscale(1);
+            pointer-events: none;
+        }
+        .marker-icon.concierge-match {
+            box-shadow: 0 0 0 3px rgba(126,87,194,0.55), 0 0 14px rgba(126,87,194,0.6);
+            transform: scale(1.08);
+        }
+
+        /* Results card strip + clear button */
+        #conciergeResultsBar {
+            position: fixed; left: 0; right: 0; bottom: 0;
+            z-index: 1200;
+            background: linear-gradient(to top, rgba(13,27,42,0.95), rgba(13,27,42,0.75));
+            padding: 0.6rem 0.75rem 0.75rem;
+            display: none;
+            backdrop-filter: blur(6px);
+        }
+        #conciergeResultsBar.active { display: block; }
+        #conciergeResultsBar .results-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 0.55rem;
+            color: #c0c0e0; font-size: 0.82rem;
+        }
+        #conciergeResultsBar .results-title { font-weight: 600; }
+        #conciergeResultsBar .results-clear {
+            background: rgba(255,255,255,0.08); color: #e0e0e0;
+            border: 1px solid #2a2a4a;
+            padding: 0.3rem 0.7rem; border-radius: 14px;
+            font-size: 0.78rem; cursor: pointer;
+        }
+        #conciergeResultsBar .results-clear:hover { background: rgba(255,255,255,0.14); }
+        #conciergeCardStrip {
+            display: flex; gap: 0.55rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 0.25rem;
+        }
+        .concierge-card {
+            flex: 0 0 260px;
+            scroll-snap-align: start;
+            background: #16213e;
+            border-radius: 10px;
+            border-left: 4px solid var(--qcolor, #1565C0);
+            padding: 0.65rem 0.75rem;
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+        .concierge-card:hover { transform: translateY(-2px); }
+        .concierge-card.active { outline: 2px solid #7e57c2; }
+        .concierge-card .cc-name {
+            font-size: 0.95rem; font-weight: 600; color: #e0e0e0;
+            margin-bottom: 0.2rem;
+            display: flex; align-items: center; gap: 0.35rem;
+        }
+        .concierge-card .cc-visited {
+            font-size: 0.65rem; color: #66bb6a;
+            background: rgba(102,187,106,0.12);
+            padding: 0.1rem 0.4rem; border-radius: 8px;
+        }
+        .concierge-card .cc-status {
+            font-size: 0.72rem; color: #8a8aad;
+            margin-bottom: 0.35rem;
+        }
+        .concierge-card .cc-status.open { color: #66bb6a; }
+        .concierge-card .cc-status.closed { color: #e57373; }
+        .concierge-card .cc-status.closing-soon { color: #ffb74d; }
+        .concierge-card .cc-matches {
+            display: flex; flex-wrap: wrap; gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .concierge-card .cc-match-chip {
+            font-size: 0.65rem;
+            background: rgba(126,87,194,0.18); color: #b39ddb;
+            border: 1px solid rgba(126,87,194,0.35);
+            padding: 0.1rem 0.4rem; border-radius: 8px;
+        }
+        .concierge-card .cc-rating {
+            font-size: 0.7rem; color: #ffc107; margin-bottom: 0.35rem;
+        }
+        .concierge-card .cc-actions {
+            display: flex; gap: 0.3rem;
+        }
+        .concierge-card .cc-action {
+            flex: 1;
+            background: #0d1b2a; color: #c0c0e0;
+            border: 1px solid #1a2a4a;
+            padding: 0.3rem 0.35rem; border-radius: 6px;
+            font-size: 0.7rem; cursor: pointer;
+            text-align: center;
+            transition: all 0.15s;
+        }
+        .concierge-card .cc-action:hover { border-color: #1565C0; color: #90caf9; }
+        .concierge-card .cc-action.pool-added {
+            background: #2E7D32; border-color: #2E7D32; color: #fff;
+        }
+
+        /* Matchmaker pool badge */
+        #matchmakerBadge {
+            position: fixed;
+            right: 1rem; top: 5.5rem;
+            z-index: 1100;
+            background: linear-gradient(135deg, #2E7D32, #1565C0); color: #fff;
+            border: none;
+            padding: 0.55rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.85rem; font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            display: none;
+            transition: transform 0.15s;
+        }
+        #matchmakerBadge.active { display: inline-flex; align-items: center; gap: 0.4rem; }
+        #matchmakerBadge:hover { transform: scale(1.05); }
+        #matchmakerBadge .mm-badge-icon { font-size: 1rem; }
+
+        /* Matchmaker pool modal */
+        #matchmakerModal.modal .modal-content { max-width: 520px; }
+        .mm-pool-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.55rem 0.75rem;
+            background: #0d1b2a;
+            border-left: 3px solid var(--qcolor, #1565C0);
+            border-radius: 6px;
+            margin-bottom: 0.45rem;
+        }
+        .mm-pool-item .mm-pool-name { font-size: 0.92rem; color: #e0e0e0; }
+        .mm-pool-item .mm-pool-addr { font-size: 0.72rem; color: #8a8aad; margin-top: 0.12rem; }
+        .mm-pool-remove {
+            background: none; border: none; color: #e57373;
+            font-size: 1.1rem; cursor: pointer;
+            padding: 0 0.4rem;
+        }
+        .mm-submit-btn {
+            width: 100%; margin-top: 1rem;
+            padding: 0.75rem; background: #2E7D32; color: #fff;
+            border: none; border-radius: 8px;
+            font-size: 0.95rem; font-weight: 600; cursor: pointer;
+        }
+        .mm-submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .mm-waiting {
+            text-align: center; padding: 1rem 0;
+        }
+        .mm-waiting .mm-waiting-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+        .mm-waiting .mm-waiting-msg { color: #c0c0e0; font-size: 0.95rem; margin-bottom: 0.5rem; }
+        .mm-waiting .mm-waiting-sub { color: #8a8aad; font-size: 0.78rem; margin-bottom: 1rem; }
+        .mm-check-btn {
+            background: #1565C0; color: #fff; border: none;
+            padding: 0.55rem 1.3rem; border-radius: 6px;
+            font-size: 0.88rem; cursor: pointer;
+        }
+        .mm-resubmit-btn {
+            background: #c0392b; color: #fff; border: none;
+            padding: 0.55rem 1.3rem; border-radius: 6px;
+            font-size: 0.85rem; cursor: pointer; margin-left: 0.5rem;
+        }
+
         @keyframes confetti-fall {
             0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
             100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
@@ -1690,7 +1944,7 @@
 
             <div class="filter-chips-row" id="filterChipsRow"></div>
 
-            <button class="recommend-btn" id="openRecBtn">🎲 Match Me</button>
+            <button class="concierge-btn" id="openConciergeBtn">✨ Concierge</button>
 
             <div class="legend">
                 <div style="margin-bottom: 0.7rem; font-weight: bold; font-size: 0.9rem;">Quadrants</div>
@@ -1884,9 +2138,85 @@
         <canvas id="confettiCanvas" style="position: absolute; inset: 0; pointer-events: none;"></canvas>
     </div>
 
+    <!-- ===== Concierge Modal ===== -->
+    <div id="conciergeModal">
+        <div class="concierge-header">
+            <h2>✨ Concierge</h2>
+            <button class="concierge-close" id="conciergeCloseBtn" aria-label="Close">×</button>
+        </div>
+
+        <div class="concierge-section">
+            <div class="concierge-section-label">
+                <span>Your vibes</span>
+                <button class="concierge-edit-vibes-link" id="conciergeEditVibesLink">Edit vibes</button>
+            </div>
+            <div id="conciergeVibeChips"></div>
+            <div id="conciergeNoVibesMsg" class="concierge-empty-msg" style="display:none;">No vibes yet — tap "Edit vibes" to create one.</div>
+        </div>
+
+        <div class="concierge-section">
+            <div class="concierge-section-label"><span>Filters</span></div>
+            <div class="concierge-filter-row">
+                <div class="concierge-filter-toggle" data-filter="openNow">Open Now</div>
+                <div class="concierge-filter-toggle" data-filter="happyHour">Happy Hour</div>
+                <div class="concierge-filter-toggle" data-filter="nearMe">Near Me</div>
+                <select id="conciergeQuadrantSelect" class="concierge-quadrant-select">
+                    <option value="ALL">All quadrants</option>
+                    <option value="NW">NW</option>
+                    <option value="NE">NE</option>
+                    <option value="SW">SW</option>
+                    <option value="SE">SE</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="concierge-show-btn" id="conciergeShowBtn" disabled>Show me</button>
+        <div id="conciergeStatus" class="concierge-empty-msg" style="margin-top: 0.75rem; min-height: 1rem;"></div>
+    </div>
+
+    <!-- ===== Concierge Results Bar (bottom of map) ===== -->
+    <div id="conciergeResultsBar">
+        <div class="results-header">
+            <span class="results-title" id="conciergeResultsTitle"></span>
+            <button class="results-clear" id="conciergeClearBtn">Clear</button>
+        </div>
+        <div id="conciergeCardStrip"></div>
+    </div>
+
+    <!-- ===== Matchmaker Pool Badge ===== -->
+    <button id="matchmakerBadge">
+        <span class="mm-badge-icon">🎯</span>
+        <span id="matchmakerBadgeText">0 in pool</span>
+    </button>
+
+    <!-- ===== Matchmaker Pool Modal ===== -->
+    <div class="modal" id="matchmakerModal">
+        <div class="modal-content">
+            <div id="mmBuildView">
+                <h2>🎯 Your Matchmaker Pool</h2>
+                <p style="color: #8a8aad; margin-bottom: 0.85rem; font-size: 0.85rem;">Bars you've added from the Concierge. Submit to see if they match the other person's pool.</p>
+                <div id="mmPoolList"></div>
+                <button id="mmSubmitBtn" class="mm-submit-btn" disabled>Submit Pool</button>
+                <button id="mmCloseBtn" style="margin-top: 0.5rem; width: 100%; background: none; border: 1px solid #2a2a4a; color: #8a8aad; padding: 0.5rem; border-radius: 6px; cursor: pointer;">Keep browsing</button>
+            </div>
+            <div id="mmWaitingView" style="display: none;">
+                <h2>🎯 Pool submitted</h2>
+                <div class="mm-waiting">
+                    <div class="mm-waiting-icon">⏳</div>
+                    <div class="mm-waiting-msg" id="mmWaitingMsg">Waiting for the other person...</div>
+                    <div class="mm-waiting-sub" id="mmWaitingSub"></div>
+                    <button id="mmCheckBtn" class="mm-check-btn">Check for match</button>
+                    <button id="mmResubmitBtn" class="mm-resubmit-btn" style="display:none;">Clear & resubmit</button>
+                </div>
+                <button id="mmWaitingCloseBtn" style="margin-top: 0.5rem; width: 100%; background: none; border: 1px solid #2a2a4a; color: #8a8aad; padding: 0.5rem; border-radius: 6px; cursor: pointer;">Close</button>
+            </div>
+            <div id="mmRevealView" style="display: none;"></div>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        const defaultBarsData = [{"name": "Bar None Tavern", "lat": 45.5286045, "lng": -122.6987543, "num": 1, "q": "NW", "color": "#D32F2F", "address": "811 Northwest 23rd Avenue"}, {"name": "Joe's Cellar", "lat": 45.5325691, "lng": -122.6944917, "num": 2, "q": "NW", "color": "#D32F2F", "address": "1332 Northwest 21st Avenue"}, {"name": "Joe's Dive Bar", "lat": 45.5325051, "lng": -122.6944499, "num": 3, "q": "NW", "color": "#D32F2F", "address": "1332 Northwest 21st Avenue"}, {"name": "Nite Hawk Cafe & Lounge", "lat": 45.569522, "lng": -122.6823877, "num": 4, "q": "NW", "color": "#D32F2F", "address": "6423 North Interstate Avenue"}, {"name": "Pacific Pub", "lat": 45.5497362, "lng": -122.6808729, "num": 5, "q": "NW", "color": "#D32F2F", "address": "3704 North Interstate Avenue"}, {"name": "Paymaster Bar Portland", "lat": 45.5304437, "lng": -122.688282, "num": 6, "q": "NW", "color": "#D32F2F", "address": "1020 Northwest 17th Avenue"}, {"name": "Queen Bee Wine Bar", "lat": 45.5513541, "lng": -122.6758648, "num": 7, "q": "NW", "color": "#D32F2F", "address": "3925 North Mississippi Avenue"}, {"name": "Silver Dollar Bar", "lat": 45.5264498, "lng": -122.6947376, "num": 8, "q": "NW", "color": "#D32F2F", "address": "Northwest Glisan Street"}, {"name": "Slim's Restaurant & Lounge", "lat": 45.590425, "lng": -122.7549462, "num": 9, "q": "NW", "color": "#D32F2F", "address": "8635 North Lombard Street"}, {"name": "The Alibi Lounge", "lat": 45.5525709, "lng": -122.6805986, "num": 10, "q": "NW", "color": "#D32F2F", "address": "4024 North Interstate Avenue"}, {"name": "The Perch", "lat": 45.5884027, "lng": -122.7439236, "num": 11, "q": "NW", "color": "#D32F2F", "address": "7505 North Lombard Street"}, {"name": "Tiny's Bar", "lat": 45.5773064, "lng": -122.6876444, "num": 12, "q": "NW", "color": "#D32F2F", "address": "2025 North Lombard Street"}, {"name": "Whiskey & A Go Go", "lat": 45.5235489, "lng": -122.6715716, "num": 13, "q": "NW", "color": "#D32F2F", "address": "31 Northwest 1st Avenue"}, {"name": "Wild Card Bar", "lat": 45.5503382, "lng": -122.6759616, "num": 14, "q": "NW", "color": "#D32F2F", "address": "3807 North Mississippi Avenue"}, {"name": "Wishing Well", "lat": 45.5911575, "lng": -122.7561863, "num": 15, "q": "NW", "color": "#D32F2F", "address": "8800 North Lombard Street"}, {"name": "Ace Tavern", "lat": 45.5554229, "lng": -122.5707736, "num": 16, "q": "NE", "color": "#1565C0", "address": "8868 Northeast Sandy Boulevard"}, {"name": "Billy Ray's Dive", "lat": 45.5389957, "lng": -122.6613791, "num": 17, "q": "NE", "color": "#1565C0", "address": "2216 Northeast Martin Luther King Junior Boulevard"}, {"name": "Cliffs PDX", "lat": 45.5407758, "lng": -122.6634546, "num": 18, "q": "NE", "color": "#1565C0", "address": "128 Northeast Russell Street"}, {"name": "Florida Room", "lat": 45.5629023, "lng": -122.6709018, "num": 19, "q": "NE", "color": "#1565C0", "address": "435 North Killingsworth Street"}, {"name": "Katie's Bar Portland", "lat": 45.5584057, "lng": -122.5457841, "num": 20, "q": "NE", "color": "#1565C0", "address": "11307 Northeast Sandy Boulevard"}, {"name": "Mad Hanna", "lat": 45.5483322, "lng": -122.5996183, "num": 21, "q": "NE", "color": "#1565C0", "address": "6129 Northeast Fremont Street"}, {"name": "Pacific Pub Portland", "lat": 45.5237742, "lng": -122.661537, "num": 22, "q": "NE", "color": "#1565C0", "address": "100 Northeast Martin Luther King Junior Boulevard"}, {"name": "Pay Dirt Bar", "lat": 45.5291347, "lng": -122.6379392, "num": 23, "q": "NE", "color": "#1565C0", "address": "2724 Northeast Pacific Street"}, {"name": "Rose & Thistle Portland", "lat": 45.5347756, "lng": -122.6418215, "num": 24, "q": "NE", "color": "#1565C0", "address": "Northeast Broadway"}, {"name": "Spare Room Restaurant & Lounge", "lat": 45.558075, "lng": -122.620205, "num": 25, "q": "NE", "color": "#1565C0", "address": "4830 Northeast 42nd Avenue"}, {"name": "Spirit of 77 Bar Portland", "lat": 45.526692, "lng": -122.6614699, "num": 26, "q": "NE", "color": "#1565C0", "address": "500 Northeast Martin Luther King Junior Boulevard"}, {"name": "The Sandy Hut", "lat": 45.5237846, "lng": -122.650773, "num": 27, "q": "NE", "color": "#1565C0", "address": "1430 Northeast Sandy Boulevard"}, {"name": "Barlow Room", "lat": 45.5176968, "lng": -122.6814535, "num": 28, "q": "SW", "color": "#F9A825", "address": "737 Southwest Salmon Street"}, {"name": "Kelly's Olympian", "lat": 45.5199078, "lng": -122.6765491, "num": 29, "q": "SW", "color": "#F9A825", "address": "426 Southwest Washington Street"}, {"name": "Roxy's Bar", "lat": 45.5225468, "lng": -122.6826277, "num": 30, "q": "SW", "color": "#F9A825", "address": "1121 Southwest Harvey Milk Street"}, {"name": "Scooter McQuade's", "lat": 45.5224231, "lng": -122.6849481, "num": 31, "q": "SW", "color": "#F9A825", "address": "1321 Southwest Washington Street"}, {"name": "Shanghai Tunnel Bar", "lat": 45.5226196, "lng": -122.6725789, "num": 32, "q": "SW", "color": "#F9A825", "address": "211 Southwest Ankeny Street"}, {"name": "Suki's Bar", "lat": 45.5057546, "lng": -122.6822366, "num": 33, "q": "SW", "color": "#F9A825", "address": "2401 Southwest 4th Avenue"}, {"name": "The Jockey Club", "lat": 45.519383, "lng": -122.6764088, "num": 34, "q": "SW", "color": "#F9A825", "address": "401 Southwest Alder Street"}, {"name": "Yamhill Pub", "lat": 45.5175708, "lng": -122.6753837, "num": 35, "q": "SW", "color": "#F9A825", "address": "223 Southwest Yamhill Street"}, {"name": "710 Club Portland", "lat": 45.4619809, "lng": -122.6607021, "num": 36, "q": "SE", "color": "#2E7D32", "address": "710 Portland Rowing Club"}, {"name": "A Roadside Bar", "lat": 45.5156222, "lng": -122.6532704, "num": 37, "q": "SE", "color": "#2E7D32", "address": "1000 Southeast 12th Avenue"}, {"name": "B Side Tavern", "lat": 45.522728, "lng": -122.6589493, "num": 38, "q": "SE", "color": "#2E7D32", "address": "632 East Burnside Street"}, {"name": "Bar Maven Portland", "lat": 45.4908263, "lng": -122.5990563, "num": 39, "q": "SE", "color": "#2E7D32", "address": "6219 Southeast Foster Road"}, {"name": "Bar of the Gods", "lat": 45.5121938, "lng": -122.6129647, "num": 40, "q": "SE", "color": "#2E7D32", "address": "Southeast Hawthorne Boulevard"}, {"name": "Bare Bones", "lat": 45.516216, "lng": -122.63567, "num": 41, "q": "SE", "color": "#2E7D32", "address": "2908 Southeast Belmont Street"}, {"name": "Basement Tavern", "lat": 45.5153053, "lng": -122.6535067, "num": 42, "q": "SE", "color": "#2E7D32", "address": "1028 Southeast 12th Avenue"}, {"name": "Bear Paw Inn Portland", "lat": 45.499822, "lng": -122.6545339, "num": 43, "q": "SE", "color": "#2E7D32", "address": "3237 Southeast Milwaukie Avenue"}, {"name": "Belmont Inn Portland", "lat": 45.5165701, "lng": -122.6297759, "num": 44, "q": "SE", "color": "#2E7D32", "address": "3357 Southeast Belmont Street"}, {"name": "Brass Monkey Bar", "lat": 45.5046617, "lng": -122.627797, "num": 45, "q": "SE", "color": "#2E7D32", "address": "3530 Southeast Division Street"}, {"name": "BrookLynn Pub", "lat": 45.4981061, "lng": -122.6538284, "num": 46, "q": "SE", "color": "#2E7D32", "address": "3400 Southeast Milwaukie Avenue"}, {"name": "Clover Bar", "lat": 45.5121531, "lng": -122.6410267, "num": 47, "q": "SE", "color": "#2E7D32", "address": "2423 Southeast Hawthorne Boulevard"}, {"name": "Cosmo Lounge", "lat": 45.4742502, "lng": -122.6490705, "num": 48, "q": "SE", "color": "#2E7D32", "address": "6707 Southeast Milwaukie Avenue"}, {"name": "Dirty Pretty", "lat": 45.522728, "lng": -122.6588532, "num": 49, "q": "SE", "color": "#2E7D32", "address": "638 East Burnside Street"}, {"name": "Dot's Cafe", "lat": 45.5035335, "lng": -122.6399576, "num": 50, "q": "SE", "color": "#2E7D32", "address": "2521 Southeast Clinton Street"}, {"name": "East End Tavern", "lat": 45.5213633, "lng": -122.6608886, "num": 51, "q": "SE", "color": "#2E7D32", "address": "203 Southeast Grand Avenue"}, {"name": "Five & Dime", "lat": 45.4891183, "lng": -122.595065, "num": 52, "q": "SE", "color": "#2E7D32", "address": "6535 Southeast Foster Road"}, {"name": "Gil's Speakeasy", "lat": 45.5152082, "lng": -122.6593429, "num": 53, "q": "SE", "color": "#2E7D32", "address": "609 Southeast Taylor Street"}, {"name": "Happy Landing Dive Bar", "lat": 45.5187289, "lng": -122.5102378, "num": 54, "q": "SE", "color": "#2E7D32", "address": "520 Southeast 148th Avenue"}, {"name": "Hawthorne Hideaway", "lat": 45.5122553, "lng": -122.642983, "num": 55, "q": "SE", "color": "#2E7D32", "address": "2221 Southeast Hawthorne Boulevard"}, {"name": "Holman's Tavern", "lat": 45.5225725, "lng": -122.6375188, "num": 56, "q": "SE", "color": "#2E7D32", "address": "15 Southeast 28th Avenue"}, {"name": "Honest Tom's Bar", "lat": 45.5048699, "lng": -122.6230807, "num": 57, "q": "SE", "color": "#2E7D32", "address": "Southeast Division Street"}, {"name": "Hound Dog Lounge", "lat": 45.4906303, "lng": -122.6514038, "num": 58, "q": "SE", "color": "#2E7D32", "address": "4436 Southeast Milwaukie Avenue"}, {"name": "Houndogs", "lat": 45.4906303, "lng": -122.6514038, "num": 59, "q": "SE", "color": "#2E7D32", "address": "4436 Southeast Milwaukie Avenue"}, {"name": "Lay Low Bar", "lat": 45.4976267, "lng": -122.6008976, "num": 60, "q": "SE", "color": "#2E7D32", "address": "6015 Southeast Powell Boulevard"}, {"name": "Lotsa Luck Bar & Grill", "lat": 45.4989901, "lng": -122.6440297, "num": 61, "q": "SE", "color": "#2E7D32", "address": "2136 Southeast Powell Boulevard"}, {"name": "Low Tide Lounge", "lat": 45.5166586, "lng": -122.6445901, "num": 62, "q": "SE", "color": "#2E7D32", "address": "2045 Southeast Belmont Street"}, {"name": "Lucky 13", "lat": 45.5118972, "lng": -122.6232711, "num": 63, "q": "SE", "color": "#2E7D32", "address": "3862 Southeast Hawthorne Boulevard"}, {"name": "Mad Hanna Bar", "lat": 45.5119718, "lng": -122.6292622, "num": 64, "q": "SE", "color": "#2E7D32", "address": "3404 Southeast Hawthorne Boulevard"}, {"name": "Main Street Social", "lat": 45.4436493, "lng": -122.6410258, "num": 65, "q": "SE", "color": "#2E7D32", "address": "2001 Southeast Jefferson Street"}, {"name": "Montavilla Station", "lat": 45.5194482, "lng": -122.5817228, "num": 66, "q": "SE", "color": "#2E7D32", "address": "417 Southeast 80th Avenue"}, {"name": "My Father's Place", "lat": 45.518955, "lng": -122.6609973, "num": 67, "q": "SE", "color": "#2E7D32", "address": "523 Southeast Grand Avenue"}, {"name": "Nick's Famous Coney Island", "lat": 45.511858, "lng": -122.624905, "num": 68, "q": "SE", "color": "#2E7D32", "address": "3746 Southeast Hawthorne Boulevard"}, {"name": "No Fun Bar Portland", "lat": 45.5123323, "lng": -122.6483812, "num": 69, "q": "SE", "color": "#2E7D32", "address": "1709 Southeast Hawthorne Boulevard"}, {"name": "Palomar Portland", "lat": 45.5053115, "lng": -122.6566074, "num": 70, "q": "SE", "color": "#2E7D32", "address": "959 Southeast Division Street"}, {"name": "Prohibition Bar", "lat": 45.5176949, "lng": -122.6598427, "num": 71, "q": "SE", "color": "#2E7D32", "address": "Southeast 6th Avenue"}, {"name": "Reel M Inn", "lat": 45.504684, "lng": -122.6406386, "num": 72, "q": "SE", "color": "#2E7D32", "address": "2430 Southeast Division Street"}, {"name": "Resident Culture Brewing", "lat": 45.5180068, "lng": -122.6574522, "num": 73, "q": "SE", "color": "#2E7D32", "address": "735 Southeast Alder Street"}, {"name": "Roadside Attraction Bar Portland", "lat": 45.5156222, "lng": -122.6532704, "num": 74, "q": "SE", "color": "#2E7D32", "address": "1000 Southeast 12th Avenue"}, {"name": "Roscoe's Bar", "lat": 45.5192971, "lng": -122.5803262, "num": 75, "q": "SE", "color": "#2E7D32", "address": "8105 Southeast Stark Street"}, {"name": "Rumpus Room Portland", "lat": 45.5044169, "lng": -122.5543822, "num": 76, "q": "SE", "color": "#2E7D32", "address": "10555 Southeast Division Street"}, {"name": "Sadie's Dive Bar", "lat": 45.5182463, "lng": -122.5545525, "num": 77, "q": "SE", "color": "#2E7D32", "address": "10566 Southeast Washington Street"}, {"name": "Sidestreet Off Belmont", "lat": 45.5167784, "lng": -122.6294406, "num": 78, "q": "SE", "color": "#2E7D32", "address": "828 Southeast 34th Avenue"}, {"name": "Slammer Tavern Portland", "lat": 45.5192515, "lng": -122.6575329, "num": 79, "q": "SE", "color": "#2E7D32", "address": "500 Southeast 8th Avenue"}, {"name": "Slingshot Bar Portland", "lat": 45.4937185, "lng": -122.6055967, "num": 80, "q": "SE", "color": "#2E7D32", "address": "5532 Southeast Center Street"}, {"name": "Space Room Lounge", "lat": 45.5118528, "lng": -122.6128806, "num": 81, "q": "SE", "color": "#2E7D32", "address": "4800 Southeast Hawthorne Boulevard"}, {"name": "Starday Tavern", "lat": 45.4893195, "lng": -122.5955076, "num": 82, "q": "SE", "color": "#2E7D32", "address": "6517 Southeast Foster Road"}, {"name": "Sugar Hill Tavern", "lat": 45.5163472, "lng": -122.6299544, "num": 83, "q": "SE", "color": "#2E7D32", "address": "3348 Southeast Belmont Street"}, {"name": "Tacoma Tavern", "lat": 45.4792459, "lng": -122.6121719, "num": 84, "q": "SE", "color": "#2E7D32", "address": "4905 Southeast Woodstock Boulevard"}, {"name": "The End Bar", "lat": 45.5046617, "lng": -122.6276936, "num": 85, "q": "SE", "color": "#2E7D32", "address": "3532 Southeast Division Street"}, {"name": "The Lion's Eye Tavern", "lat": 45.4799533, "lng": -122.5791147, "num": 86, "q": "SE", "color": "#2E7D32", "address": "Southeast Knight Street"}, {"name": "The Lowroad", "lat": 45.5228061, "lng": -122.6580972, "num": 87, "q": "SE", "color": "#2E7D32", "address": "724 East Burnside Street"}, {"name": "The Nest Bar Portland", "lat": 45.516569, "lng": -122.6377425, "num": 88, "q": "SE", "color": "#2E7D32", "address": "2715 Southeast Belmont Street"}, {"name": "The Vern", "lat": 45.5163204, "lng": -122.6385391, "num": 89, "q": "SE", "color": "#2E7D32", "address": "2622 Southeast Belmont Street"}, {"name": "Thunderwood Bar", "lat": 45.4951421, "lng": -122.6075604, "num": 90, "q": "SE", "color": "#2E7D32", "address": "5339 Southeast Foster Road"}, {"name": "Tin House Bar", "lat": 45.5183993, "lng": -122.6606193, "num": 91, "q": "SE", "color": "#2E7D32", "address": "Southeast Washington Street"}, {"name": "Tom's Restaurant & Bar", "lat": 45.5048699, "lng": -122.6230807, "num": 92, "q": "SE", "color": "#2E7D32", "address": "Southeast Division Street"}, {"name": "Trails End Tavern", "lat": 45.5121556, "lng": -122.6150308, "num": 93, "q": "SE", "color": "#2E7D32", "address": "4601 Southeast Hawthorne Boulevard"}, {"name": "Yankee Tavern", "lat": 45.5119159, "lng": -122.6196075, "num": 94, "q": "SE", "color": "#2E7D32", "address": "4130 Southeast Hawthorne Boulevard"}, {"name": "Yukon Tavern", "lat": 45.4804807, "lng": -122.6497629, "num": 95, "q": "SE", "color": "#2E7D32", "address": "5817 Southeast Milwaukie Avenue"}];
+        const defaultBarsData = [{"name": "Bar None Tavern", "lat": 45.5286045, "lng": -122.6987543, "num": 1, "q": "NW", "color": "#D32F2F", "address": "811 Northwest 23rd Avenue"}, {"name": "Joe's Cellar", "lat": 45.5325691, "lng": -122.6944917, "num": 2, "q": "NW", "color": "#D32F2F", "address": "1332 Northwest 21st Avenue"}, {"name": "Nite Hawk Cafe & Lounge", "lat": 45.569522, "lng": -122.6823877, "num": 4, "q": "NW", "color": "#D32F2F", "address": "6423 North Interstate Avenue"}, {"name": "Pacific Pub", "lat": 45.5497362, "lng": -122.6808729, "num": 5, "q": "NW", "color": "#D32F2F", "address": "3704 North Interstate Avenue"}, {"name": "Paymaster Bar Portland", "lat": 45.5304437, "lng": -122.688282, "num": 6, "q": "NW", "color": "#D32F2F", "address": "1020 Northwest 17th Avenue"}, {"name": "Queen Bee Wine Bar", "lat": 45.5513541, "lng": -122.6758648, "num": 7, "q": "NW", "color": "#D32F2F", "address": "3925 North Mississippi Avenue"}, {"name": "Silver Dollar Bar", "lat": 45.5264498, "lng": -122.6947376, "num": 8, "q": "NW", "color": "#D32F2F", "address": "Northwest Glisan Street"}, {"name": "Slim's Restaurant & Lounge", "lat": 45.590425, "lng": -122.7549462, "num": 9, "q": "NW", "color": "#D32F2F", "address": "8635 North Lombard Street"}, {"name": "The Alibi Lounge", "lat": 45.5525709, "lng": -122.6805986, "num": 10, "q": "NW", "color": "#D32F2F", "address": "4024 North Interstate Avenue"}, {"name": "The Perch", "lat": 45.5884027, "lng": -122.7439236, "num": 11, "q": "NW", "color": "#D32F2F", "address": "7505 North Lombard Street"}, {"name": "Tiny's Bar", "lat": 45.5773064, "lng": -122.6876444, "num": 12, "q": "NW", "color": "#D32F2F", "address": "2025 North Lombard Street"}, {"name": "Whiskey & A Go Go", "lat": 45.5235489, "lng": -122.6715716, "num": 13, "q": "NW", "color": "#D32F2F", "address": "31 Northwest 1st Avenue"}, {"name": "Wild Card Bar", "lat": 45.5503382, "lng": -122.6759616, "num": 14, "q": "NW", "color": "#D32F2F", "address": "3807 North Mississippi Avenue"}, {"name": "Wishing Well", "lat": 45.5911575, "lng": -122.7561863, "num": 15, "q": "NW", "color": "#D32F2F", "address": "8800 North Lombard Street"}, {"name": "Ace Tavern", "lat": 45.5554229, "lng": -122.5707736, "num": 16, "q": "NE", "color": "#1565C0", "address": "8868 Northeast Sandy Boulevard"}, {"name": "Billy Ray's Dive", "lat": 45.5389957, "lng": -122.6613791, "num": 17, "q": "NE", "color": "#1565C0", "address": "2216 Northeast Martin Luther King Junior Boulevard"}, {"name": "Cliffs PDX", "lat": 45.5407758, "lng": -122.6634546, "num": 18, "q": "NE", "color": "#1565C0", "address": "128 Northeast Russell Street"}, {"name": "Florida Room", "lat": 45.5629023, "lng": -122.6709018, "num": 19, "q": "NE", "color": "#1565C0", "address": "435 North Killingsworth Street"}, {"name": "Katie's Bar Portland", "lat": 45.5584057, "lng": -122.5457841, "num": 20, "q": "NE", "color": "#1565C0", "address": "11307 Northeast Sandy Boulevard"}, {"name": "Mad Hanna", "lat": 45.5483322, "lng": -122.5996183, "num": 21, "q": "NE", "color": "#1565C0", "address": "6129 Northeast Fremont Street"}, {"name": "Pacific Pub Portland", "lat": 45.5237742, "lng": -122.661537, "num": 22, "q": "NE", "color": "#1565C0", "address": "100 Northeast Martin Luther King Junior Boulevard"}, {"name": "Pay Dirt Bar", "lat": 45.5291347, "lng": -122.6379392, "num": 23, "q": "NE", "color": "#1565C0", "address": "2724 Northeast Pacific Street"}, {"name": "Rose & Thistle Portland", "lat": 45.5347756, "lng": -122.6418215, "num": 24, "q": "NE", "color": "#1565C0", "address": "Northeast Broadway"}, {"name": "Spare Room Restaurant & Lounge", "lat": 45.558075, "lng": -122.620205, "num": 25, "q": "NE", "color": "#1565C0", "address": "4830 Northeast 42nd Avenue"}, {"name": "Spirit of 77 Bar Portland", "lat": 45.526692, "lng": -122.6614699, "num": 26, "q": "NE", "color": "#1565C0", "address": "500 Northeast Martin Luther King Junior Boulevard"}, {"name": "The Sandy Hut", "lat": 45.5237846, "lng": -122.650773, "num": 27, "q": "NE", "color": "#1565C0", "address": "1430 Northeast Sandy Boulevard"}, {"name": "Barlow Room", "lat": 45.5176968, "lng": -122.6814535, "num": 28, "q": "SW", "color": "#F9A825", "address": "737 Southwest Salmon Street"}, {"name": "Kelly's Olympian", "lat": 45.5199078, "lng": -122.6765491, "num": 29, "q": "SW", "color": "#F9A825", "address": "426 Southwest Washington Street"}, {"name": "Roxy's Bar", "lat": 45.5225468, "lng": -122.6826277, "num": 30, "q": "SW", "color": "#F9A825", "address": "1121 Southwest Harvey Milk Street"}, {"name": "Scooter McQuade's", "lat": 45.5224231, "lng": -122.6849481, "num": 31, "q": "SW", "color": "#F9A825", "address": "1321 Southwest Washington Street"}, {"name": "Shanghai Tunnel Bar", "lat": 45.5226196, "lng": -122.6725789, "num": 32, "q": "SW", "color": "#F9A825", "address": "211 Southwest Ankeny Street"}, {"name": "Suki's Bar", "lat": 45.5057546, "lng": -122.6822366, "num": 33, "q": "SW", "color": "#F9A825", "address": "2401 Southwest 4th Avenue"}, {"name": "The Jockey Club", "lat": 45.519383, "lng": -122.6764088, "num": 34, "q": "SW", "color": "#F9A825", "address": "401 Southwest Alder Street"}, {"name": "Yamhill Pub", "lat": 45.5175708, "lng": -122.6753837, "num": 35, "q": "SW", "color": "#F9A825", "address": "223 Southwest Yamhill Street"}, {"name": "710 Club Portland", "lat": 45.4619809, "lng": -122.6607021, "num": 36, "q": "SE", "color": "#2E7D32", "address": "710 Portland Rowing Club"}, {"name": "A Roadside Bar", "lat": 45.5156222, "lng": -122.6532704, "num": 37, "q": "SE", "color": "#2E7D32", "address": "1000 Southeast 12th Avenue"}, {"name": "B Side Tavern", "lat": 45.522728, "lng": -122.6589493, "num": 38, "q": "SE", "color": "#2E7D32", "address": "632 East Burnside Street"}, {"name": "Bar Maven Portland", "lat": 45.4908263, "lng": -122.5990563, "num": 39, "q": "SE", "color": "#2E7D32", "address": "6219 Southeast Foster Road"}, {"name": "Bar of the Gods", "lat": 45.5121938, "lng": -122.6129647, "num": 40, "q": "SE", "color": "#2E7D32", "address": "Southeast Hawthorne Boulevard"}, {"name": "Bare Bones", "lat": 45.516216, "lng": -122.63567, "num": 41, "q": "SE", "color": "#2E7D32", "address": "2908 Southeast Belmont Street"}, {"name": "Basement Tavern", "lat": 45.5153053, "lng": -122.6535067, "num": 42, "q": "SE", "color": "#2E7D32", "address": "1028 Southeast 12th Avenue"}, {"name": "Bear Paw Inn Portland", "lat": 45.499822, "lng": -122.6545339, "num": 43, "q": "SE", "color": "#2E7D32", "address": "3237 Southeast Milwaukie Avenue"}, {"name": "Belmont Inn Portland", "lat": 45.5165701, "lng": -122.6297759, "num": 44, "q": "SE", "color": "#2E7D32", "address": "3357 Southeast Belmont Street"}, {"name": "Brass Monkey Bar", "lat": 45.5046617, "lng": -122.627797, "num": 45, "q": "SE", "color": "#2E7D32", "address": "3530 Southeast Division Street"}, {"name": "BrookLynn Pub", "lat": 45.4981061, "lng": -122.6538284, "num": 46, "q": "SE", "color": "#2E7D32", "address": "3400 Southeast Milwaukie Avenue"}, {"name": "Clover Bar", "lat": 45.5121531, "lng": -122.6410267, "num": 47, "q": "SE", "color": "#2E7D32", "address": "2423 Southeast Hawthorne Boulevard"}, {"name": "Cosmo Lounge", "lat": 45.4742502, "lng": -122.6490705, "num": 48, "q": "SE", "color": "#2E7D32", "address": "6707 Southeast Milwaukie Avenue"}, {"name": "Dirty Pretty", "lat": 45.522728, "lng": -122.6588532, "num": 49, "q": "SE", "color": "#2E7D32", "address": "638 East Burnside Street"}, {"name": "Dot's Cafe", "lat": 45.5035335, "lng": -122.6399576, "num": 50, "q": "SE", "color": "#2E7D32", "address": "2521 Southeast Clinton Street"}, {"name": "East End Tavern", "lat": 45.5213633, "lng": -122.6608886, "num": 51, "q": "SE", "color": "#2E7D32", "address": "203 Southeast Grand Avenue"}, {"name": "Five & Dime", "lat": 45.4891183, "lng": -122.595065, "num": 52, "q": "SE", "color": "#2E7D32", "address": "6535 Southeast Foster Road"}, {"name": "Gil's Speakeasy", "lat": 45.5152082, "lng": -122.6593429, "num": 53, "q": "SE", "color": "#2E7D32", "address": "609 Southeast Taylor Street"}, {"name": "Happy Landing Dive Bar", "lat": 45.5187289, "lng": -122.5102378, "num": 54, "q": "SE", "color": "#2E7D32", "address": "520 Southeast 148th Avenue"}, {"name": "Hawthorne Hideaway", "lat": 45.5122553, "lng": -122.642983, "num": 55, "q": "SE", "color": "#2E7D32", "address": "2221 Southeast Hawthorne Boulevard"}, {"name": "Holman's Tavern", "lat": 45.5225725, "lng": -122.6375188, "num": 56, "q": "SE", "color": "#2E7D32", "address": "15 Southeast 28th Avenue"}, {"name": "Honest Tom's Bar", "lat": 45.5048699, "lng": -122.6230807, "num": 57, "q": "SE", "color": "#2E7D32", "address": "Southeast Division Street"}, {"name": "Hound Dog Lounge", "lat": 45.4906303, "lng": -122.6514038, "num": 58, "q": "SE", "color": "#2E7D32", "address": "4436 Southeast Milwaukie Avenue"}, {"name": "Lay Low Bar", "lat": 45.4976267, "lng": -122.6008976, "num": 60, "q": "SE", "color": "#2E7D32", "address": "6015 Southeast Powell Boulevard"}, {"name": "Lotsa Luck Bar & Grill", "lat": 45.4989901, "lng": -122.6440297, "num": 61, "q": "SE", "color": "#2E7D32", "address": "2136 Southeast Powell Boulevard"}, {"name": "Low Tide Lounge", "lat": 45.5166586, "lng": -122.6445901, "num": 62, "q": "SE", "color": "#2E7D32", "address": "2045 Southeast Belmont Street"}, {"name": "Lucky 13", "lat": 45.5118972, "lng": -122.6232711, "num": 63, "q": "SE", "color": "#2E7D32", "address": "3862 Southeast Hawthorne Boulevard"}, {"name": "Mad Hanna Bar", "lat": 45.5119718, "lng": -122.6292622, "num": 64, "q": "SE", "color": "#2E7D32", "address": "3404 Southeast Hawthorne Boulevard"}, {"name": "Main Street Social", "lat": 45.4436493, "lng": -122.6410258, "num": 65, "q": "SE", "color": "#2E7D32", "address": "2001 Southeast Jefferson Street"}, {"name": "Montavilla Station", "lat": 45.5194482, "lng": -122.5817228, "num": 66, "q": "SE", "color": "#2E7D32", "address": "417 Southeast 80th Avenue"}, {"name": "My Father's Place", "lat": 45.518955, "lng": -122.6609973, "num": 67, "q": "SE", "color": "#2E7D32", "address": "523 Southeast Grand Avenue"}, {"name": "Nick's Famous Coney Island", "lat": 45.511858, "lng": -122.624905, "num": 68, "q": "SE", "color": "#2E7D32", "address": "3746 Southeast Hawthorne Boulevard"}, {"name": "No Fun Bar Portland", "lat": 45.5123323, "lng": -122.6483812, "num": 69, "q": "SE", "color": "#2E7D32", "address": "1709 Southeast Hawthorne Boulevard"}, {"name": "Palomar Portland", "lat": 45.5053115, "lng": -122.6566074, "num": 70, "q": "SE", "color": "#2E7D32", "address": "959 Southeast Division Street"}, {"name": "Prohibition Bar", "lat": 45.5176949, "lng": -122.6598427, "num": 71, "q": "SE", "color": "#2E7D32", "address": "Southeast 6th Avenue"}, {"name": "Reel M Inn", "lat": 45.504684, "lng": -122.6406386, "num": 72, "q": "SE", "color": "#2E7D32", "address": "2430 Southeast Division Street"}, {"name": "Resident Culture Brewing", "lat": 45.5180068, "lng": -122.6574522, "num": 73, "q": "SE", "color": "#2E7D32", "address": "735 Southeast Alder Street"}, {"name": "Roadside Attraction Bar Portland", "lat": 45.5156222, "lng": -122.6532704, "num": 74, "q": "SE", "color": "#2E7D32", "address": "1000 Southeast 12th Avenue"}, {"name": "Roscoe's Bar", "lat": 45.5192971, "lng": -122.5803262, "num": 75, "q": "SE", "color": "#2E7D32", "address": "8105 Southeast Stark Street"}, {"name": "Rumpus Room Portland", "lat": 45.5044169, "lng": -122.5543822, "num": 76, "q": "SE", "color": "#2E7D32", "address": "10555 Southeast Division Street"}, {"name": "Sadie's Dive Bar", "lat": 45.5182463, "lng": -122.5545525, "num": 77, "q": "SE", "color": "#2E7D32", "address": "10566 Southeast Washington Street"}, {"name": "Sidestreet Off Belmont", "lat": 45.5167784, "lng": -122.6294406, "num": 78, "q": "SE", "color": "#2E7D32", "address": "828 Southeast 34th Avenue"}, {"name": "Slammer Tavern Portland", "lat": 45.5192515, "lng": -122.6575329, "num": 79, "q": "SE", "color": "#2E7D32", "address": "500 Southeast 8th Avenue"}, {"name": "Slingshot Bar Portland", "lat": 45.4937185, "lng": -122.6055967, "num": 80, "q": "SE", "color": "#2E7D32", "address": "5532 Southeast Center Street"}, {"name": "Space Room Lounge", "lat": 45.5118528, "lng": -122.6128806, "num": 81, "q": "SE", "color": "#2E7D32", "address": "4800 Southeast Hawthorne Boulevard"}, {"name": "Starday Tavern", "lat": 45.4893195, "lng": -122.5955076, "num": 82, "q": "SE", "color": "#2E7D32", "address": "6517 Southeast Foster Road"}, {"name": "Sugar Hill Tavern", "lat": 45.5163472, "lng": -122.6299544, "num": 83, "q": "SE", "color": "#2E7D32", "address": "3348 Southeast Belmont Street"}, {"name": "Tacoma Tavern", "lat": 45.4792459, "lng": -122.6121719, "num": 84, "q": "SE", "color": "#2E7D32", "address": "4905 Southeast Woodstock Boulevard"}, {"name": "The End Bar", "lat": 45.5046617, "lng": -122.6276936, "num": 85, "q": "SE", "color": "#2E7D32", "address": "3532 Southeast Division Street"}, {"name": "The Lion's Eye Tavern", "lat": 45.4799533, "lng": -122.5791147, "num": 86, "q": "SE", "color": "#2E7D32", "address": "Southeast Knight Street"}, {"name": "The Lowroad", "lat": 45.5228061, "lng": -122.6580972, "num": 87, "q": "SE", "color": "#2E7D32", "address": "724 East Burnside Street"}, {"name": "The Nest Bar Portland", "lat": 45.516569, "lng": -122.6377425, "num": 88, "q": "SE", "color": "#2E7D32", "address": "2715 Southeast Belmont Street"}, {"name": "The Vern", "lat": 45.5163204, "lng": -122.6385391, "num": 89, "q": "SE", "color": "#2E7D32", "address": "2622 Southeast Belmont Street"}, {"name": "Thunderwood Bar", "lat": 45.4951421, "lng": -122.6075604, "num": 90, "q": "SE", "color": "#2E7D32", "address": "5339 Southeast Foster Road"}, {"name": "Tin House Bar", "lat": 45.5183993, "lng": -122.6606193, "num": 91, "q": "SE", "color": "#2E7D32", "address": "Southeast Washington Street"}, {"name": "Tom's Restaurant & Bar", "lat": 45.5048699, "lng": -122.6230807, "num": 92, "q": "SE", "color": "#2E7D32", "address": "Southeast Division Street"}, {"name": "Trails End Tavern", "lat": 45.5121556, "lng": -122.6150308, "num": 93, "q": "SE", "color": "#2E7D32", "address": "4601 Southeast Hawthorne Boulevard"}, {"name": "Yankee Tavern", "lat": 45.5119159, "lng": -122.6196075, "num": 94, "q": "SE", "color": "#2E7D32", "address": "4130 Southeast Hawthorne Boulevard"}, {"name": "Yukon Tavern", "lat": 45.4804807, "lng": -122.6497629, "num": 95, "q": "SE", "color": "#2E7D32", "address": "5817 Southeast Milwaukie Avenue"}];
 
         // Load barsData from localStorage if customized, otherwise use defaults
         let barsData = (() => {
@@ -2177,7 +2507,6 @@
             const profile = userProfiles[identityId];
             if (!profile) return;
             currentUser = { ...profile };
-            localStorage.setItem('lastIdentity', identityId);
 
             // Transition out of splash
             const splash = document.getElementById('appSplash');
@@ -2233,6 +2562,22 @@
         let currentSearchQuery = '';
         let happyHourFilterActive = false; // legacy, kept for compat
         let firebaseUrl = null;
+        // ── FIREBASE SECURITY ──────────────────────────────────────
+        // The REST calls below use bare URLs with NO auth token,
+        // so the database is only protected by its server-side rules.
+        // Deploy these rules in Firebase Console → Realtime Database → Rules:
+        //
+        //   {
+        //     "rules": {
+        //       ".read": "auth != null && auth.uid === 'UID_BIG_DOG' || auth.uid === 'UID_CHOOCH'",
+        //       ".write": "auth != null && auth.uid === 'UID_BIG_DOG' || auth.uid === 'UID_CHOOCH'"
+        //     }
+        //   }
+        //
+        // Then switch REST calls to pass ?auth=<Firebase ID token> or
+        // use Firebase Auth REST sign-in and append the idToken as a
+        // query param:  fetch(`${firebaseUrl}/.json?auth=${idToken}`)
+        // ────────────────────────────────────────────────────────────
         let currentEditBar = null;
         const rightPanel = document.getElementById('rightPanel');
 
@@ -2665,7 +3010,14 @@
             loadLocalData() {
                 const stored = localStorage.getItem('barData');
                 if (stored) {
-                    barDataStore = JSON.parse(stored);
+                    try {
+                        barDataStore = JSON.parse(stored);
+                    } catch(e) {
+                        console.error('Corrupt barData in localStorage, resetting:', e);
+                        this.initEmptyData();
+                        this.saveLocalData();
+                        return;
+                    }
                     // Backfill default hours for bars that don't have hours set yet
                     Object.keys(defaultHours).forEach(num => {
                         if (barDataStore[num] && !barDataStore[num].hours && defaultHours[num]) {
@@ -4232,6 +4584,13 @@
         let recPicks = [];
 
         function openRecModal() {
+            // Gate: must have at least one saved vibe
+            const userVibes = loadVibes();
+            if (userVibes.length === 0) {
+                openVibesOnboarding(false);
+                return;
+            }
+
             document.getElementById('recModal').classList.add('active');
             // Skip identity step — use global currentUser (selected at app splash)
             recWho = currentUser.id;
@@ -4248,7 +4607,7 @@
             document.getElementById('recModal').classList.remove('active');
         }
 
-        document.getElementById('openRecBtn').addEventListener('click', openRecModal);
+        // openRecBtn replaced by openConciergeBtn (wired in Concierge module). Old rec flow kept for reuse.
         document.getElementById('recCloseBtn1').addEventListener('click', closeRecModal);
         document.getElementById('recCloseBtn2').addEventListener('click', closeRecModal);
         document.getElementById('recCloseBtn3').addEventListener('click', closeRecModal);
@@ -4312,10 +4671,22 @@
                 }
                 if ((data.hours || '').includes('CLOSED')) return null;
 
-                // Score by tag matches
+                // Score by tag matches (manual picks from rec flow)
                 let score = 0;
                 recPrefs.forEach(pref => {
                     if (data.tags.includes(pref)) score += 3;
+                });
+
+                // Score by saved vibes (tags + Google attributes)
+                const userVibes = loadVibes(recWho);
+                userVibes.forEach(vibe => {
+                    vibe.tags.forEach(tag => {
+                        if (data.tags.includes(tag)) score += 2;
+                    });
+                    const ga = data.googleAttributes || {};
+                    vibe.attributes.forEach(attr => {
+                        if (ga[attr] === true) score += 2;
+                    });
                 });
 
                 // Bonus for ratings from this person
@@ -4600,6 +4971,675 @@
             }
             animate();
         }
+
+        // ============================================================
+        // ===== Concierge + Matchmaker v2 =====
+        // ============================================================
+
+        // --- Shared state ---
+        let conciergeSelectedVibeId = null;
+        let conciergeFilters = { openNow: false, happyHour: false, nearMe: false, quadrant: 'ALL' };
+        let conciergeUserLocation = null;
+        let conciergeResults = [];
+        let conciergeResultsActive = false;
+        const NEAR_ME_RADIUS_MILES = 1.5;
+        const MATCHMAKER_EXPIRY_MS = 48 * 60 * 60 * 1000; // 48h
+
+        let matchmakerDraft = [];
+        let matchmakerPools = { bigDog: null, chooch: null };
+
+        // --- Utilities ---
+        function haversineMiles(lat1, lng1, lat2, lng2) {
+            const R = 3958.8;
+            const toRad = d => d * Math.PI / 180;
+            const dLat = toRad(lat2 - lat1);
+            const dLng = toRad(lng2 - lng1);
+            const a = Math.sin(dLat/2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng/2) ** 2;
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
+
+        function getMmDraftKey() { return 'mmDraft_' + (currentUser.id || 'anon'); }
+
+        function loadMmDraft() {
+            try {
+                const raw = localStorage.getItem(getMmDraftKey());
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) return parsed;
+                }
+            } catch(e) {}
+            return [];
+        }
+
+        function saveMmDraft() {
+            localStorage.setItem(getMmDraftKey(), JSON.stringify(matchmakerDraft));
+        }
+
+        function formatTimeAgo(ts) {
+            const diff = Date.now() - ts;
+            const min = Math.floor(diff / 60000);
+            if (min < 1) return 'just now';
+            if (min < 60) return min + ' min ago';
+            const hr = Math.floor(min / 60);
+            if (hr < 24) return hr + ' hr ago';
+            return Math.floor(hr / 24) + ' day ago';
+        }
+
+        function formatTimeLeft(expiresAt) {
+            if (!expiresAt) return '';
+            const diff = expiresAt - Date.now();
+            if (diff <= 0) return 'expired';
+            const hr = Math.floor(diff / 3600000);
+            if (hr >= 24) return Math.floor(hr / 24) + 'd';
+            return hr + 'h';
+        }
+
+        // --- Concierge modal ---
+        function openConcierge() {
+            const vibes = loadVibes();
+            if (vibes.length === 0) {
+                openVibesOnboarding(false);
+                return;
+            }
+            // Refresh matchmaker draft from localStorage so badge is accurate
+            matchmakerDraft = loadMmDraft();
+            updateMatchmakerBadge();
+
+            // Reset concierge state
+            conciergeSelectedVibeId = null;
+            conciergeFilters = { openNow: false, happyHour: false, nearMe: false, quadrant: 'ALL' };
+            conciergeUserLocation = null;
+
+            document.getElementById('conciergeQuadrantSelect').value = 'ALL';
+            document.querySelectorAll('.concierge-filter-toggle').forEach(t => t.classList.remove('active'));
+            document.getElementById('conciergeStatus').textContent = '';
+
+            renderConciergeVibeChips();
+            updateConciergeShowBtn();
+
+            document.getElementById('conciergeModal').classList.add('active');
+        }
+
+        function closeConcierge() {
+            document.getElementById('conciergeModal').classList.remove('active');
+        }
+
+        function renderConciergeVibeChips() {
+            const container = document.getElementById('conciergeVibeChips');
+            const noMsg = document.getElementById('conciergeNoVibesMsg');
+            const vibes = loadVibes();
+            container.innerHTML = '';
+            if (vibes.length === 0) {
+                noMsg.style.display = 'block';
+                return;
+            }
+            noMsg.style.display = 'none';
+            vibes.forEach(v => {
+                const chip = document.createElement('span');
+                chip.className = 'concierge-vibe-chip' + (v.id === conciergeSelectedVibeId ? ' selected' : '');
+                chip.textContent = v.name;
+                chip.dataset.vibeId = v.id;
+                chip.addEventListener('click', () => {
+                    // v1: one-at-a-time selection (toggle off if same)
+                    conciergeSelectedVibeId = (conciergeSelectedVibeId === v.id) ? null : v.id;
+                    renderConciergeVibeChips();
+                    updateConciergeShowBtn();
+                });
+                container.appendChild(chip);
+            });
+        }
+
+        function updateConciergeShowBtn() {
+            document.getElementById('conciergeShowBtn').disabled = !conciergeSelectedVibeId;
+        }
+
+        // --- Scoring engine ---
+        function scoreBarsForVibe(vibe) {
+            if (!vibe) return [];
+            const tags = vibe.tags || [];
+            const attrs = vibe.attributes || [];
+            const f = conciergeFilters;
+            return barsData.map(bar => {
+                const data = barDataStore[bar.num];
+                if (!data) return null;
+                // Hard filters
+                if (f.openNow) {
+                    const st = parseBarStatus(data.hours);
+                    if (st !== 'open' && st !== 'closing-soon') return null;
+                }
+                if (f.happyHour) {
+                    const hh = parseHappyHourStatus(data.happyHourTimes || '');
+                    if (hh !== 'active') return null;
+                }
+                if (f.quadrant && f.quadrant !== 'ALL' && bar.q !== f.quadrant) return null;
+                if (f.nearMe && conciergeUserLocation) {
+                    const d = haversineMiles(conciergeUserLocation.lat, conciergeUserLocation.lng, bar.lat, bar.lng);
+                    if (d > NEAR_ME_RADIUS_MILES) return null;
+                }
+                // Score — pure match count (per spec, tune later)
+                const barTags = data.tags || [];
+                const barAttrs = data.googleAttributes || {};
+                const matchedTags = tags.filter(t => barTags.includes(t));
+                const matchedAttrs = attrs.filter(a => barAttrs[a] === true);
+                const score = matchedTags.length + matchedAttrs.length;
+                if (score === 0) return null;
+                return { bar, data, score, matchedTags, matchedAttrs };
+            })
+            .filter(Boolean)
+            .sort((a, b) => b.score - a.score || a.bar.num - b.bar.num);
+        }
+
+        // --- Run (show-me) ---
+        async function runConcierge() {
+            const vibes = loadVibes();
+            const vibe = vibes.find(v => v.id === conciergeSelectedVibeId);
+            if (!vibe) return;
+
+            const statusEl = document.getElementById('conciergeStatus');
+
+            // Resolve Near Me location if toggle is on and we haven't yet
+            if (conciergeFilters.nearMe && !conciergeUserLocation) {
+                statusEl.textContent = 'Finding your location...';
+                try {
+                    conciergeUserLocation = await new Promise((resolve, reject) => {
+                        if (!navigator.geolocation) { reject(new Error('not supported')); return; }
+                        navigator.geolocation.getCurrentPosition(
+                            pos => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+                            err => reject(err),
+                            { timeout: 8000, maximumAge: 60000 }
+                        );
+                    });
+                    statusEl.textContent = '';
+                } catch (err) {
+                    statusEl.textContent = 'Near Me unavailable — showing results without it.';
+                    conciergeFilters.nearMe = false;
+                    const toggle = document.querySelector('.concierge-filter-toggle[data-filter="nearMe"]');
+                    if (toggle) toggle.classList.remove('active');
+                }
+            }
+
+            const results = scoreBarsForVibe(vibe);
+            if (results.length === 0) {
+                statusEl.textContent = 'Nothing on your list matches that combination yet.';
+                return;
+            }
+
+            conciergeResults = results;
+            closeConcierge();
+            enterConciergeResultsMode(vibe, results);
+        }
+
+        // --- Map results mode ---
+        function enterConciergeResultsMode(vibe, results) {
+            conciergeResultsActive = true;
+
+            // Dim everything, then un-dim matches
+            const matchNums = new Set(results.map(r => r.bar.num));
+            markers.forEach(m => {
+                const iconEl = m._icon ? m._icon.querySelector('.marker-icon') : null;
+                if (!iconEl) return;
+                if (matchNums.has(m.barNum)) {
+                    iconEl.classList.remove('concierge-dimmed');
+                    iconEl.classList.add('concierge-match');
+                } else {
+                    iconEl.classList.add('concierge-dimmed');
+                    iconEl.classList.remove('concierge-match');
+                }
+            });
+
+            // Fit bounds to matches
+            if (results.length > 0) {
+                const bounds = L.latLngBounds(results.map(r => [r.bar.lat, r.bar.lng]));
+                map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+            }
+
+            renderConciergeCardStrip(vibe, results);
+            document.getElementById('conciergeResultsBar').classList.add('active');
+            setTimeout(() => map.invalidateSize(), 350);
+        }
+
+        function exitConciergeResultsMode() {
+            conciergeResultsActive = false;
+            conciergeResults = [];
+            markers.forEach(m => {
+                const iconEl = m._icon ? m._icon.querySelector('.marker-icon') : null;
+                if (iconEl) iconEl.classList.remove('concierge-dimmed', 'concierge-match');
+            });
+            document.getElementById('conciergeResultsBar').classList.remove('active');
+            document.getElementById('conciergeCardStrip').innerHTML = '';
+            setTimeout(() => map.invalidateSize(), 350);
+        }
+
+        function renderConciergeCardStrip(vibe, results) {
+            const strip = document.getElementById('conciergeCardStrip');
+            const title = document.getElementById('conciergeResultsTitle');
+            title.textContent = vibe.name + ' · ' + results.length + ' match' + (results.length === 1 ? '' : 'es');
+            strip.innerHTML = '';
+
+            results.forEach(r => {
+                const card = document.createElement('div');
+                card.className = 'concierge-card';
+                card.style.setProperty('--qcolor', r.bar.color);
+                card.dataset.barNum = r.bar.num;
+
+                // Name + visited indicator
+                const nameEl = document.createElement('div');
+                nameEl.className = 'cc-name';
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = r.bar.name;
+                nameEl.appendChild(nameSpan);
+                if (typeof isBarVisited === 'function' && isBarVisited(r.bar.num)) {
+                    const v = document.createElement('span');
+                    v.className = 'cc-visited';
+                    v.textContent = '✓ Visited';
+                    nameEl.appendChild(v);
+                }
+                card.appendChild(nameEl);
+
+                // Status
+                const barStatus = parseBarStatus(r.data.hours);
+                const statusEl = document.createElement('div');
+                statusEl.className = 'cc-status ' + barStatus;
+                const statusLabel = barStatus === 'open' ? 'Open now'
+                    : barStatus === 'closing-soon' ? 'Closing soon'
+                    : barStatus === 'closed' ? 'Closed'
+                    : (r.data.hours || 'Hours unknown');
+                statusEl.textContent = statusLabel;
+                card.appendChild(statusEl);
+
+                // Matched chips (why recommended)
+                const matchesEl = document.createElement('div');
+                matchesEl.className = 'cc-matches';
+                r.matchedTags.forEach(t => {
+                    const chip = document.createElement('span');
+                    chip.className = 'cc-match-chip';
+                    chip.textContent = t;
+                    matchesEl.appendChild(chip);
+                });
+                r.matchedAttrs.forEach(a => {
+                    const chip = document.createElement('span');
+                    chip.className = 'cc-match-chip';
+                    const found = vibeAttributes.find(va => va.key === a);
+                    chip.textContent = found ? found.label : a;
+                    matchesEl.appendChild(chip);
+                });
+                card.appendChild(matchesEl);
+
+                // Rating (if visited)
+                if (typeof getAverageRating === 'function') {
+                    const avg = getAverageRating(r.bar.num);
+                    if (avg && avg > 0) {
+                        const rating = document.createElement('div');
+                        rating.className = 'cc-rating';
+                        rating.textContent = '★ ' + avg.toFixed(1);
+                        card.appendChild(rating);
+                    }
+                }
+
+                // Actions
+                const actions = document.createElement('div');
+                actions.className = 'cc-actions';
+
+                const viewBtn = document.createElement('button');
+                viewBtn.className = 'cc-action';
+                viewBtn.textContent = 'Details';
+                viewBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    exitConciergeResultsMode();
+                    openEditPanel(r.bar);
+                });
+                actions.appendChild(viewBtn);
+
+                const poolBtn = document.createElement('button');
+                poolBtn.className = 'cc-action';
+                const refreshPoolBtn = () => {
+                    if (matchmakerDraft.includes(r.bar.num)) {
+                        poolBtn.classList.add('pool-added');
+                        poolBtn.textContent = '✓ Pool';
+                    } else {
+                        poolBtn.classList.remove('pool-added');
+                        poolBtn.textContent = '+ Pool';
+                    }
+                };
+                refreshPoolBtn();
+                poolBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleMatchmakerDraft(r.bar.num);
+                    refreshPoolBtn();
+                });
+                actions.appendChild(poolBtn);
+
+                const logBtn = document.createElement('button');
+                logBtn.className = 'cc-action';
+                logBtn.textContent = 'Log';
+                logBtn.title = 'Log a visit';
+                logBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    exitConciergeResultsMode();
+                    openEditPanel(r.bar);
+                    setTimeout(() => {
+                        const content = document.getElementById('editPanelContent');
+                        if (!content) return;
+                        const target = content.querySelector('[data-section="ratings"]')
+                            || content.querySelector('.ratings-section')
+                            || content.querySelector('.rating-block')
+                            || content;
+                        if (target && target.scrollIntoView) {
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }, 450);
+                });
+                actions.appendChild(logBtn);
+
+                card.appendChild(actions);
+
+                // Card tap → fly map to bar
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.concierge-card').forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    map.flyTo([r.bar.lat, r.bar.lng], 16, { duration: 0.8 });
+                });
+
+                strip.appendChild(card);
+            });
+        }
+
+        // --- Matchmaker pool ---
+        function toggleMatchmakerDraft(barNum) {
+            const idx = matchmakerDraft.indexOf(barNum);
+            if (idx >= 0) matchmakerDraft.splice(idx, 1);
+            else matchmakerDraft.push(barNum);
+            saveMmDraft();
+            updateMatchmakerBadge();
+        }
+
+        function updateMatchmakerBadge() {
+            const badge = document.getElementById('matchmakerBadge');
+            const txt = document.getElementById('matchmakerBadgeText');
+            if (!badge || !txt) return;
+            if (matchmakerDraft.length > 0) {
+                badge.classList.add('active');
+                txt.textContent = matchmakerDraft.length + ' in pool';
+            } else {
+                badge.classList.remove('active');
+            }
+        }
+
+        async function syncMatchmakerPoolsFromCloud() {
+            if (!firebaseUrl) return;
+            try {
+                const res = await fetch(firebaseUrl + '/matchmakerPools.json');
+                if (!res.ok) return;
+                const data = await res.json();
+                if (data && typeof data === 'object') {
+                    matchmakerPools = {
+                        bigDog: data.bigDog || null,
+                        chooch: data.chooch || null
+                    };
+                }
+            } catch(e) { /* silent */ }
+        }
+
+        async function pushMatchmakerPoolToCloud() {
+            if (!firebaseUrl) return;
+            try {
+                await fetch(firebaseUrl + '/matchmakerPools.json', {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        bigDog: matchmakerPools.bigDog,
+                        chooch: matchmakerPools.chooch
+                    })
+                });
+            } catch(e) { /* silent */ }
+        }
+
+        async function openMatchmakerModal() {
+            // Refresh draft in case it changed
+            matchmakerDraft = loadMmDraft();
+            updateMatchmakerBadge();
+            // Pull latest pools
+            await syncMatchmakerPoolsFromCloud();
+
+            // Expire any stale pools
+            const now = Date.now();
+            ['bigDog', 'chooch'].forEach(id => {
+                const p = matchmakerPools[id];
+                if (p && p.expiresAt && now >= p.expiresAt) {
+                    matchmakerPools[id] = null;
+                }
+            });
+
+            document.getElementById('matchmakerModal').classList.add('active');
+
+            const mine = matchmakerPools[currentUser.id];
+            if (mine && mine.picks && mine.picks.length > 0) {
+                showMatchmakerWaiting();
+                // Also immediately check — maybe the other person already submitted
+                evaluateMatchmakerPools();
+            } else {
+                showMatchmakerBuild();
+            }
+        }
+
+        function closeMatchmakerModal() {
+            document.getElementById('matchmakerModal').classList.remove('active');
+        }
+
+        function showMatchmakerBuild() {
+            document.getElementById('mmBuildView').style.display = '';
+            document.getElementById('mmWaitingView').style.display = 'none';
+            document.getElementById('mmRevealView').style.display = 'none';
+            renderMatchmakerPool();
+        }
+
+        function renderMatchmakerPool() {
+            const list = document.getElementById('mmPoolList');
+            list.innerHTML = '';
+            if (matchmakerDraft.length === 0) {
+                list.innerHTML = '<div style="color: #6a6a8a; font-size: 0.85rem; text-align: center; padding: 1rem 0;">Your pool is empty. Tap "+ Pool" on Concierge results to add bars.</div>';
+            } else {
+                matchmakerDraft.forEach(num => {
+                    const bar = barsData.find(b => b.num === num);
+                    if (!bar) return;
+                    const item = document.createElement('div');
+                    item.className = 'mm-pool-item';
+                    item.style.setProperty('--qcolor', bar.color);
+
+                    const info = document.createElement('div');
+                    const n = document.createElement('div');
+                    n.className = 'mm-pool-name';
+                    n.textContent = bar.name;
+                    info.appendChild(n);
+                    if (bar.address) {
+                        const a = document.createElement('div');
+                        a.className = 'mm-pool-addr';
+                        a.textContent = bar.address;
+                        info.appendChild(a);
+                    }
+                    item.appendChild(info);
+
+                    const rm = document.createElement('button');
+                    rm.className = 'mm-pool-remove';
+                    rm.textContent = '×';
+                    rm.title = 'Remove from pool';
+                    rm.addEventListener('click', () => {
+                        toggleMatchmakerDraft(num);
+                        renderMatchmakerPool();
+                    });
+                    item.appendChild(rm);
+                    list.appendChild(item);
+                });
+            }
+            document.getElementById('mmSubmitBtn').disabled = matchmakerDraft.length === 0;
+        }
+
+        async function submitMatchmakerPool() {
+            if (matchmakerDraft.length === 0) return;
+            const now = Date.now();
+            matchmakerPools[currentUser.id] = {
+                picks: [...matchmakerDraft],
+                submittedAt: now,
+                expiresAt: now + MATCHMAKER_EXPIRY_MS
+            };
+            matchmakerDraft = [];
+            saveMmDraft();
+            updateMatchmakerBadge();
+            await pushMatchmakerPoolToCloud();
+            showMatchmakerWaiting();
+            await evaluateMatchmakerPools();
+        }
+
+        function showMatchmakerWaiting() {
+            document.getElementById('mmBuildView').style.display = 'none';
+            document.getElementById('mmWaitingView').style.display = '';
+            document.getElementById('mmRevealView').style.display = 'none';
+
+            const mine = matchmakerPools[currentUser.id];
+            const sub = document.getElementById('mmWaitingSub');
+            if (mine && mine.submittedAt) {
+                sub.textContent = 'You submitted ' + formatTimeAgo(mine.submittedAt) + ' · expires in ' + formatTimeLeft(mine.expiresAt);
+            } else {
+                sub.textContent = '';
+            }
+
+            const other = currentUser.id === 'bigDog' ? 'chooch' : 'bigDog';
+            const otherName = other === 'bigDog' ? 'Big Dog' : 'Chooch';
+            const otherPool = matchmakerPools[other];
+            const msg = document.getElementById('mmWaitingMsg');
+            if (otherPool && otherPool.picks && otherPool.picks.length > 0 && Date.now() < (otherPool.expiresAt || 0)) {
+                msg.textContent = otherName + ' submitted ' + formatTimeAgo(otherPool.submittedAt) + ' — checking for match...';
+            } else {
+                msg.textContent = 'Waiting for ' + otherName + '...';
+            }
+
+            document.getElementById('mmResubmitBtn').style.display = mine ? '' : 'none';
+        }
+
+        async function evaluateMatchmakerPools() {
+            await syncMatchmakerPoolsFromCloud();
+
+            const now = Date.now();
+            ['bigDog', 'chooch'].forEach(id => {
+                const p = matchmakerPools[id];
+                if (p && p.expiresAt && now >= p.expiresAt) {
+                    matchmakerPools[id] = null;
+                }
+            });
+
+            const mine = matchmakerPools[currentUser.id];
+            const other = currentUser.id === 'bigDog' ? 'chooch' : 'bigDog';
+            const theirs = matchmakerPools[other];
+
+            if (!mine || !mine.picks || mine.picks.length === 0) {
+                showMatchmakerBuild();
+                return;
+            }
+            if (!theirs || !theirs.picks || theirs.picks.length === 0) {
+                showMatchmakerWaiting();
+                return;
+            }
+
+            const myPicks = mine.picks;
+            const theirPicks = theirs.picks;
+            const matches = myPicks.filter(n => theirPicks.includes(n));
+
+            if (matches.length > 0) {
+                matchmakerPools.bigDog = null;
+                matchmakerPools.chooch = null;
+                await pushMatchmakerPoolToCloud();
+                closeMatchmakerModal();
+                showMatchCelebration(matches);
+            } else {
+                showMatchmakerCompromise(myPicks, theirPicks, other);
+                matchmakerPools.bigDog = null;
+                matchmakerPools.chooch = null;
+                await pushMatchmakerPoolToCloud();
+            }
+        }
+
+        function showMatchmakerCompromise(myPicks, theirPicks, otherId) {
+            document.getElementById('mmBuildView').style.display = 'none';
+            document.getElementById('mmWaitingView').style.display = 'none';
+            const reveal = document.getElementById('mmRevealView');
+            reveal.style.display = '';
+
+            const allPicks = new Map();
+            myPicks.forEach((num, i) => { allPicks.set(num, (allPicks.get(num) || 0) + (myPicks.length - i)); });
+            theirPicks.forEach((num, i) => { allPicks.set(num, (allPicks.get(num) || 0) + (theirPicks.length - i)); });
+            const ranked = [...allPicks.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3);
+
+            const myName = currentUser.displayName || 'You';
+            const otherName = otherId === 'bigDog' ? 'Big Dog' : 'Chooch';
+
+            let html = '<h2>No exact match, but...</h2>';
+            html += '<p style="color: #8a8aad; margin-bottom: 1rem; font-size: 0.85rem;">Closest compromises based on both pools:</p>';
+            html += '<div>';
+            ranked.forEach(([barNum], i) => {
+                const bar = barsData.find(b => b.num === barNum);
+                const data = barDataStore[barNum];
+                if (!bar) return;
+                const whoPickedIt = [];
+                if (myPicks.includes(barNum)) whoPickedIt.push(myName);
+                if (theirPicks.includes(barNum)) whoPickedIt.push(otherName);
+                html += '<div class="rec-solo-result">';
+                html += '<div class="bar-name">' + (i + 1) + '. ' + escapeHtml(bar.name) + '</div>';
+                html += '<div class="bar-info">' + escapeHtml(bar.address || '') + (data && data.hours ? ' · ' + escapeHtml(data.hours) : '') + '</div>';
+                html += '<div style="font-size: 0.7rem; color: #66bb6a; margin-top: 0.25rem;">Picked by: ' + whoPickedIt.join(' &amp; ') + '</div>';
+                html += '</div>';
+            });
+            html += '</div>';
+            html += '<button id="mmRevealCloseBtn" style="margin-top: 1rem; width: 100%; background: #0f3460; color: #e0e0e0; border: 1px solid #1565C0; padding: 0.6rem; border-radius: 6px; cursor: pointer;">Done</button>';
+            reveal.innerHTML = html;
+            document.getElementById('mmRevealCloseBtn').addEventListener('click', closeMatchmakerModal);
+        }
+
+        // --- Wiring ---
+        document.getElementById('openConciergeBtn').addEventListener('click', openConcierge);
+        document.getElementById('conciergeCloseBtn').addEventListener('click', closeConcierge);
+        document.getElementById('conciergeEditVibesLink').addEventListener('click', () => {
+            closeConcierge();
+            openVibesOnboarding(true);
+        });
+        document.getElementById('conciergeShowBtn').addEventListener('click', runConcierge);
+        document.getElementById('conciergeClearBtn').addEventListener('click', exitConciergeResultsMode);
+
+        document.querySelectorAll('.concierge-filter-toggle').forEach(t => {
+            t.addEventListener('click', () => {
+                const key = t.dataset.filter;
+                conciergeFilters[key] = !conciergeFilters[key];
+                t.classList.toggle('active', conciergeFilters[key]);
+                if (key === 'nearMe' && !conciergeFilters.nearMe) {
+                    conciergeUserLocation = null;
+                    document.getElementById('conciergeStatus').textContent = '';
+                }
+            });
+        });
+
+        document.getElementById('conciergeQuadrantSelect').addEventListener('change', (e) => {
+            conciergeFilters.quadrant = e.target.value;
+        });
+
+        document.getElementById('matchmakerBadge').addEventListener('click', openMatchmakerModal);
+        document.getElementById('mmCloseBtn').addEventListener('click', closeMatchmakerModal);
+        document.getElementById('mmWaitingCloseBtn').addEventListener('click', closeMatchmakerModal);
+        document.getElementById('mmSubmitBtn').addEventListener('click', submitMatchmakerPool);
+        document.getElementById('mmCheckBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('mmCheckBtn');
+            btn.textContent = 'Checking...';
+            await evaluateMatchmakerPools();
+            btn.textContent = 'Check for match';
+        });
+        document.getElementById('mmResubmitBtn').addEventListener('click', async () => {
+            if (!confirm('Clear your submitted pool and start over?')) return;
+            matchmakerPools[currentUser.id] = null;
+            await pushMatchmakerPoolToCloud();
+            showMatchmakerBuild();
+        });
+
+        // ============================================================
+        // ===== end Concierge + Matchmaker =====
+        // ============================================================
 
         initMap();
 
