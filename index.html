@@ -1312,6 +1312,69 @@
             background: #90caf9;
         }
 
+        /* ===== App State Machine — Splash / Identity / Mode Select ===== */
+        #appSplash {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: #0d1b2a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        #appSplash.exiting {
+            opacity: 0;
+            transform: scale(1.02);
+            pointer-events: none;
+        }
+        #appSplash .splash-title {
+            font-size: 1.1rem;
+            color: #8a8aad;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        #appSplash .splash-subtitle {
+            font-size: 0.85rem;
+            color: #4a4a6a;
+            margin-bottom: 2.5rem;
+            text-align: center;
+            max-width: 320px;
+            line-height: 1.4;
+        }
+        #appSplash .identity-card {
+            width: 260px;
+            padding: 1.8rem 1.2rem;
+            margin-bottom: 1rem;
+            border-radius: 12px;
+            background: #16213e;
+            border: 2px solid #0f3460;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.25s ease;
+        }
+        #appSplash .identity-card:hover {
+            border-color: #90caf9;
+            background: #1a2a4a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        #appSplash .identity-card:active {
+            transform: translateY(0);
+        }
+        #appSplash .identity-card .identity-emoji {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 0.6rem;
+        }
+        #appSplash .identity-card .identity-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+
         /* Recommend feature */
         .rec-identity-btn:hover { border-color: #1565C0 !important; background: #16213e !important; }
         .rec-identity-btn.selected { border-color: #2E7D32 !important; background: #1a3a1a !important; }
@@ -1363,6 +1426,21 @@
     </style>
 </head>
 <body>
+
+    <!-- ===== Identity Splash — always shows on load ===== -->
+    <div id="appSplash">
+        <div class="splash-title">Who's here?</div>
+        <div class="splash-subtitle">Pick yourself. The other one can get their own phone.</div>
+        <div class="identity-card" data-identity="bigDog">
+            <span class="identity-emoji">&#x1F436;</span>
+            <span class="identity-name">Big Dog</span>
+        </div>
+        <div class="identity-card" data-identity="chooch">
+            <span class="identity-emoji">&#x1F682;</span>
+            <span class="identity-name">Chooch</span>
+        </div>
+    </div>
+
     <header id="mainHeader">
         <div class="header-content" id="headerContent">
             <div class="header-title">
@@ -1612,6 +1690,47 @@
         function saveBarsData() {
             localStorage.setItem('barsDataCustom', JSON.stringify(barsData));
         }
+
+        // ===== App State Machine =====
+        // States: IDENTITY_SELECT → MODE_SELECT → MODE_ACTIVE
+        // (ONBOARDING state will be added when first-time setup flow is built)
+        let appState = 'IDENTITY_SELECT';
+
+        // Global identity — available to all features (Concierge, Matchmaker, Log a Visit, etc.)
+        let currentUser = {
+            id: null,           // 'bigDog' or 'chooch'
+            displayName: null,  // 'Big Dog' or 'Chooch'
+            avatar: null        // emoji for now, future: custom avatar
+        };
+
+        const userProfiles = {
+            bigDog: { id: 'bigDog', displayName: 'Big Dog', avatar: '\u{1F436}' },
+            chooch: { id: 'chooch', displayName: 'Chooch', avatar: '\u{1F682}' }
+        };
+
+        function selectIdentity(identityId) {
+            const profile = userProfiles[identityId];
+            if (!profile) return;
+            currentUser = { ...profile };
+            localStorage.setItem('lastIdentity', identityId);
+
+            // Transition out of splash
+            const splash = document.getElementById('appSplash');
+            splash.classList.add('exiting');
+            setTimeout(() => {
+                splash.style.display = 'none';
+                // TODO: When mode wheel is built, transition to MODE_SELECT here
+                // For now, go straight to the map (MODE_ACTIVE)
+                appState = 'MODE_ACTIVE';
+            }, 400);
+        }
+
+        // Wire up identity card clicks
+        document.querySelectorAll('#appSplash .identity-card').forEach(card => {
+            card.addEventListener('click', () => {
+                selectIdentity(card.dataset.identity);
+            });
+        });
 
         let map;
         let markers = [];
@@ -3613,14 +3732,15 @@
 
         function openRecModal() {
             document.getElementById('recModal').classList.add('active');
-            document.getElementById('recStep1').style.display = '';
-            document.getElementById('recStep2').style.display = 'none';
-            document.getElementById('recStep3').style.display = 'none';
-            document.getElementById('recStep4').style.display = 'none';
-            recWho = null;
+            // Skip identity step — use global currentUser (selected at app splash)
+            recWho = currentUser.id;
             recPrefs = [];
             recPicks = [];
-            document.querySelectorAll('.rec-identity-btn').forEach(b => b.classList.remove('selected'));
+            document.getElementById('recStep1').style.display = 'none';
+            document.getElementById('recStep2').style.display = '';
+            document.getElementById('recStep3').style.display = 'none';
+            document.getElementById('recStep4').style.display = 'none';
+            renderRecPrefs();
         }
 
         function closeRecModal() {
