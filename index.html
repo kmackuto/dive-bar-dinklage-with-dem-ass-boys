@@ -1375,6 +1375,198 @@
             color: #e0e0e0;
         }
 
+        /* ===== Vibes Onboarding Overlay ===== */
+        #vibesOnboarding {
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
+            background: #0d1b2a;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+            padding: 2rem 1rem;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        #vibesOnboarding.active {
+            display: flex;
+        }
+        #vibesOnboarding.exiting {
+            opacity: 0;
+            transform: scale(1.02);
+            pointer-events: none;
+        }
+        .vibes-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            max-width: 380px;
+        }
+        .vibes-header h2 {
+            font-size: 1.3rem;
+            color: #e0e0e0;
+            margin-bottom: 0.4rem;
+        }
+        .vibes-header p {
+            font-size: 0.82rem;
+            color: #6a6a8a;
+            line-height: 1.4;
+        }
+        .vibes-list {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .vibe-card {
+            background: #16213e;
+            border: 2px solid #0f3460;
+            border-radius: 10px;
+            padding: 1rem;
+            transition: border-color 0.2s;
+        }
+        .vibe-card.editing {
+            border-color: #1565C0;
+        }
+        .vibe-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.6rem;
+        }
+        .vibe-card-header input {
+            flex: 1;
+            background: #0d1b2a;
+            border: 1px solid #1a2a4a;
+            border-radius: 6px;
+            padding: 0.45rem 0.65rem;
+            color: #e0e0e0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .vibe-card-header input:focus {
+            border-color: #1565C0;
+        }
+        .vibe-card-header input::placeholder {
+            color: #4a4a6a;
+            font-weight: 400;
+        }
+        .vibe-delete-btn {
+            background: none;
+            border: none;
+            color: #5a5a7a;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            transition: color 0.15s, background 0.15s;
+        }
+        .vibe-delete-btn:hover {
+            color: #e57373;
+            background: rgba(229,115,115,0.1);
+        }
+        .vibe-tag-section {
+            margin-bottom: 0.4rem;
+        }
+        .vibe-tag-label {
+            font-size: 0.68rem;
+            color: #6a6a8a;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.3rem;
+        }
+        .vibe-tag-pool {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+        }
+        .vibe-tag-chip {
+            background: #0d1b2a;
+            color: #8a8aad;
+            border: 1px solid #1a2a4a;
+            padding: 0.25rem 0.55rem;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 0.74rem;
+            transition: all 0.15s;
+            user-select: none;
+        }
+        .vibe-tag-chip:hover {
+            border-color: #1565C0;
+            color: #c0c0e0;
+        }
+        .vibe-tag-chip.selected {
+            background: #1565C0;
+            border-color: #1565C0;
+            color: #fff;
+        }
+        .vibes-add-btn {
+            width: 100%;
+            max-width: 400px;
+            padding: 0.7rem;
+            background: none;
+            border: 2px dashed #1a2a4a;
+            border-radius: 10px;
+            color: #6a6a8a;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 1.5rem;
+        }
+        .vibes-add-btn:hover {
+            border-color: #1565C0;
+            color: #90caf9;
+        }
+        .vibes-done-btn {
+            padding: 0.75rem 2.5rem;
+            background: linear-gradient(135deg, #1565C0, #2E7D32);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+        .vibes-done-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+        }
+        .vibes-done-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .vibes-error {
+            color: #e57373;
+            font-size: 0.78rem;
+            margin-top: 0.5rem;
+            text-align: center;
+            min-height: 1.2rem;
+        }
+
+        /* Vibes section in Settings */
+        .settings-vibe-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #0d1b2a;
+            border: 1px solid #1a2a4a;
+            padding: 0.35rem 0.7rem;
+            border-radius: 14px;
+            font-size: 0.8rem;
+            color: #90caf9;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .settings-vibe-chip:hover {
+            border-color: #1565C0;
+        }
+
         /* Recommend feature */
         .rec-identity-btn:hover { border-color: #1565C0 !important; background: #16213e !important; }
         .rec-identity-btn.selected { border-color: #2E7D32 !important; background: #1a3a1a !important; }
@@ -1438,6 +1630,21 @@
         <div class="identity-card" data-identity="chooch">
             <span class="identity-emoji">&#x1F682;</span>
             <span class="identity-name">Chooch</span>
+        </div>
+    </div>
+
+    <!-- ===== Vibes Onboarding — shows after identity if no vibes saved ===== -->
+    <div id="vibesOnboarding">
+        <div class="vibes-header">
+            <h2>Set Up Your Vibes</h2>
+            <p>Create at least one vibe to use the Concierge. Pick a name and choose the tags that define it.</p>
+        </div>
+        <div class="vibes-list" id="vibesList"></div>
+        <button class="vibes-add-btn" id="vibesAddBtn">+ Add another vibe</button>
+        <div class="vibes-error" id="vibesError"></div>
+        <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <button class="vibes-done-btn" id="vibesDoneBtn" disabled>Let's go</button>
+            <button id="vibesCancelBtn" style="display: none; background: none; border: 1px solid #2a2a4a; color: #8a8aad; padding: 0.65rem 1.5rem; border-radius: 20px; font-size: 0.9rem; cursor: pointer;">Cancel</button>
         </div>
     </div>
 
@@ -1589,6 +1796,12 @@
             </div>
 
             <hr style="border-color: #0f3460; margin: 1.5rem 0;">
+            <h3 style="margin-bottom: 0.5rem;">Your Vibes</h3>
+            <p style="font-size: 0.78rem; color: #6a6a8a; margin-bottom: 0.6rem;">Used by the Concierge to recommend bars.</p>
+            <div id="settingsVibesList" style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.5rem;"></div>
+            <button id="editVibesBtn" style="background: #1565C0; color: #fff; font-size: 0.8rem; padding: 0.4rem 0.8rem; border: none; border-radius: 6px; cursor: pointer;">Edit Vibes</button>
+
+            <hr style="border-color: #0f3460; margin: 1.5rem 0;">
             <h3 style="margin-bottom: 0.75rem;">Add a Bar</h3>
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                 <input type="text" id="addBarName" class="popup-input" placeholder="Bar name">
@@ -1692,8 +1905,7 @@
         }
 
         // ===== App State Machine =====
-        // States: IDENTITY_SELECT → MODE_SELECT → MODE_ACTIVE
-        // (ONBOARDING state will be added when first-time setup flow is built)
+        // States: IDENTITY_SELECT → VIBES_ONBOARDING → MODE_SELECT → MODE_ACTIVE
         let appState = 'IDENTITY_SELECT';
 
         // Global identity — available to all features (Concierge, Matchmaker, Log a Visit, etc.)
@@ -1708,6 +1920,259 @@
             chooch: { id: 'chooch', displayName: 'Chooch', avatar: '\u{1F682}' }
         };
 
+        // ===== Custom Vibes System =====
+        // Vibes are per-user, stored in localStorage as vibes_bigDog / vibes_chooch
+        // Each vibe: { id, name, tags: [], attributes: [] }
+
+        const vibeAttributes = [
+            { key: 'outdoorSeating', label: 'Patio / Outdoor' },
+            { key: 'liveMusic', label: 'Live Music' },
+            { key: 'allowsDogs', label: 'Dog Friendly' },
+            { key: 'servesBeer', label: 'Serves Beer' },
+            { key: 'servesCocktails', label: 'Serves Cocktails' },
+            { key: 'servesWine', label: 'Serves Wine' }
+        ];
+
+        function getVibesKey(userId) {
+            return 'vibes_' + (userId || currentUser.id);
+        }
+
+        function loadVibes(userId) {
+            try {
+                const raw = localStorage.getItem(getVibesKey(userId));
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch(e) {}
+            return [];
+        }
+
+        function saveVibes(vibes, userId) {
+            localStorage.setItem(getVibesKey(userId), JSON.stringify(vibes));
+        }
+
+        function generateVibeId() {
+            return 'vibe-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
+        }
+
+        // Temporary editing state for the onboarding / edit flow
+        let editingVibes = [];
+        let vibesEditMode = false; // false = onboarding, true = editing from settings
+
+        function createEmptyVibe() {
+            return { id: generateVibeId(), name: '', tags: [], attributes: [] };
+        }
+
+        function renderVibeCard(vibe, index) {
+            const card = document.createElement('div');
+            card.className = 'vibe-card editing';
+            card.dataset.vibeIndex = index;
+
+            // Header with name input and delete button
+            const header = document.createElement('div');
+            header.className = 'vibe-card-header';
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.placeholder = 'Name this vibe (e.g. Cheap & Weird)';
+            nameInput.value = vibe.name;
+            nameInput.maxLength = 40;
+            nameInput.addEventListener('input', (e) => {
+                editingVibes[index].name = e.target.value.trim();
+                validateVibes();
+            });
+            header.appendChild(nameInput);
+
+            if (editingVibes.length > 1 || vibesEditMode) {
+                const delBtn = document.createElement('button');
+                delBtn.className = 'vibe-delete-btn';
+                delBtn.textContent = '✕';
+                delBtn.title = 'Remove this vibe';
+                delBtn.addEventListener('click', () => {
+                    editingVibes.splice(index, 1);
+                    renderVibesEditor();
+                });
+                header.appendChild(delBtn);
+            }
+            card.appendChild(header);
+
+            // Tags section
+            const tagSection = document.createElement('div');
+            tagSection.className = 'vibe-tag-section';
+            const tagLabel = document.createElement('div');
+            tagLabel.className = 'vibe-tag-label';
+            tagLabel.textContent = 'Tags';
+            tagSection.appendChild(tagLabel);
+            const tagPool = document.createElement('div');
+            tagPool.className = 'vibe-tag-pool';
+            allPresetTags.forEach(tag => {
+                const chip = document.createElement('span');
+                chip.className = 'vibe-tag-chip' + (vibe.tags.includes(tag) ? ' selected' : '');
+                chip.textContent = tag;
+                chip.addEventListener('click', () => {
+                    const idx = editingVibes[index].tags.indexOf(tag);
+                    if (idx >= 0) {
+                        editingVibes[index].tags.splice(idx, 1);
+                    } else {
+                        editingVibes[index].tags.push(tag);
+                    }
+                    chip.classList.toggle('selected');
+                    validateVibes();
+                });
+                tagPool.appendChild(chip);
+            });
+            tagSection.appendChild(tagPool);
+            card.appendChild(tagSection);
+
+            // Attributes section
+            const attrSection = document.createElement('div');
+            attrSection.className = 'vibe-tag-section';
+            const attrLabel = document.createElement('div');
+            attrLabel.className = 'vibe-tag-label';
+            attrLabel.textContent = 'Attributes';
+            attrSection.appendChild(attrLabel);
+            const attrPool = document.createElement('div');
+            attrPool.className = 'vibe-tag-pool';
+            vibeAttributes.forEach(attr => {
+                const chip = document.createElement('span');
+                chip.className = 'vibe-tag-chip' + (vibe.attributes.includes(attr.key) ? ' selected' : '');
+                chip.textContent = attr.label;
+                chip.addEventListener('click', () => {
+                    const idx = editingVibes[index].attributes.indexOf(attr.key);
+                    if (idx >= 0) {
+                        editingVibes[index].attributes.splice(idx, 1);
+                    } else {
+                        editingVibes[index].attributes.push(attr.key);
+                    }
+                    chip.classList.toggle('selected');
+                    validateVibes();
+                });
+                attrPool.appendChild(chip);
+            });
+            attrSection.appendChild(attrPool);
+            card.appendChild(attrSection);
+
+            return card;
+        }
+
+        function renderVibesEditor() {
+            const list = document.getElementById('vibesList');
+            list.innerHTML = '';
+            editingVibes.forEach((vibe, i) => {
+                list.appendChild(renderVibeCard(vibe, i));
+            });
+            validateVibes();
+        }
+
+        function validateVibes() {
+            const errorEl = document.getElementById('vibesError');
+            const doneBtn = document.getElementById('vibesDoneBtn');
+            let valid = true;
+            let errorMsg = '';
+
+            if (editingVibes.length === 0) {
+                valid = false;
+                errorMsg = 'Create at least one vibe to continue.';
+            } else {
+                for (let i = 0; i < editingVibes.length; i++) {
+                    const v = editingVibes[i];
+                    if (!v.name) {
+                        valid = false;
+                        errorMsg = 'Every vibe needs a name.';
+                        break;
+                    }
+                    if (v.tags.length === 0 && v.attributes.length === 0) {
+                        valid = false;
+                        errorMsg = `"${v.name}" needs at least one tag or attribute.`;
+                        break;
+                    }
+                }
+            }
+
+            errorEl.textContent = errorMsg;
+            doneBtn.disabled = !valid;
+            return valid;
+        }
+
+        function openVibesOnboarding(isEdit) {
+            vibesEditMode = !!isEdit;
+            const existing = loadVibes();
+            editingVibes = existing.length > 0
+                ? JSON.parse(JSON.stringify(existing))
+                : [createEmptyVibe()];
+
+            const overlay = document.getElementById('vibesOnboarding');
+            const header = overlay.querySelector('.vibes-header h2');
+            const doneBtn = document.getElementById('vibesDoneBtn');
+            const cancelBtn = document.getElementById('vibesCancelBtn');
+
+            if (isEdit) {
+                header.textContent = 'Edit Your Vibes';
+                doneBtn.textContent = 'Save';
+                cancelBtn.style.display = 'inline-block';
+            } else {
+                header.textContent = 'Set Up Your Vibes';
+                doneBtn.textContent = "Let's go";
+                cancelBtn.style.display = 'none';
+            }
+
+            overlay.classList.remove('exiting');
+            overlay.classList.add('active');
+            appState = 'VIBES_ONBOARDING';
+            renderVibesEditor();
+        }
+
+        function closeVibesOnboarding() {
+            const overlay = document.getElementById('vibesOnboarding');
+            overlay.classList.add('exiting');
+            setTimeout(() => {
+                overlay.classList.remove('active', 'exiting');
+                // TODO: When mode wheel is built, transition to MODE_SELECT here
+                // For now, go straight to the map (MODE_ACTIVE)
+                appState = 'MODE_ACTIVE';
+            }, 400);
+        }
+
+        // "Add another vibe" button
+        document.getElementById('vibesAddBtn').addEventListener('click', () => {
+            editingVibes.push(createEmptyVibe());
+            renderVibesEditor();
+            // Scroll to new card
+            const list = document.getElementById('vibesList');
+            setTimeout(() => {
+                list.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                list.lastElementChild?.querySelector('input')?.focus();
+            }, 50);
+        });
+
+        // "Cancel" button (edit mode only — returns to settings without saving)
+        document.getElementById('vibesCancelBtn').addEventListener('click', () => {
+            const overlay = document.getElementById('vibesOnboarding');
+            overlay.classList.add('exiting');
+            setTimeout(() => {
+                overlay.classList.remove('active', 'exiting');
+                appState = 'MODE_ACTIVE';
+            }, 400);
+        });
+
+        // "Done / Save" button
+        document.getElementById('vibesDoneBtn').addEventListener('click', () => {
+            if (!validateVibes()) return;
+            saveVibes(editingVibes);
+            if (vibesEditMode) {
+                // Came from settings — just close overlay, we're already in MODE_ACTIVE
+                const overlay = document.getElementById('vibesOnboarding');
+                overlay.classList.add('exiting');
+                setTimeout(() => {
+                    overlay.classList.remove('active', 'exiting');
+                    appState = 'MODE_ACTIVE';
+                    renderSettingsVibes();
+                }, 400);
+            } else {
+                closeVibesOnboarding();
+            }
+        });
+
         function selectIdentity(identityId) {
             const profile = userProfiles[identityId];
             if (!profile) return;
@@ -1719,9 +2184,16 @@
             splash.classList.add('exiting');
             setTimeout(() => {
                 splash.style.display = 'none';
-                // TODO: When mode wheel is built, transition to MODE_SELECT here
-                // For now, go straight to the map (MODE_ACTIVE)
-                appState = 'MODE_ACTIVE';
+
+                // Check if user has vibes — if not, show onboarding
+                const userVibes = loadVibes(identityId);
+                if (userVibes.length === 0) {
+                    openVibesOnboarding(false);
+                } else {
+                    // TODO: When mode wheel is built, transition to MODE_SELECT here
+                    // For now, go straight to the map (MODE_ACTIVE)
+                    appState = 'MODE_ACTIVE';
+                }
             }, 400);
         }
 
@@ -1731,6 +2203,29 @@
                 selectIdentity(card.dataset.identity);
             });
         });
+
+        // ===== Settings — Vibes Display & Edit =====
+        function renderSettingsVibes() {
+            const container = document.getElementById('settingsVibesList');
+            if (!container) return;
+            const vibes = loadVibes();
+            container.innerHTML = '';
+            if (vibes.length === 0) {
+                container.innerHTML = '<span style="font-size: 0.8rem; color: #6a6a8a;">No vibes set up yet.</span>';
+                return;
+            }
+            vibes.forEach(v => {
+                const chip = document.createElement('span');
+                chip.className = 'settings-vibe-chip';
+                const tagCount = v.tags.length + v.attributes.length;
+                chip.textContent = v.name + ' (' + tagCount + ')';
+                chip.title = [...v.tags, ...v.attributes.map(a => {
+                    const found = vibeAttributes.find(va => va.key === a);
+                    return found ? found.label : a;
+                })].join(', ');
+                container.appendChild(chip);
+            });
+        }
 
         let map;
         let markers = [];
@@ -3577,7 +4072,13 @@
             if (firebaseUrl) {
                 document.getElementById('settingsFirebaseUrl').value = firebaseUrl;
             }
+            renderSettingsVibes();
             document.getElementById('settingsModal').classList.add('active');
+        });
+
+        document.getElementById('editVibesBtn').addEventListener('click', () => {
+            document.getElementById('settingsModal').classList.remove('active');
+            openVibesOnboarding(true);
         });
 
         document.getElementById('updateFirebaseUrlBtn').addEventListener('click', async () => {
