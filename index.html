@@ -2697,12 +2697,12 @@
                 if (currentTimeMinutes >= openTimeMinutes) {
                     const minutesUntilClose = 1440 - currentTimeMinutes + closeTimeMinutes;
                     if (minutesUntilClose <= 120) {
-                        return 'closing_soon';
+                        return 'closing-soon';
                     }
                     return 'open';
                 } else if (currentTimeMinutes < closeTimeMinutes) {
                     if (closeTimeMinutes - currentTimeMinutes <= 120) {
-                        return 'closing_soon';
+                        return 'closing-soon';
                     }
                     return 'open';
                 }
@@ -2712,7 +2712,7 @@
             if (currentTimeMinutes >= openTimeMinutes && currentTimeMinutes < closeTimeMinutes) {
                 const minutesUntilClose = closeTimeMinutes - currentTimeMinutes;
                 if (minutesUntilClose <= 120) {
-                    return 'closing_soon';
+                    return 'closing-soon';
                 }
                 return 'open';
             }
@@ -3325,7 +3325,7 @@
             if (!data || !data.ratings) return null;
             const vals = [data.ratings.bigDogDrinks, data.ratings.bigDogVibes, data.ratings.choochDrinks, data.ratings.choochVibes].filter(v => v > 0);
             if (vals.length === 0) return null;
-            return (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1);
+            return vals.reduce((a, b) => a + b, 0) / vals.length;
         }
 
         function updateProgressBar() {
@@ -3392,7 +3392,7 @@
                         iconEl.innerHTML = '✓';
                     }
 
-                    if (status === 'closing_soon') {
+                    if (status === 'closing-soon') {
                         iconEl.classList.add('closing-soon');
                         iconEl.style.setProperty('--color', bar.color);
                         iconEl.innerHTML = '!';
@@ -3407,7 +3407,7 @@
                     iconEl.style.setProperty('--color', bar.color);
 
                     const dNum = getDisplayNum(bar);
-                    if (status === 'closing_soon') {
+                    if (status === 'closing-soon') {
                         iconEl.classList.add('closing-soon');
                         iconEl.innerHTML = '!';
                     } else if (status === 'closed') {
@@ -3525,7 +3525,7 @@
             }
 
             if (avgRating) {
-                html += `<div class="compact-popup-info">⭐ ${avgRating}</div>`;
+                html += `<div class="compact-popup-info">⭐ ${avgRating.toFixed(1)}</div>`;
             }
 
             html += `<div class="compact-popup-details-link" data-bar-num="${bar.num}">Open Details →</div>`;
@@ -3637,7 +3637,7 @@
                     let statusDot = '';
                     if (status === 'open') {
                         statusDot = '🟢';
-                    } else if (status === 'closing_soon') {
+                    } else if (status === 'closing-soon') {
                         statusDot = '🟡';
                     } else if (status === 'closed') {
                         statusDot = '🔴';
@@ -3657,7 +3657,7 @@
                         <span class="bar-item-num">${visited ? '✓' : dNum + '.'}</span>
                         <span class="bar-item-name">${escapeHtml(bar.name)}</span>
                         ${incomplete ? '<span class="bar-item-incomplete" title="Missing ratings or journal entries">⚠️</span>' : ''}
-                        ${avgRating ? `<span class="bar-item-rating">⭐ ${avgRating}</span>` : ''}
+                        ${avgRating ? `<span class="bar-item-rating">⭐ ${avgRating.toFixed(1)}</span>` : ''}
                     `;
 
                     if (hhStatus === 'active') {
@@ -3884,6 +3884,17 @@
             const markVisitedBtn = document.getElementById('markVisitedBtn');
             if (markVisitedBtn) {
                 markVisitedBtn.addEventListener('click', () => {
+                    // Visited state is derived from journals/ratings (see STATUS.md §3).
+                    // Writing lastVisited alone won't register, so seed a marker journal entry
+                    // the first time through.
+                    if (!isBarVisited(bar.num)) {
+                        const who = currentUser.id || 'bigDog';
+                        data.journals[who].unshift({
+                            text: 'Marked as visited',
+                            timestamp: new Date().toISOString(),
+                            marker: true
+                        });
+                    }
                     data.lastVisited = new Date().toISOString();
                     const displayDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                     const displayEl = document.getElementById('lastVisitedDisplay');
