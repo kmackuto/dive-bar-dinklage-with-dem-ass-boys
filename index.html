@@ -2014,13 +2014,13 @@
             <p>Sync your dive bar data between you and Jacob in real time.</p>
 
             <div style="background: #0d1b2a; border-radius: 8px; padding: 16px; margin: 16px 0;">
-                <p style="font-size: 0.95em; color: #ccc; margin-bottom: 12px;">Paste your Firebase Realtime Database URL below. It looks like:</p>
-                <code style="background:#16213e; padding:4px 8px; border-radius:3px; font-size: 0.85em; color: #90caf9; display: block; text-align: center;">https://your-project-default-rtdb.firebaseio.com</code>
+                <p style="font-size: 0.95em; color: #ccc; margin-bottom: 12px;">Paste this Firebase Realtime Database URL below to sync:</p>
+                <code style="background:#16213e; padding:4px 8px; border-radius:3px; font-size: 0.85em; color: #90caf9; display: block; text-align: center;">https://dive-bar-dinklage-default-rtdb.firebaseio.com</code>
             </div>
 
             <div class="form-group">
                 <label for="firebaseUrlInput" style="font-size: 0.95em;">Firebase Database URL:</label>
-                <input type="text" id="firebaseUrlInput" placeholder="https://your-project-default-rtdb.firebaseio.com">
+                <input type="text" id="firebaseUrlInput" placeholder="https://dive-bar-dinklage-default-rtdb.firebaseio.com">
             </div>
 
             <div class="modal-buttons">
@@ -4401,7 +4401,7 @@
         document.getElementById('connectFirebaseBtn').addEventListener('click', async () => {
             const url = document.getElementById('firebaseUrlInput').value.trim();
             if (!url || !url.includes('firebaseio.com')) {
-                alert('Enter a valid Firebase Realtime Database URL.\n\nIt should look like: https://your-project-default-rtdb.firebaseio.com');
+                alert('Enter a valid Firebase Realtime Database URL.\n\nIt should look like: https://dive-bar-dinklage-default-rtdb.firebaseio.com');
                 return;
             }
             const btn = document.getElementById('connectFirebaseBtn');
